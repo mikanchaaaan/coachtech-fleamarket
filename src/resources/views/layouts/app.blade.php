@@ -12,11 +12,12 @@
 </head>
 <body>
     <header class="header">
-    <div class="header__inner">
-        <h1 class="header__logo">
-            FashionablyLate
-        </h1>
-        @yield('button')
+        <div class="header__inner">
+            <div class="header__logo">
+                <img src="{{ asset('img/logo.svg') }}" alt="ロゴ">
+            </div>
+            @yield('search-form')
+            @yield('button')
         </div>
     </header>
 

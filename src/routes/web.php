@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+// プロフィール編集画面の表示
+Route::get('/mypage/profile', [UserController::class, 'showEditProfile']);
+
+// プロフィール編集画面の更新
+Route::post('/mypage/profile/edit', [UserController::class, 'editProfile']);
