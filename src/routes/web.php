@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,13 +15,13 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// 商品一覧画面の表示
+Route::get('/', [ItemController::class, 'index']);
+
+Route::middleware('auth')->group(function () {
+    // プロフィール編集画面の表示
+    Route::get('/mypage/profile', [UserController::class, 'showEditProfile']);
+
+    // プロフィール編集画面の更新
+    Route::post('/mypage/profile/edit', [UserController::class, 'editProfile']);
 });
-
-
-// プロフィール編集画面の表示
-Route::get('/mypage/profile', [UserController::class, 'showEditProfile']);
-
-// プロフィール編集画面の更新
-Route::post('/mypage/profile/edit', [UserController::class, 'editProfile']);

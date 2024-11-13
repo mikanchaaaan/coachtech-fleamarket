@@ -11,8 +11,27 @@
         <h2>プロフィール設定</h2>
     </div>
     <div class="profileedit__content--inner">
-        <form action="/mypage/profile/edit" class="form" method="post">
+        <form action="/mypage/profile/image" class="form__image" method="post">
             @csrf
+            <!-- 画像選択 -->
+            <div class="form__group-image">
+                <div class="form__group-image--display">
+                </div>
+                <div class="form__group-image--content">
+                    <div class="form__input-image--text">
+                        <input type="file" name="image" value="{{ old('image') }}" />
+                    </div>
+                    <div class="form__error">
+                        @error('image')
+                        {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form action="/mypage/profile/edit" class="form__profile" method="post">
+        @csrf
             <!-- 名前入力 -->
             <div class="form__group">
                 <div class="form__group-title">

@@ -14,4 +14,9 @@ class Address extends Model
         'address',
         'building',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }
