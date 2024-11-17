@@ -15,12 +15,11 @@ class CreateExhibitionsTable extends Migration
     {
         Schema::create('exhibitions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('categories_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('conditions_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('image');
             $table->string('brand_name');
             $table->integer('price');
+            $table->integer('condition');
             $table->text('description');
             $table->timestamps();
         });

@@ -15,8 +15,7 @@ class ExhibitionsTableSeeder extends Seeder
     public function run()
     {
         $param = [
-            'categories_id' => 1,
-            'conditions_id' => 1,
+            'condition' => 1,
             'name' => '腕時計',
             'image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Armani+Mens+Clock.jpg',
             'brand_name' =>'',
@@ -26,8 +25,7 @@ class ExhibitionsTableSeeder extends Seeder
         DB::table('exhibitions')->insert($param);
 
         $param = [
-            'categories_id' => 2,
-            'conditions_id' => 2,
+            'condition' => 2,
             'name' => 'HDD',
             'image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/HDD+Hard+Disk.jpg',
             'brand_name' => '',
@@ -37,8 +35,7 @@ class ExhibitionsTableSeeder extends Seeder
         DB::table('exhibitions')->insert($param);
 
         $param = [
-            'categories_id' => 3,
-            'conditions_id' => 3,
+            'condition' => 3,
             'name' => '玉ねぎ3束',
             'image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/iLoveIMG+d.jpg',
             'brand_name' => '',
@@ -48,8 +45,7 @@ class ExhibitionsTableSeeder extends Seeder
         DB::table('exhibitions')->insert($param);
 
         $param = [
-            'categories_id' => 4,
-            'conditions_id' => 4,
+            'condition' => 4,
             'name' => '革靴',
             'image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Leather+Shoes+Product+Photo.jpg',
             'brand_name' => '',
@@ -59,8 +55,7 @@ class ExhibitionsTableSeeder extends Seeder
         DB::table('exhibitions')->insert($param);
 
         $param = [
-            'categories_id' => 5,
-            'conditions_id' => 1,
+            'condition' => 1,
             'name' => 'ノートPC',
             'image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Living+Room+Laptop.jpg',
             'brand_name' => '',
@@ -70,8 +65,7 @@ class ExhibitionsTableSeeder extends Seeder
         DB::table('exhibitions')->insert($param);
 
         $param = [
-            'categories_id' => 6,
-            'conditions_id' => 2,
+            'condition' => 2,
             'name' => 'マイク',
             'image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Music+Mic+4632231.jpg',
             'brand_name' => '',
@@ -81,8 +75,7 @@ class ExhibitionsTableSeeder extends Seeder
         DB::table('exhibitions')->insert($param);
 
         $param = [
-            'categories_id' => 7,
-            'conditions_id' => 3,
+            'condition' => 3,
             'name' => 'ショルダーバッグ',
             'image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Purse+fashion+pocket.jpg',
             'brand_name' => '',
@@ -92,8 +85,7 @@ class ExhibitionsTableSeeder extends Seeder
         DB::table('exhibitions')->insert($param);
 
         $param = [
-            'categories_id' => 8,
-            'conditions_id' => 4,
+            'condition' => 4,
             'name' => 'タンブラー',
             'image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Tumbler+souvenir.jpg',
             'brand_name' => '',
@@ -103,8 +95,7 @@ class ExhibitionsTableSeeder extends Seeder
         DB::table('exhibitions')->insert($param);
 
         $param = [
-            'categories_id' => 9,
-            'conditions_id' => 1,
+            'condition' => 1,
             'name' => 'コーヒーミル',
             'image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Waitress+with+Coffee+Grinder.jpg',
             'brand_name' => '',
@@ -114,8 +105,7 @@ class ExhibitionsTableSeeder extends Seeder
         DB::table('exhibitions')->insert($param);
 
         $param = [
-            'categories_id' => 10,
-            'conditions_id' => 2,
+            'condition' => 2,
             'name' => 'メイクセット',
             'image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/%E5%A4%96%E5%87%BA%E3%83%A1%E3%82%A4%E3%82%AF%E3%82%A2%E3%83%83%E3%83%95%E3%82%9A%E3%82%BB%E3%83%83%E3%83%88.jpg',
             'brand_name' => '',
