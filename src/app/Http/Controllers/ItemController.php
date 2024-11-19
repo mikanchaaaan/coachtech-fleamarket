@@ -12,7 +12,8 @@ class ItemController extends Controller
     // 商品一覧画面の表示
     public function index()
     {
-        $exhibitions = Exhibition::all();
+        // 商品情報と購入情報の取得
+        $exhibitions = Exhibition::with('purchases')->get();
         return view('item.index', compact('exhibitions'));
     }
 

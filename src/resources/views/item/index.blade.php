@@ -18,6 +18,10 @@
                 </a>
                 <div class="detail-content">
                     <p>{{$exhibition->name}}</p>
+                    {{-- 購入済みの商品は"sold"と表示する --}}
+                    @if ($exhibition->purchases->isNotEmpty())
+                        <span class="sold">Sold</span>
+                    @endif
                 </div>
             </div>
         @endforeach

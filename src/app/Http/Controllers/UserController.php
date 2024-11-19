@@ -5,9 +5,27 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Address;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    // プロフィール画面の表示
+    public function showProfile(Request $request)
+    {
+        // ログイン中のユーザ情報を取得
+        $user = auth()->user();
+
+        $tab = $request->query('tab', 'sell'); // デフォルトは 'sell'
+
+        if ($tab == 'buy') {
+            $exhibitions = auth()->user()->purchaseItems;  // 購入した商品を取得
+        } else {
+            $exhibitions = auth()->user()->sellItems;  // 出品した商品を取得
+        }
+
+        return view('user.profile', compact('user','exhibitions','tab'));
+    }
+
     // プロフィール編集画面の表示
     public function showEditProfile()
     {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Exhibition;
 use App\Models\Address;
+use App\Models\Purchase;
 
 class PurchaseController extends Controller
 {
@@ -41,5 +42,27 @@ class PurchaseController extends Controller
 
         return redirect("/purchase/{$item_id}")->with('message', '配送先を変更しました。');
 
+    }
+
+    // 購入した商品をPurchaseテーブルに登録
+    public function createPurchase(Request $request, $item_id)
+    {
+        // ログイン中のユーザの確認
+        $user = auth()->user();
+
+        // Exhibitionテーブルからアイテムを取得
+        $exhibition = Exhibition::findOrFail($item_id);
+
+        // Purchaseテーブルに登録するデータを作成
+        $purchase = [
+            'user_id' => $user->id,
+            'exhibition_id' => $exhibition->id,
+        ];
+
+        // Purchaseテーブルに追加
+        Purchase::create($purchase);
+
+        // マイページにリダイレクト
+        return redirect("/mypage")->with('message', '商品を購入しました。');
     }
 }

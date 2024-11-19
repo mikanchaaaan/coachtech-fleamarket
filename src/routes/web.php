@@ -23,6 +23,9 @@ Route::get('/', [ItemController::class, 'index']);
 Route::get('/item/{item_id}', [ItemController::class, 'detail']);
 
 Route::middleware('auth')->group(function () {
+    // プロフィール画面の表示
+    Route::get('mypage', [UserController::class, 'showProfile']);
+
     // プロフィール編集画面の表示
     Route::get('/mypage/profile', [UserController::class, 'showEditProfile']);
 
@@ -37,5 +40,8 @@ Route::middleware('auth')->group(function () {
 
     // 配送先住所の変更
     Route::post('/purchase/address/edit/{item_id}', [PurchaseController::class, 'editAddress']);
+
+    // 商品の購入
+    Route::post('/purchase/complete/{item_id}',[PurchaseController::class, 'createPurchase']);
 
 });

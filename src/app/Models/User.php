@@ -47,6 +47,18 @@ class User extends Authenticatable
     // addressテーブルとの結合
     public function address()
     {
-        return $this->hasOne('App\Models\Address');
+        return $this->hasOne(Address::class);
+    }
+
+    // purchaseテーブルとの結合
+    public function purchaseItems()
+    {
+        return $this->belongsToMany(Exhibition::class, 'purchases', 'user_id', 'exhibition_id');
+    }
+
+    // salesテーブルとの結合
+    public function sellItems()
+    {
+        return $this->belongsToMany(Exhibition::class, 'sales', 'user_id', 'exhibition_id');
     }
 }

@@ -13,7 +13,7 @@
         <div class="exhibition">
             <h1 class="exhibition-title">{{ $exhibition->name }}</h1>
             <p class="exhibition-brand_name">{{ $exhibition->brand_name }}</p>
-            <p class="exhibition-price">\{{ $exhibition->price }}(税込)</p>
+            <p class="exhibition-price">\{{ number_format($exhibition->price) }}(税込)</p>
             <div class="likes-comment__mark">
                 <form action="/item/likes/:item_id" class="likes-form" method="post">
                 <div class="likes__mark">
