@@ -54,6 +54,13 @@ class UserController extends Controller
             $user->address()->create(array_merge($address, ['user_id' => $user->id]));
         }
 
-        return redirect('/');
+        // プロフィール画像の更新
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $path = $image->store('image', 'public');
+            $user->update(['image' => $path]); // 新規登録でも適切に処理される
+        }
+
+        return redirect('/mypage');
     }
 }

@@ -12,6 +12,7 @@ class Purchase extends Model
     protected $fillable = [
         'user_id',
         'exhibition_id',
+        'address_id',
     ];
 
     // Exhibitionモデルとの結合

@@ -11,7 +11,7 @@
         <h2>プロフィール設定</h2>
     </div>
     <div class="profileedit__content--inner">
-        <form action="/mypage/profile/image" class="form__image" method="post">
+        <form action="/mypage/profile/edit" class="form__image" method="post" enctype="multipart/form-data">
             @csrf
             <!-- 画像選択 -->
             <div class="form__group-image">
@@ -19,7 +19,8 @@
                 </div>
                 <div class="form__group-image--content">
                     <div class="form__input-image--text">
-                        <input type="file" name="image" value="{{ old('image') }}" />
+                        <input type="file" name="image" id="image" value="{{ old('image') }}" />
+                        <div class="image__preview"></div>
                     </div>
                     <div class="form__error">
                         @error('image')
@@ -28,10 +29,6 @@
                     </div>
                 </div>
             </div>
-        </form>
-
-        <form action="/mypage/profile/edit" class="form__profile" method="post">
-        @csrf
             <!-- 名前入力 -->
             <div class="form__group">
                 <div class="form__group-title">
@@ -103,4 +100,23 @@
         </form>
     </div>
 </div>
+@endsection
+
+@section('js')
+<script>
+    document.getElementById('image').addEventListener('change', function (event) {
+        const file = event.target.files[0];  // 選択されたファイル
+        const previewDiv = document.querySelector('.image__preview'); // プレビューを表示する場所
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewDiv.innerHTML = `<img src="${e.target.result}" alt="選択された画像" style="max-width: 100%; height: auto;">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewDiv.innerHTML = '画像が選択されていません';
+        }
+    });
+</script>
 @endsection

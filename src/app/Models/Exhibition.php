@@ -20,4 +20,13 @@ class Exhibition extends Model
     {
         return $this->hasMany(Purchase::class, 'exhibition_id');
     }
+
+    protected $fillable = [
+        'name',
+        'image',
+        'brand_name',
+        'price',
+        'condition',
+        'description',
+    ];
 }

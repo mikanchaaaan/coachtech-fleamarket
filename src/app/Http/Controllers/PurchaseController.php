@@ -50,17 +50,22 @@ class PurchaseController extends Controller
         // ログイン中のユーザの確認
         $user = auth()->user();
 
+        // 住所情報の取得
+        $address = $user->address;
+        $address_id = $address->id;
+
         // Exhibitionテーブルからアイテムを取得
         $exhibition = Exhibition::findOrFail($item_id);
 
         // Purchaseテーブルに登録するデータを作成
-        $purchase = [
+        $purchaseData = [
             'user_id' => $user->id,
             'exhibition_id' => $exhibition->id,
+            'address_id' => $address_id,
         ];
 
         // Purchaseテーブルに追加
-        Purchase::create($purchase);
+        Purchase::create($purchaseData);
 
         // マイページにリダイレクト
         return redirect("/mypage")->with('message', '商品を購入しました。');

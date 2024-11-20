@@ -29,6 +29,12 @@ Route::middleware('auth')->group(function () {
     // プロフィール編集画面の表示
     Route::get('/mypage/profile', [UserController::class, 'showEditProfile']);
 
+    // 商品出品画面の表示
+    Route::get('/sell',[ItemController::class, 'showSell']);
+
+    // 商品の出品
+    Route::post('/sell/create', [ItemController::class, 'createSell']);
+
     // プロフィール編集画面の更新
     Route::post('/mypage/profile/edit', [UserController::class, 'editProfile']);
 
@@ -43,5 +49,4 @@ Route::middleware('auth')->group(function () {
 
     // 商品の購入
     Route::post('/purchase/complete/{item_id}',[PurchaseController::class, 'createPurchase']);
-
 });

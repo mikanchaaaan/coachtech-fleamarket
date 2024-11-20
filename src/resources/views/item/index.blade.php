@@ -14,7 +14,11 @@
         @foreach ($exhibitions as $exhibition)
             <div class="exhibition-content">
                 <a href="/item/{{$exhibition->id}}" class="exhibition-link">
-                <img src="{{ asset($exhibition->image) }}"  alt="商品画像" class="img-content"/>
+                @if (filter_var($exhibition->image, FILTER_VALIDATE_URL))
+                    <img src="{{ asset($exhibition->image) }}"  alt="商品画像" class="img-content"/>
+                @elseif($exhibition->image)
+                    <img src="{{ asset('storage/' . $exhibition->image) }}" alt="{{ $exhibition->name }}" class="img-content"/>
+                @endif
                 </a>
                 <div class="detail-content">
                     <p>{{$exhibition->name}}</p>

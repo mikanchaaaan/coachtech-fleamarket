@@ -17,7 +17,7 @@ class CreateExhibitionsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('image');
-            $table->string('brand_name');
+            $table->string('brand_name')->nullable();
             $table->integer('price');
             $table->integer('condition');
             $table->text('description');

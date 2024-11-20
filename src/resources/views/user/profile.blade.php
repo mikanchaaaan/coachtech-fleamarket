@@ -7,7 +7,7 @@
 @section('content')
 <div class="profile__top">
     <div class="profile-top-information">
-        <img src="" alt="プロフィール画像" class="profile-img">
+        <img src="{{ asset('storage/' . auth()->user()->image) }}" alt="プロフィール画像" class="profile-img">
         <h2 class="profile-name">{{ $user->name }}</h2>
     </div>
     <a href="/mypage/profile" class="goto-profileedit">プロフィールを編集</a>
@@ -21,7 +21,11 @@
 <div class="profile__content">
     @foreach($exhibitions as $exhibition)
     <div class="profile-exhibition">
-        <img src="{{$exhibition->image}}" alt="商品画像" class="profile__exhibition-img">
+        @if (filter_var($exhibition->image, FILTER_VALIDATE_URL))
+            <img src="{{ asset($exhibition->image) }}"  alt={{ $exhibition->name }} class="profile__exhibition-img"/>
+        @elseif($exhibition->image)
+            <img src="{{ asset('storage/' . $exhibition->image) }}" alt="{{ $exhibition->name }}" class="profile__exhibition-img"/>
+        @endif
         <p class="profile__exhibition-name">{{$exhibition->name}}</p>
     </div>
     @endforeach
