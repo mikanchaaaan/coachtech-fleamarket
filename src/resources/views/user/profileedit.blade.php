@@ -4,6 +4,27 @@
 <link rel="stylesheet" href="{{ asset('css/profileedit.css') }}">
 @endsection
 
+@section('page-move')
+    <div class="header__search--box">
+        <form action="/item/search" class="header__search--form">
+            @csrf
+            <input type="text" class="header__search--input" value="なにをお探しですか？">
+        </form>
+    </div>
+    <div class="header__button--logout">
+        <form action="/logout" class="logout-form" method="post">
+            @csrf
+            <button class="logout-button">ログアウト</button>
+        </form>
+    </div>
+    <div class="header__button--mypage">
+        <a href="/mypage" class="goto-mypage">マイページ</a>
+    </div>
+    <div class="header__button--sell">
+        <a href="/sell" class="goto-sell">出品</a>
+    </div>
+@endsection
+
 <!-- ユーザ情報登録画面 -->
 @section('content')
 <div class="profileedit__content">
@@ -16,6 +37,9 @@
             <!-- 画像選択 -->
             <div class="form__group-image">
                 <div class="form__group-image--display">
+                    @if($user->image)  <!-- 画像がある場合は表示 -->
+                        <img src="{{ asset('storage/' . $user->image) }}" alt="プロフィール画像" class="image__preview">
+                    @endif
                 </div>
                 <div class="form__group-image--content">
                     <div class="form__input-image--text">
@@ -36,7 +60,7 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--text">
-                        <input type="text" name="name" value="{{ old('name') }}" />
+                        <input type="text" name="name" value="{{ old('name', $user->name) }}" />
                     </div>
                     <div class="form__error">
                         @error('name')
@@ -52,7 +76,7 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--text">
-                        <input type="text" name="postcode" value="{{ old('postcode') }}" />
+                        <input type="text" name="postcode" value="{{ old('postcode', $user->address->postcode) }}" />
                     </div>
                     <div class="form__error">
                         @error('postcode')
@@ -68,7 +92,7 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--text">
-                        <input type="test" name="address" />
+                        <input type="test" name="address" value="{{ old('address', $user->address->address) }}"/>
                     </div>
                     <div class="form__error">
                         @error('address')
@@ -84,7 +108,7 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--text">
-                        <input type="text" name="building" />
+                        <input type="text" name="building" value="{{ old('building', $user->address->building) }}"/>
                     </div>
                     <div class="form__error">
                         @error('building')

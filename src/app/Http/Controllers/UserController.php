@@ -29,7 +29,10 @@ class UserController extends Controller
     // プロフィール編集画面の表示
     public function showEditProfile()
     {
-        return view('user.profileedit');
+        // ログイン中のユーザ情報を取得
+        $user = auth()->user();
+
+        return view('user.profileedit', compact('user'));
     }
 
     // プロフィール編集画面の更新
@@ -37,6 +40,9 @@ class UserController extends Controller
     {
         // ログイン中のユーザ情報を取得
         $user = auth()->user();
+
+        // 初回登録かどうかをチェック（`created_at`を使う場合）
+        $isFirstTime = $user->created_at == $user->updated_at;
 
         // ユーザー名を更新
         /** @var User $user */
@@ -61,6 +67,13 @@ class UserController extends Controller
             $user->update(['image' => $path]); // 新規登録でも適切に処理される
         }
 
+        // 初回登録の場合はログアウトしてからログイン画面にリダイレクト
+        if ($isFirstTime) {
+            auth()->logout();
+            return redirect('/login');
+        }
+
+        // プロフィール更新時はマイページにリダイレクト
         return redirect('/mypage');
     }
 }

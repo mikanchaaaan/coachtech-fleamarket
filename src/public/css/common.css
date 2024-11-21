@@ -3,3 +3,7 @@
     height: 80px;
     background-color: #000;
 }
+
+.header__inner{
+    display: flex;
+}

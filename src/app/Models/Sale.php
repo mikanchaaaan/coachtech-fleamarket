@@ -13,4 +13,10 @@ class Sale extends Model
         'user_id',
         'exhibition_id',
     ];
+
+    // Exhibitionモデルとの結合
+    public function exhibitions()
+    {
+        return $this->belongsTo(Exhibition::class);
+    }
 }

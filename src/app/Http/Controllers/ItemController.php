@@ -14,8 +14,19 @@ class ItemController extends Controller
     // 商品一覧画面の表示
     public function index()
     {
-        // 商品情報と購入情報の取得
-        $exhibitions = Exhibition::with('purchases')->get();
+        // ログイン中のユーザIDの取得
+        $user = auth()->user();
+        $user_id = auth()->check() ? auth()->id() : null;
+
+        // 商品情報の取得
+        $exhibitions = Exhibition::with('purchases') // 購入情報の取得
+            ->when($user_id, function ($query) use ($user_id) {
+            // ログイン中のユーザーが出品した商品は表示しない
+            return $query->whereDoesntHave('sales', function ($query) use ($user_id) {
+                $query->where('user_id', $user_id);
+            });
+        })->get();
+
         return view('item.index', compact('exhibitions'));
     }
 

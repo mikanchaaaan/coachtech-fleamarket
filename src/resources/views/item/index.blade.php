@@ -4,6 +4,35 @@
 <link rel="stylesheet" href="{{ asset('css/index.css') }}">
 @endsection
 
+@section('page-move')
+    <div class="header__search--box">
+        <form action="/item/search" class="header__search--form">
+            @csrf
+            <input type="text" class="header__search--input" value="なにをお探しですか？">
+        </form>
+    </div>
+    @auth
+        <!-- ログインしている場合 -->
+        <div class="header__button--logout">
+            <form action="/logout" class="logout-form" method="post">
+                @csrf
+                <button class="logout-button">ログアウト</button>
+            </form>
+        </div>
+    @else
+        <!-- ログインしていない場合 -->
+        <div class="header__button--login">
+            <a href="/login" class="login-button">ログイン</a>
+        </div>
+    @endauth
+    <div class="header__button--mypage">
+        <a href="/mypage" class="goto-mypage">マイページ</a>
+    </div>
+    <div class="header__button--sell">
+        <a href="/sell" class="goto-sell">出品</a>
+    </div>
+@endsection
+
 @section('content')
 <div class="exhibition">
     <div class="exhibition-page__tab">
