@@ -9,6 +9,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Like[] $likes
+ */
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -50,6 +54,12 @@ class User extends Authenticatable
         return $this->hasOne(Address::class);
     }
 
+    // likeテーブルとの結合
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
     // purchaseテーブルとの結合
     public function purchaseItems()
     {
@@ -60,5 +70,11 @@ class User extends Authenticatable
     public function sellItems()
     {
         return $this->belongsToMany(Exhibition::class, 'sales', 'user_id', 'exhibition_id');
+    }
+
+    // commentテーブルとの結合
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }

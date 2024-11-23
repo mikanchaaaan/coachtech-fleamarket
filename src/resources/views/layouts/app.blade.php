@@ -15,7 +15,9 @@
     <header class="header">
         <div class="header__inner">
             <div class="header__logo">
-                <img src="{{ asset('img/logo.svg') }}" alt="ロゴ">
+                <a href="/" class="header__logo--inner">
+                    <img src="{{ asset('img/logo.svg') }}" alt="ロゴ">
+                </a>
             </div>
             @yield('page-move')
         </div>

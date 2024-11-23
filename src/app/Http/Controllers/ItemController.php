@@ -8,6 +8,9 @@ use App\Models\Category;
 use App\Models\Condition;
 use App\Models\Sale;
 use App\Models\Product;
+use App\Models\Like;
+use App\Models\User;
+use App\Models\Comment;
 
 class ItemController extends Controller
 {
@@ -46,7 +49,16 @@ class ItemController extends Controller
         // 状態が不明の場合の処理
         $condition = $conditionLabels[$exhibition->condition] ?? '不明';
 
-        return view('item.detail', compact('exhibition', 'condition'));
+        // いいね数のカウント
+        $countLikes = $exhibition->likes()->count();
+
+        // コメントの表示
+        $comments = $exhibition->comments;
+
+        // コメント数のカウント
+        $countComments = $exhibition->comments()->count();
+
+        return view('item.detail', compact('exhibition', 'condition', 'countLikes','comments', 'countComments'));
     }
 
     // 商品出品画面の表示
@@ -101,6 +113,42 @@ class ItemController extends Controller
 
         // 商品一覧にリダイレクト
         return redirect("/")->with('message','商品を追加しました');
+    }
+
+    // いいね機能の実装
+    public function addLike($item_id)
+    {
+        $user = auth()->user();
+        $exhibition = Exhibition::findOrFail($item_id);
+
+        // すでに「いいね」しているかチェック
+        $existingLike = $user->likes()->where('exhibition_id', $exhibition->id)->first();
+
+        if ($existingLike) {
+            // すでにいいねしていたら削除
+            $existingLike->delete();
+        } else {
+            // まだいいねしていなければ、新規作成
+            $user->likes()->create([
+                'exhibition_id' => $exhibition->id,
+            ]);
+        }
+
+        return back();
+    }
+
+    // コメント機能の実装
+    public function comment(Request $request, $item_id)
+    {
+        $exhibition = Exhibition::findOrFail($item_id);
+
+        Comment::create([
+            'user_id' => auth()->id(),
+            'exhibition_id' => $exhibition->id,
+            'content' => $request->input('content'),
+        ]);
+
+        return back();
 
     }
 }

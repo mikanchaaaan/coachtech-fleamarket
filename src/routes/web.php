@@ -35,6 +35,12 @@ Route::middleware('auth')->group(function () {
     // 商品の出品
     Route::post('/sell/create', [ItemController::class, 'createSell']);
 
+    // いいね機能の実装
+    Route::post('/item/likes/{item_id}', [ItemController::class, 'addLike']);
+
+    // コメント機能の実装
+    Route::post('item/comments/{item_id}', [ItemController::class, 'comment']);
+
     // プロフィール編集画面の更新
     Route::post('/mypage/profile/edit', [UserController::class, 'editProfile']);
 

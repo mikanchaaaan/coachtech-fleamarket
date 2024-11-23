@@ -27,6 +27,18 @@ class Exhibition extends Model
         return $this->hasMany(Sale::class, 'exhibition_id');
     }
 
+    // likeテーブルとの結合
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    // commentテーブルとの結合
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     protected $fillable = [
         'name',
         'image',
