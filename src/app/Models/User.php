@@ -77,4 +77,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function likedItems()
+    {
+        return $this->belongsToMany(Exhibition::class, 'likes', 'user_id', 'exhibition_id');
+    }
 }

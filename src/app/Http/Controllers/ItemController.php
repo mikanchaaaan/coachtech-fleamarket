@@ -14,24 +14,57 @@ use App\Models\Comment;
 
 class ItemController extends Controller
 {
-    // 商品一覧画面の表示
-    public function index()
-    {
-        // ログイン中のユーザIDの取得
-        $user = auth()->user();
-        $user_id = auth()->check() ? auth()->id() : null;
+// 商品一覧画面の表示
+public function index(Request $request)
+{
+    // ログイン中のユーザIDの取得
+    $user = auth()->user();
+    $user_id = auth()->check() ? auth()->id() : null;
 
-        // 商品情報の取得
-        $exhibitions = Exhibition::with('purchases') // 購入情報の取得
-            ->when($user_id, function ($query) use ($user_id) {
-            // ログイン中のユーザーが出品した商品は表示しない
-            return $query->whereDoesntHave('sales', function ($query) use ($user_id) {
+    // タブ情報の確認
+    $tab = $request->query('tab', 'all'); // デフォルトは 'all'
+
+    // 検索情報の取得
+    $keyword = $request->query('keyword', ''); // 検索キーワードの取得
+
+    // 商品取得の初期化
+    $exhibitions = collect(); // 最初に空のコレクションを用意
+
+    // 検索条件がある場合、キーワードで絞り込み
+    if ($keyword) {
+        // allタブの表示
+        if ($tab == 'all') {
+            $exhibitions = Exhibition::where('name', 'like', '%' . $keyword . '%')
+                ->whereDoesntHave('sales', function ($query) use ($user_id) {
+                    $query->where('user_id', $user_id);
+                })
+                ->get();
+        }
+        // mylistタブの表示
+        elseif ($tab == 'mylist') {
+            $exhibitions = $user->likedItems()->where('name', 'like', '%' . $keyword . '%')
+                ->whereDoesntHave('sales', function ($query) use ($user_id) {
+                    $query->where('user_id', $user_id);
+                })
+                ->get();
+        }
+    } else {
+        // 検索条件がない場合
+        // allタブの表示
+        if ($tab == 'all') {
+            $exhibitions = Exhibition::whereDoesntHave('sales', function ($query) use ($user_id) {
                 $query->where('user_id', $user_id);
-            });
-        })->get();
-
-        return view('item.index', compact('exhibitions'));
+            })->get();
+        // mylistタブの表示
+        } elseif ($tab == 'mylist') {
+            $exhibitions = $user->likedItems()->whereDoesntHave('sales', function ($query) use ($user_id) {
+                $query->where('user_id', $user_id);
+            })
+            ->get();
+        }
     }
+    return view('item.index', compact('exhibitions', 'tab', 'keyword'));
+}
 
     // 商品詳細画面の表示
     public function detail($item_id)
@@ -149,6 +182,5 @@ class ItemController extends Controller
         ]);
 
         return back();
-
     }
 }

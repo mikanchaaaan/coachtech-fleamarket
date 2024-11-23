@@ -6,9 +6,9 @@
 
 @section('page-move')
     <div class="header__search--box">
-        <form action="/item/search" class="header__search--form">
-            @csrf
-            <input type="text" class="header__search--input" value="なにをお探しですか？">
+        <form action="{{ route('item.index') }}" class="header__search--form" method="get">
+            <input type="text" name="keyword" class="header__search--input" placeholder="なにをお探しですか？" value="{{ request('keyword')}}">
+            <input type="hidden" name="tab" value="{{ $tab }}">
         </form>
     </div>
     @auth
@@ -36,25 +36,25 @@
 @section('content')
 <div class="exhibition">
     <div class="exhibition-page__tab">
-        <a href="/" class="exhibition-page__tab--all">おすすめ</a>
-        <a href="/?tab=mylist" class="exhibition-page__tab--mylist">マイリスト</a>
+        <a href="/?tab=all&keyword={{ request('keyword') }}" class="exhibition-page__tab--all" {{ $tab == 'all' ? 'active' : '' }}>おすすめ</a>
+        <a href="/?tab=mylist&keyword={{ request('keyword') }}" class="exhibition-page__tab--mylist" {{ $tab == 'mylist' ? 'active' : '' }}>マイリスト</a>
     </div>
     <div class="exhibition-contents">
         @foreach ($exhibitions as $exhibition)
             <div class="exhibition-content">
                 <a href="/item/{{$exhibition->id}}" class="exhibition-link">
-                @if (filter_var($exhibition->image, FILTER_VALIDATE_URL))
-                    <img src="{{ asset($exhibition->image) }}"  alt="商品画像" class="img-content"/>
-                @elseif($exhibition->image)
-                    <img src="{{ asset('storage/' . $exhibition->image) }}" alt="{{ $exhibition->name }}" class="img-content"/>
-                @endif
+                    @if (filter_var($exhibition->image, FILTER_VALIDATE_URL))
+                        <img src="{{ asset($exhibition->image) }}"  alt="商品画像" class="img-content"/>
+                    @elseif($exhibition->image)
+                        <img src="{{ asset('storage/' . $exhibition->image) }}" alt="{{ $exhibition->name }}" class="img-content"/>
+                    @endif
                 </a>
                 <div class="detail-content">
                     <p>{{$exhibition->name}}</p>
                     {{-- 購入済みの商品は"sold"と表示する --}}
-                    @if ($exhibition->purchases->isNotEmpty())
-                        <span class="sold">Sold</span>
-                    @endif
+                        @if ($exhibition->purchases->isNotEmpty())
+                            <span class="sold">Sold</span>
+                        @endif
                 </div>
             </div>
         @endforeach

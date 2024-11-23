@@ -47,4 +47,12 @@ class Exhibition extends Model
         'condition',
         'description',
     ];
+
+    // 商品検索機能
+    public function scopeKeywordSearch($query, $keyword)
+    {
+        if (!empty($keyword)) {
+        $query->where('name', 'like', '%' . $keyword . '%');
+        }
+    }
 }
