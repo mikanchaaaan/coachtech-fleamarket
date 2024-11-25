@@ -6,9 +6,9 @@
 
 @section('page-move')
     <div class="header__search--box">
-        <form action="{{ route('item.index') }}" class="header__search--form" method="get">
+        <form action="{{ route('item.index') }}" method="get">
             <input type="text" name="keyword" class="header__search--input" placeholder="なにをお探しですか？" value="{{ request('keyword')}}">
-            <input type="hidden" name="tab" value="{{ $tab }}">
+            <input type="hidden" name="tab" value="{{ session('tab', 'all') }}">
         </form>
     </div>
     @auth

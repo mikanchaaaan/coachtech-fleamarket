@@ -6,9 +6,9 @@
 
 @section('page-move')
     <div class="header__search--box">
-        <form action="/item/search" class="header__search--form">
-            @csrf
-            <input type="text" class="header__search--input" value="なにをお探しですか？">
+        <form action="{{ route('item.index') }}" method="get">
+            <input type="text" name="keyword" class="header__search--input" placeholder="なにをお探しですか？" value="{{ request('keyword')}}">
+            <input type="hidden" name="tab" value="{{ session('tab', 'all') }}">
         </form>
     </div>
     @auth

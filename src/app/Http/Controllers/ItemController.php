@@ -42,11 +42,16 @@ public function index(Request $request)
         }
         // mylistタブの表示
         elseif ($tab == 'mylist') {
-            $exhibitions = $user->likedItems()->where('name', 'like', '%' . $keyword . '%')
-                ->whereDoesntHave('sales', function ($query) use ($user_id) {
-                    $query->where('user_id', $user_id);
-                })
-                ->get();
+            if(auth()->check()){
+                /** @var \App\Models\User $user */
+                $exhibitions = $user->likedItems()->where('name', 'like', '%' . $keyword . '%')
+                    ->whereDoesntHave('sales', function ($query) use ($user_id) {
+                        $query->where('user_id', $user_id);
+                    })
+                    ->get();
+            } else {
+                return redirect()->route('login');
+            }
         }
     } else {
         // 検索条件がない場合
@@ -57,12 +62,19 @@ public function index(Request $request)
             })->get();
         // mylistタブの表示
         } elseif ($tab == 'mylist') {
-            $exhibitions = $user->likedItems()->whereDoesntHave('sales', function ($query) use ($user_id) {
-                $query->where('user_id', $user_id);
-            })
-            ->get();
+            if(auth()->check()){
+                /** @var \App\Models\User $user */
+                $exhibitions = $user->likedItems()->whereDoesntHave('sales', function ($query) use ($user_id) {
+                    $query->where('user_id', $user_id);
+                })
+                ->get();
+            } else {
+                return redirect()->route('login');
+            }
         }
     }
+    session(['tab' => $tab]);
+
     return view('item.index', compact('exhibitions', 'tab', 'keyword'));
 }
 
@@ -155,6 +167,7 @@ public function index(Request $request)
         $exhibition = Exhibition::findOrFail($item_id);
 
         // すでに「いいね」しているかチェック
+        /** @var \App\Models\User $user */
         $existingLike = $user->likes()->where('exhibition_id', $exhibition->id)->first();
 
         if ($existingLike) {
@@ -162,6 +175,7 @@ public function index(Request $request)
             $existingLike->delete();
         } else {
             // まだいいねしていなければ、新規作成
+            /** @var \App\Models\User $user */
             $user->likes()->create([
                 'exhibition_id' => $exhibition->id,
             ]);
