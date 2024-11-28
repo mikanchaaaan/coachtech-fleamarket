@@ -26,52 +26,64 @@
 @endsection
 
 @section('content')
-<div class="purchase-content">
-    <div class="purchase-content__left">
-        <div class="purchase-content__left--information">
-            <div class="exhibition-imgbox">
-                <img src="{{ asset($exhibition->image)}}" alt="商品画像" class="exhibition-img">
+<form action="/purchase/complete/{{ $exhibition->id }}" class="purchase-complete" method="post">
+    @csrf
+    <div class="purchase-content">
+        <div class="purchase-content__left">
+            <div class="purchase-content__left--information">
+                <div class="exhibition-imgbox">
+                    <img src="{{ asset($exhibition->image)}}" alt="商品画像" class="exhibition-img">
+                </div>
+                <div class="exhibition-contentbox">
+                    <h2 class="exhibition-title">{{ $exhibition->name }}</h2>
+                    <p class="exhibition-price">\{{ number_format($exhibition->price) }}</p>
+                </div>
             </div>
-            <div class="exhibition-contentbox">
-                <h2 class="exhibition-title">{{ $exhibition->name }}</h2>
-                <p class="exhibition-price">\{{ number_format($exhibition->price) }}</p>
+            <div class="purchase-content__left--payment">
+                <h3 class="payment-title">支払い方法</h3>
+                    @error('payment-select')
+                        {{ $message }}
+                    @enderror
+                <select id="payment" class="payment-select" name="payment-method" onchange="updateDisplay()">
+                    <option value="convenience_payment">コンビニ払い</option>
+                    <option value="card_payment">カード支払い</option>
+                </select>
+            </div>
+            <div class="purchase-content__left--address">
+                <div class="address-title-box">
+                    <h3 class="address-title">配送先</h3>
+                    <a href="/purchase/address/{{ $exhibition->id }}" class="address-change-link">変更する</a>
+                </div>
+                <p class="address-postcode">{{ $address->postcode }}</p>
+                    @error('postcode')
+                        {{ $message }}
+                    @enderror
+                <p class="address-address">{{ $address->address }}</p>
+                    @error('address')
+                        {{ $message }}
+                    @enderror
+                <p class="address-building">{{ $address->building }}</p>
+                    @error('building')
+                        {{ $message }}
+                    @enderror
             </div>
         </div>
-        <div class="purchase-content__left--payment">
-            <h3 class="payment-title">支払い方法</h3>
-            <select id="payment" class="payment-select" onchange="updateDisplay()">
-                <option value="convenience_payment">コンビニ払い</option>
-                <option value="card_payment">カード支払い</option>
-            </select>
-        </div>
-        <div class="purchase-content__left--address">
-            <div class="address-title-box">
-                <h3 class="address-title">配送先</h3>
-                <a href="/purchase/address/{{ $exhibition->id }}" class="address-change-link">変更する</a>
+        <div class="purchase-content__right">
+            <div class="purchase-content__right--confirm">
+                <div class="purchase-price">
+                    <p class="purchase-price-title">商品代金</p>
+                    <p class="purchase-price-content">\{{ number_format($exhibition->price) }}</p>
+                </div>
+                <div class="purchase-payment">
+                    <p class="purchase-payment-title">支払い方法</p>
+                    <p id="display" class="purchase-paymane-content">選択された支払い方法はここに表示されます</p>
+                </div>
             </div>
-            <p class="address-postcode">{{ $address->postcode }}</p>
-            <p class="address-address">{{ $address->address }}</p>
-            <p class="address-building">{{ $address->building }}</p>
+                <button class="purchase-content__right--button">購入する</button>
+                <input type="hidden" class="purchase__exhibition-id" name="exhibition-id" value="{{ $exhibition->id }}">
         </div>
     </div>
-    <div class="purchase-content__right">
-        <div class="purchase-content__right--confirm">
-            <div class="purchase-price">
-                <p class="purchase-price-title">商品代金</p>
-                <p class="purchase-price-content">\{{ number_format($exhibition->price) }}</p>
-            </div>
-            <div class="purchase-payment">
-                <p class="purchase-payment-title">支払い方法</p>
-                <p id="display" class="purchase-paymane-content">選択された支払い方法はここに表示されます</p>
-            </div>
-        </div>
-        <form action="/purchase/complete/{{ $exhibition->id }}" class="purchase-complete" method="post">
-            @csrf
-            <button class="purchase-content__right--button">購入する</button>
-            <input type="hidden" class="purchase__exhibition-id" name="exhibition-id" value="{{ $exhibition->id }}">
-        </form>
-    </div>
-</div>
+</form>
 @endsection
 
 <script>

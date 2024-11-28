@@ -39,6 +39,9 @@
                 <input type="file" name="image" id="image" style="display:none" accept="image/*">
                 <div class="image__preview"></div>
             </div>
+            @error ('image')
+                <p>{{$message}}</p>
+            @enderror
         </div>
         <div class="sell-content-box__detail">
             <h2 class="detail__title">商品の詳細</h2>
@@ -50,6 +53,9 @@
                     <label for="category-{{ $category->id }}">{{ $category->content }}</label>
                 </div>
                 @endforeach
+            @error ('categories[]')
+                <p>{{$message}}</p>
+            @enderror
             </div>
             <div class="detail__condition">
                 <h3 class="detail__condition--title">商品の状態</h3>
@@ -60,6 +66,9 @@
                     <option value="3">やや傷や汚れあり</option>
                     <option value="4">状態が悪い</option>
                 </select>
+                @error ('condition')
+                    <p>{{$message}}</p>
+                @enderror
             </div>
         </div>
         <div class="sell-content-box__information">
@@ -67,14 +76,23 @@
             <div class="information__name">
                 <h3 class="information__name--title">商品名</h3>
                 <input type="text" name="name" value="">
+                @error ('name')
+                    <p>{{$message}}</p>
+                @enderror
             </div>
             <div class="information__description">
                 <h3 class="information__discription--title">商品の説明</h3>
                 <textarea name="description" id="" cols="30" rows="10"></textarea>
+                @error ('description')
+                    <p>{{$message}}</p>
+                @enderror
             </div>
             <div class="information__price">
                 <h3 class="information__price--title">販売価格</h3>
-                <input type="text" name="price" value="￥">
+                <input type="text" name="price" value="" placeholder="￥">
+                @error ('price')
+                    <p>{{$message}}</p>
+                @enderror
             </div>
         </div>
         <button class="register-sell">出品する</button>

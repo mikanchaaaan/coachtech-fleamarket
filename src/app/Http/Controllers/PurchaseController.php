@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Exhibition;
 use App\Models\Address;
 use App\Models\Purchase;
+use App\Http\Requests\PurchaseRequest;
+use App\Http\Requests\AddressRequest;
 
 class PurchaseController extends Controller
 {
@@ -29,7 +31,7 @@ class PurchaseController extends Controller
     }
 
     // 配送先住所の変更
-    public function editAddress(Request $request, $item_id)
+    public function editAddress(AddressRequest $request, $item_id)
     {
         // ログイン中のユーザの確認
         $user = auth()->user();
@@ -45,7 +47,7 @@ class PurchaseController extends Controller
     }
 
     // 購入した商品をPurchaseテーブルに登録
-    public function createPurchase(Request $request, $item_id)
+    public function createPurchase(PurchaseRequest $request, $item_id)
     {
         // ログイン中のユーザの確認
         $user = auth()->user();

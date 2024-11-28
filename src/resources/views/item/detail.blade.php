@@ -103,6 +103,9 @@
                 @endforeach
                 <div class="exhibition-comment__content--input">
                     <h3 class="comment-input__title">商品へのコメント</h3>
+                    @error('content')
+                        <p>{{ $message }}</p>
+                    @enderror
                     <textarea name="content" cols="30" rows="10" class="comment-input"></textarea>
                     <button class="comment-input__button">コメントを送信する</button>
                 </div>

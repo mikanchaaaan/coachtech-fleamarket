@@ -11,6 +11,8 @@ use App\Models\Product;
 use App\Models\Like;
 use App\Models\User;
 use App\Models\Comment;
+use App\Http\Requests\CommentRequest;
+use App\Http\Requests\ExhibitionRequest;
 
 class ItemController extends Controller
 {
@@ -129,7 +131,7 @@ public function index(Request $request)
         }
 
         // 価格から￥記号を取り除き、整数に変換
-        $exhibitionData['price'] = (int)str_replace('￥', '', $exhibitionData['price']);
+        $exhibitionData['price'] = (int)str_replace(['￥', ','], '', $exhibitionData['price']);
 
         // Exhibitionテーブルに商品の登録
         $exhibition = Exhibition::create($exhibitionData);
@@ -185,7 +187,7 @@ public function index(Request $request)
     }
 
     // コメント機能の実装
-    public function comment(Request $request, $item_id)
+    public function comment(CommentRequest $request, $item_id)
     {
         $exhibition = Exhibition::findOrFail($item_id);
 

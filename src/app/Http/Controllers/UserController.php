@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Address;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\AddressRequest;
+use App\Http\Requests\ProfileRequest;
 
 class UserController extends Controller
 {
@@ -36,7 +38,7 @@ class UserController extends Controller
     }
 
     // プロフィール編集画面の更新
-    public function editProfile(Request $request)
+    public function editProfile(AddressRequest $addressrequest, ProfileRequest $profilerequest)
     {
         // ログイン中のユーザ情報を取得
         $user = auth()->user();
@@ -46,10 +48,10 @@ class UserController extends Controller
 
         // ユーザー名を更新
         /** @var User $user */
-        $user->update(['name' => $request->name]);
+        $user->update(['name' => $profilerequest->name]);
 
         // 住所のデータを取得
-        $address = $request->only(['postcode', 'address', 'building']);
+        $address = $addressrequest->only(['postcode', 'address', 'building']);
 
         // 住所が存在する場合は更新、存在しない場合は新規作成
         if ($user->address) {
@@ -61,8 +63,8 @@ class UserController extends Controller
         }
 
         // プロフィール画像の更新
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
+        if ($profilerequest->hasFile('image')) {
+            $image = $profilerequest->file('image');
             $path = $image->store('image', 'public');
             $user->update(['image' => $path]); // 新規登録でも適切に処理される
         }
