@@ -11,25 +11,27 @@
             <input type="hidden" name="tab" value="{{ session('tab', 'all') }}">
         </form>
     </div>
-    @auth
-        <!-- ログインしている場合 -->
-        <div class="header__button--logout">
-            <form action="/logout" class="logout-form" method="post">
-                @csrf
-                <button class="logout-button">ログアウト</button>
-            </form>
+    <div class="header__button">
+        @auth
+            <!-- ログインしている場合 -->
+            <div class="header__button--logout">
+                <form action="/logout" class="logout-form" method="post">
+                    @csrf
+                    <button class="logout-button">ログアウト</button>
+                </form>
+            </div>
+        @else
+            <!-- ログインしていない場合 -->
+            <div class="header__button--login">
+                <a href="/login" class="login-button">ログイン</a>
+            </div>
+        @endauth
+        <div class="header__button--mypage">
+            <a href="/mypage" class="goto-mypage">マイページ</a>
         </div>
-    @else
-        <!-- ログインしていない場合 -->
-        <div class="header__button--login">
-            <a href="/login" class="login-button">ログイン</a>
+        <div class="header__button--sell">
+            <a href="/sell" class="goto-sell">出品</a>
         </div>
-    @endauth
-    <div class="header__button--mypage">
-        <a href="/mypage" class="goto-mypage">マイページ</a>
-    </div>
-    <div class="header__button--sell">
-        <a href="/sell" class="goto-sell">出品</a>
     </div>
 @endsection
 

@@ -116,7 +116,7 @@ public function index(Request $request)
     }
 
     // 商品の出品
-    public function createSell(Request $request)
+    public function createSell(ExhibitionRequest $request)
     {
         // ログイン中のユーザの確認
         $user = auth()->user();

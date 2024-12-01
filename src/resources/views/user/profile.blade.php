@@ -2,6 +2,7 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+<link rel="stylesheet" href="{{ asset('css/common.css') }}">
 @endsection
 
 @section('page-move')
@@ -11,26 +12,34 @@
             <input type="hidden" name="tab" value="{{ session('tab', 'all') }}">
         </form>
     </div>
-    <div class="header__button--logout">
-        <form action="/logout" class="logout-form" method="post">
-            @csrf
-            <button class="logout-button">ログアウト</button>
-        </form>
-    </div>
-    <div class="header__button--mypage">
-        <a href="/mypage" class="goto-mypage">マイページ</a>
-    </div>
-    <div class="header__button--sell">
-        <a href="/sell" class="goto-sell">出品</a>
+    <div class="header__button">
+        @auth
+            <!-- ログインしている場合 -->
+            <div class="header__button--logout">
+                <form action="/logout" class="logout-form" method="post">
+                    @csrf
+                    <button class="logout-button">ログアウト</button>
+                </form>
+            </div>
+        @else
+            <!-- ログインしていない場合 -->
+            <div class="header__button--login">
+                <a href="/login" class="login-button">ログイン</a>
+            </div>
+        @endauth
+        <div class="header__button--mypage">
+            <a href="/mypage" class="goto-mypage">マイページ</a>
+        </div>
+        <div class="header__button--sell">
+            <a href="/sell" class="goto-sell">出品</a>
+        </div>
     </div>
 @endsection
 
 @section('content')
 <div class="profile__top">
-    <div class="profile-top-information">
-        <img src="{{ asset('storage/' . auth()->user()->image) }}" alt="プロフィール画像" class="profile-img">
-        <h2 class="profile-name">{{ $user->name }}</h2>
-    </div>
+    <img src="{{ asset('storage/' . auth()->user()->image) }}" alt="プロフィール画像" class="profile-img">
+    <h2 class="profile-name">{{ $user->name }}</h2>
     <a href="/mypage/profile" class="goto-profileedit">プロフィールを編集</a>
 </div>
 
@@ -47,7 +56,7 @@
         @elseif($exhibition->image)
             <img src="{{ asset('storage/' . $exhibition->image) }}" alt="{{ $exhibition->name }}" class="profile__exhibition-img"/>
         @endif
-        <p class="profile__exhibition-name">{{$exhibition->name}}</p>
+    <p class="profile__exhibition-name">{{$exhibition->name}}</p>
     </div>
     @endforeach
 </div>

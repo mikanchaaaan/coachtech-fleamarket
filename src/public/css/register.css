@@ -1,0 +1,56 @@
+.register-form__heading h2 {
+    text-align: center;
+    font-size: 36px;
+    color: #000000;
+    margin: 50px;
+    font-weight: 700;
+}
+
+.register__content--inner {
+    width: 30%;
+    background-color: #ffffff;
+    padding: 50px 0;
+    margin: 10px auto;
+}
+
+.form__label--item {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.form__input--text input {
+    padding: 10px;
+    width: 100%;
+    height: 40px;
+    border: 1px solid #5f5f5f;
+}
+
+.form__button-submit {
+    margin-top: 30px;
+    width: 100%;
+    height: 60px;
+    background-color: #ff5555;
+    border: none;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.go__login--button {
+    display: block;
+    margin-top: 30px;
+    width: 100%;
+    height: 40px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 400;
+    color: #0073cc;
+    text-decoration: none;
+}
+
+.form__error {
+    height: 20px;
+    color: #ff0000;
+    text-align: left;
+}

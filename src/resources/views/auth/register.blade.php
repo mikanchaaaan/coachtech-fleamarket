@@ -79,7 +79,7 @@
             </div>
             <!-- 登録ボタン -->
             <div class="form__button">
-                <button class="form__button-submit" type="submit">登録</button>
+                <button class="form__button-submit" type="submit">登録する</button>
             </div>
             <div class="go__login">
                 <a href="/login" class="go__login--button">ログインはこちら</a>
