@@ -2,7 +2,6 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
-<link rel="stylesheet" href="{{ asset('css/common.css') }}">
 @endsection
 
 @section('page-move')
@@ -38,14 +37,18 @@
 
 @section('content')
 <div class="profile__top">
-    <img src="{{ asset('storage/' . auth()->user()->image) }}" alt="プロフィール画像" class="profile-img">
+    @if(auth()->user()->image)
+        <img src="{{ asset('storage/' . auth()->user()->image) }}" alt="プロフィール画像" class="profile-img">
+    @else
+        <div class="image__none"></div>
+    @endif
     <h2 class="profile-name">{{ $user->name }}</h2>
     <a href="/mypage/profile" class="goto-profileedit">プロフィールを編集</a>
 </div>
 
 <div class="profile__tab">
-    <a href="/mypage?tab=sell" class="purchase-exhibition" {{ $tab == 'sell' ? 'active' : '' }}>出品した商品</a>
-    <a href="/mypage?tab=buy" class="sell-exhibition" {{ $tab == 'buy' ? 'active' : '' }}>購入した商品</a>
+    <a href="/mypage?tab=sell" class="purchase-exhibition {{ $tab == 'sell' ? 'active' : '' }}">出品した商品</a>
+    <a href="/mypage?tab=buy" class="sell-exhibition {{ $tab == 'buy' ? 'active' : '' }}">購入した商品</a>
 </div>
 
 <div class="profile__content">

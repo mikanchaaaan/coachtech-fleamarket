@@ -7,18 +7,21 @@
     border-bottom: 2px solid #5f5f5f;
 }
 
-.exhibition-page__tab--all {
+.exhibition-page__tab a {
     font-size: 24px;
     font-weight: 700;
     color: #5f5f5f;
     text-decoration: none;
 }
 
-.exhibition-page__tab--mylist {
+.exhibition-page__tab a.active {
     font-size: 24px;
     font-weight: 700;
     color: #ff0000;
     text-decoration: none;
+}
+
+.exhibition-page__tab--mylist {
     padding-left: 40px;
 }
 

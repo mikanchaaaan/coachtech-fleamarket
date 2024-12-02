@@ -2,7 +2,6 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/index.css') }}">
-<link rel="stylesheet" href="{{ asset('css/common.css') }}">
 @endsection
 
 @section('page-move')
@@ -39,8 +38,8 @@
 @section('content')
 <div class="exhibition">
     <div class="exhibition-page__tab">
-        <a href="/?tab=all&keyword={{ request('keyword') }}" class="exhibition-page__tab--all" {{ $tab == 'all' ? 'active' : '' }}>おすすめ</a>
-        <a href="/?tab=mylist&keyword={{ request('keyword') }}" class="exhibition-page__tab--mylist" {{ $tab == 'mylist' ? 'active' : '' }}>マイリスト</a>
+        <a href="/?tab=all&keyword={{ request('keyword') }}" class="exhibition-page__tab--all {{ $tab == 'all' ? 'active' : '' }}">おすすめ</a>
+        <a href="/?tab=mylist&keyword={{ request('keyword') }}" class="exhibition-page__tab--mylist {{ $tab == 'mylist' ? 'active' : '' }}">マイリスト</a>
     </div>
     <div class="exhibition-contents">
         @foreach ($exhibitions as $exhibition)

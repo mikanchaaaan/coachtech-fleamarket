@@ -49,9 +49,11 @@
                 <input type="file" name="image" id="image" style="display:none" accept="image/*">
                 <div class="image__preview"></div>
             </div>
-            @error ('image')
-                <p>{{$message}}</p>
-            @enderror
+            <div class="form__error">
+                @error ('image')
+                    <p>{{$message}}</p>
+                @enderror
+            </div>
         </div>
         <div class="sell-content-box__detail">
             <h2 class="detail__title">商品の詳細</h2>
@@ -59,13 +61,15 @@
                 <h3 class="detail__category--title">カテゴリー</h3>
                 @foreach($categories as $category)
                 <div class="detail__category--content">
-                    <input type="checkbox" name="categories[]" value="{{ $category->id }}" id="category-{{ $category->id }}">
-                    <label for="category-{{ $category->id }}">{{ $category->content }}</label>
+                    <input type="checkbox" name="categories[]" value="{{ $category->id }}" id="category-{{ $category->id }}" class="category-checkbox">
+                    <label for="category-{{ $category->id }}" class="category-label">{{ $category->content }}</label>
                 </div>
                 @endforeach
-            @error ('categories[]')
-                <p>{{$message}}</p>
-            @enderror
+            <div class="form__error">
+                @error ('categories[]')
+                    <p>{{$message}}</p>
+                @enderror
+            </div>
             </div>
             <div class="detail__condition">
                 <h3 class="detail__condition--title">商品の状態</h3>
@@ -76,33 +80,41 @@
                     <option value="3">やや傷や汚れあり</option>
                     <option value="4">状態が悪い</option>
                 </select>
-                @error ('condition')
-                    <p>{{$message}}</p>
-                @enderror
+                <div class="form__error">
+                    @error ('condition')
+                        <p>{{$message}}</p>
+                    @enderror
+                </div>
             </div>
         </div>
         <div class="sell-content-box__information">
             <h2 class="information__title">商品名と説明</h2>
             <div class="information__name">
                 <h3 class="information__name--title">商品名</h3>
-                <input type="text" name="name" value="">
-                @error ('name')
-                    <p>{{$message}}</p>
-                @enderror
+                <input type="text" name="name" value="" class="information__name--content">
+                <div class="form__error">
+                    @error ('name')
+                        <p>{{$message}}</p>
+                    @enderror
+                </div>
             </div>
             <div class="information__description">
-                <h3 class="information__discription--title">商品の説明</h3>
-                <textarea name="description" id="" cols="30" rows="10"></textarea>
-                @error ('description')
-                    <p>{{$message}}</p>
-                @enderror
+                <h3 class="information__description--title">商品の説明</h3>
+                <textarea name="description" id="" cols="30" rows="10" class="information__description--content"></textarea>
+                <div class="form__error">
+                    @error ('description')
+                        <p>{{$message}}</p>
+                    @enderror
+                </div>
             </div>
             <div class="information__price">
                 <h3 class="information__price--title">販売価格</h3>
-                <input type="text" name="price" value="" placeholder="￥">
-                @error ('price')
-                    <p>{{$message}}</p>
-                @enderror
+                <input type="text" name="price" value="" placeholder="￥" class="information__price--content">
+                <div class="form__error">
+                    @error ('price')
+                        <p>{{$message}}</p>
+                    @enderror
+                </div>
             </div>
         </div>
         <button class="register-sell">出品する</button>
@@ -112,18 +124,23 @@
 
 @section('js')
 <script>
-    document.getElementById('image').addEventListener('change', function (event) {
-        const file = event.target.files[0];  // 選択されたファイル
-        const previewDiv = document.querySelector('.image__preview'); // プレビューを表示する場所
+    document.getElementById('image').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        const previewDiv = document.querySelector('.image__preview');
+        const button = document.querySelector('.image__select--button');
 
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                previewDiv.innerHTML = `<img src="${e.target.result}" alt="選択された画像" style="max-width: 100%; height: auto;">`;
+                previewDiv.innerHTML = `<img src="${e.target.result}" alt="選択された画像">`;
+                previewDiv.style.display = 'block'; // プレビューを表示
+                button.style.display = 'none'; // ボタンを非表示
             };
             reader.readAsDataURL(file);
         } else {
-            previewDiv.innerHTML = '画像が選択されていません';
+            previewDiv.innerHTML = ''; // プレビューをクリア
+            previewDiv.style.display = 'none'; // プレビューを隠す
+            button.style.display = 'block'; // ボタンを再表示
         }
     });
 </script>

@@ -46,14 +46,16 @@
                 </div>
                 <div class="exhibition-contentbox">
                     <h2 class="exhibition-title">{{ $exhibition->name }}</h2>
-                    <p class="exhibition-price">\{{ number_format($exhibition->price) }}</p>
+                    <span class="exhibition-price">\{{ number_format($exhibition->price) }}</span>
                 </div>
             </div>
             <div class="purchase-content__left--payment">
                 <h3 class="payment-title">支払い方法</h3>
-                    @error('payment-select')
-                        {{ $message }}
-                    @enderror
+                    <div class="form__error">
+                        @error('payment-select')
+                            {{ $message }}
+                        @enderror
+                    </div>
                 <select id="payment" class="payment-select" name="payment-method" onchange="updateDisplay()">
                     <option value="convenience_payment">コンビニ払い</option>
                     <option value="card_payment">カード支払い</option>
@@ -64,29 +66,37 @@
                     <h3 class="address-title">配送先</h3>
                     <a href="/purchase/address/{{ $exhibition->id }}" class="address-change-link">変更する</a>
                 </div>
-                <p class="address-postcode">{{ $address->postcode }}</p>
-                    @error('postcode')
-                        {{ $message }}
-                    @enderror
-                <p class="address-address">{{ $address->address }}</p>
-                    @error('address')
-                        {{ $message }}
-                    @enderror
-                <p class="address-building">{{ $address->building }}</p>
-                    @error('building')
-                        {{ $message }}
-                    @enderror
+                <p class="address-postcode">〒 {{ $address->postcode }}</p>
+                    <div class="form__error">
+                        @error('postcode')
+                            {{ $message }}
+                        @enderror
+                    </div>
+                <div class="address-building-box">
+                    <p class="address-address">{{ $address->address }}</p>
+                        <div class="form__error">
+                            @error('address')
+                                {{ $message }}
+                            @enderror
+                        </div>
+                    <p class="address-building">{{ $address->building }}</p>
+                        <div class="form__error">
+                            @error('building')
+                                {{ $message }}
+                            @enderror
+                        </div>
+                </div>
             </div>
         </div>
         <div class="purchase-content__right">
             <div class="purchase-content__right--confirm">
                 <div class="purchase-price">
                     <p class="purchase-price-title">商品代金</p>
-                    <p class="purchase-price-content">\{{ number_format($exhibition->price) }}</p>
+                    <span class="purchase-price-content">\{{ number_format($exhibition->price) }}</span>
                 </div>
                 <div class="purchase-payment">
                     <p class="purchase-payment-title">支払い方法</p>
-                    <p id="display" class="purchase-paymane-content">選択された支払い方法はここに表示されます</p>
+                    <span id="display" class="purchase-payment-content">選択された支払い方法はここに表示されます</span>
                 </div>
             </div>
                 <button class="purchase-content__right--button">購入する</button>

@@ -49,10 +49,13 @@
                 <div class="form__group-image--display">
                     @if($user->image)  <!-- 画像がある場合は表示 -->
                         <img src="{{ asset('storage/' . $user->image) }}" alt="プロフィール画像" class="image__preview">
+                    @else
+                        <div class="image__none"></div>
                     @endif
                 </div>
                 <div class="form__group-image--content">
                     <div class="form__input-image--text">
+                        <label for="image" class="image-change">画像を選択する</label>
                         <input type="file" name="image" id="image" value="{{ old('image') }}" />
                         <div class="image__preview"></div>
                     </div>
@@ -86,7 +89,7 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--text">
-                        <input type="text" name="postcode" value="{{ old('postcode', $user->address->postcode) }}" />
+                    <input type="text" name="postcode" value="{{ old('postcode', optional($user->address)->postcode) }}" />
                     </div>
                     <div class="form__error">
                         @error('postcode')
@@ -102,7 +105,7 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--text">
-                        <input type="text" name="address" value="{{ old('address', $user->address->address) }}"/>
+                        <input type="text" name="address" value="{{ old('address', optional($user->address)->address) }}"/>
                     </div>
                     <div class="form__error">
                         @error('address')
@@ -118,7 +121,7 @@
                 </div>
                 <div class="form__group-content">
                     <div class="form__input--text">
-                        <input type="text" name="building" value="{{ old('building', $user->address->building) }}"/>
+                        <input type="text" name="building" value="{{ old('building', optional($user->address)->building) }}"/>
                     </div>
                     <div class="form__error">
                         @error('building')

@@ -1,0 +1,141 @@
+.purchase-content {
+    display: flex;
+    margin: 50px;
+}
+
+.purchase-content__left {
+    width: 70%;
+}
+
+.purchase-content__left--information {
+    display: flex;
+    border-bottom: 1px solid #000000;
+}
+
+.exhibition-imgbox {
+    width: 180px;
+    height: 180px;
+    background-color: #d9d9d9;
+    margin: 30px 0;
+}
+
+.exhibition-imgbox img {
+    width: 100%;
+}
+
+.exhibition-contentbox {
+    margin: 5px 30px;
+    line-height: 1;
+}
+
+.exhibition-title {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.exhibition-price {
+    font-size: 27px;
+    font-weight: 400;
+}
+
+.purchase-content__left--payment {
+    border-bottom: 1px solid #000000;
+    padding-bottom: 50px;
+}
+
+.payment-title, .address-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000000;
+    padding: 15px 15px 0 15px;
+}
+
+.payment-select {
+    width: 265px;
+    height: 30px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #5f5f5f;
+    margin: 10px 50px;
+    padding-left: 10px;
+}
+
+.purchase-content__left--address {
+    border-bottom: 1px solid #000000;
+    padding-bottom: 50px;
+}
+
+.address-change-link {
+    font-size: 20px;
+    font-weight: 400;
+    color: #0073cc;
+    text-decoration: none;
+}
+
+.address-title-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.address-postcode {
+    margin: 10px 50px 0 50px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.address-building-box {
+    display: flex;
+    margin: 0 50px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 0;
+}
+
+.purchase-content__right--confirm {
+    width: 440px;
+    height: 230px;
+    margin: 30px;
+    border: 1px solid #000000;
+    font-weight: 400;
+}
+
+.purchase-price {
+    display: flex;
+    height: 115px;
+    border-bottom: 1px solid #000000;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    padding: 50px;
+}
+
+.purchase-payment {
+    display: flex;
+    height: 115px;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    padding: 50px;
+}
+
+.purchase-price-title, .purchase-payment-title {
+    font-size: 24px;
+    margin-right: 85px;
+}
+
+.purchase-price-content, .purchase-payment-content {
+    font-size: 20px;
+}
+
+.purchase-content__right--button {
+    width: 440px;
+    height: 60px;
+    background-color: #ff5555;
+    border: none;
+    margin: 30px;
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: 700;
+}
+
