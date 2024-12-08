@@ -109,7 +109,7 @@
             </div>
             <div class="information__price">
                 <h3 class="information__price--title">販売価格</h3>
-                <input type="text" name="price" value="" placeholder="￥" class="information__price--content">
+                <input type="text" name="price" value="" placeholder=&#165; class="information__price--content">
                 <div class="form__error">
                     @error ('price')
                         <p>{{$message}}</p>

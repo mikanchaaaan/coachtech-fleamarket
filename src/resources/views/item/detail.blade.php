@@ -49,7 +49,7 @@
             <h1 class="exhibition-title">{{ $exhibition->name }}</h1>
             <p class="exhibition-brand_name">{{ $exhibition->brand_name }}</p>
             <div class="exhibition-price">
-                <p class="exhibition-price__int">\{{ number_format($exhibition->price) }}<span class="exhibition-price__tax">（税込）</span></p>
+                <p class="exhibition-price__int">&#165;{{ number_format($exhibition->price) }}<span class="exhibition-price__tax">（税込）</span></p>
             </div>
             <div class="likes-comments__mark">
                 <div class="likes__mark">
