@@ -54,11 +54,13 @@
 <div class="profile__content">
     @foreach($exhibitions as $exhibition)
     <div class="profile-exhibition">
+        <a href="/item/{{$exhibition->id}}" class="exhibition-link">
         @if (filter_var($exhibition->image, FILTER_VALIDATE_URL))
-            <img src="{{ asset($exhibition->image) }}"  alt={{ $exhibition->name }} class="profile__exhibition-img"/>
+            <img src="{{ $exhibition->image }}"  alt="{{ $exhibition->name }}" class="profile__exhibition-img"/>
         @elseif($exhibition->image)
             <img src="{{ asset('storage/' . $exhibition->image) }}" alt="{{ $exhibition->name }}" class="profile__exhibition-img"/>
         @endif
+        </a>
     <p class="profile__exhibition-name">{{$exhibition->name}}</p>
     </div>
     @endforeach

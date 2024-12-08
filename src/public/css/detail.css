@@ -1,0 +1,257 @@
+.exhibition-detail {
+    display: flex;
+    margin: 50px;
+}
+
+.left-block {
+    width: 600px;
+    height: 600px;
+    margin: 36px 45px;
+}
+
+.exhibition-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+}
+
+.right-block {
+    width: 690px;
+}
+
+.exhibition,
+.exhibition-description,
+.exhibition-information,
+.exhibition-comment {
+    margin-left: 65px;
+}
+
+.exhibition-title {
+    font-size: 45px;
+    font-weight: 700;
+    color: #000000;
+}
+
+.exhibition-brand_name {
+    font-size: 20px;
+    font-weight: 400;
+    color: #000000;
+}
+
+.exhibition-price {
+    display: flex;
+}
+
+.exhibition-price__int {
+    font-size: 45px;
+    font-weight: 400;
+}
+
+.exhibition-price__tax {
+    font-size: 30px;
+    font-weight: 400;
+}
+
+.likes-comments__mark {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 25px;
+}
+
+.likes__mark,
+.comments__mark {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.likes__mark--button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    width: 40px;
+    height: 40px;
+    background: none;
+    transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.likes__mark--button i {
+    color: #5f5f5f;
+    font-size: 24px;
+    transition: color 0.3s ease;
+}
+
+.likes__mark--button.liked i {
+    color: gold;
+}
+
+.likes__count
+.comments__count {
+    margin-top: 5px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #000000;
+}
+
+.likes__count p,
+.comments__count p {
+    font-size: 18px;
+    font-weight: 700;
+    color: #000000;
+}
+
+.likes__count {
+    margin-left: 15px;
+    margin-right: 35px;
+}
+
+.comments__count {
+    transform: translateY(8px);
+}
+
+.comments__mark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+}
+
+.comments__mark i {
+    font-size: 24px;
+    color: #5f5f5f;
+}
+
+.goto-purchase {
+    width: 570px;
+    height: 100px;
+}
+
+.purchase-button,
+.comment-input__button {
+    display: block;
+    width: 570px;
+    padding: 10px;
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+    background-color: #ff5555;
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.exhibition-description__title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #000000;
+}
+
+.exhibition-description__content {
+    font-size: 24px;
+    font-weight: 400;
+    color: #000000;
+}
+
+.exhibition-information__title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #000000;
+}
+
+.exhibition-information__category--block {
+    display: flex;
+    align-items: center;
+}
+
+.exhibition-information__category--title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #000000;
+    margin-right: 30px;
+}
+
+.exhibition-information__category--content {
+    display: inline-block;
+    height: 30px;
+    background-color: #d9d9d9;
+    border-radius: 15px;
+    margin-right: 15px;
+    padding: 15px;
+}
+
+.exhibition-information__category--content p {
+    margin: 0;
+    line-height: 0.2;
+    font-size: 20px;
+    font-weight: 400;
+    color: #000000;
+}
+
+.exhibition-information__condition--block {
+    display: flex;
+    align-items: center;
+}
+
+.exhibition-information__condition--title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-right: 30px;
+}
+
+.exhibition-informartion__condition {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.exhibition-comment__title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #5f5f5f;
+}
+
+.exhibition-comment__user {
+    display:flex;
+    align-items: center;
+}
+
+.comment-user__img {
+    width: 70px;
+    height: 70px;
+    background-color: #d9d9d9;
+    border-radius: 50%;
+}
+
+.comment-user__name {
+    font-size: 30px;
+    font-weight: 700;
+    color: #000000;
+    margin-left: 20px;
+}
+
+.exhibition-comment__content--display {
+    font-size: 20px;
+    font-weight: 300;
+}
+
+
+.comment-input__title {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.comment-input {
+    width: 570px;
+    margin-bottom: 30px;
+}
+
+
+

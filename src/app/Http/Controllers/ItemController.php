@@ -85,6 +85,9 @@ public function index(Request $request)
     {
         $exhibition = Exhibition::findOrFail($item_id);
 
+        // ログイン中のユーザの確認
+        $user = auth()->user();
+
         // 商品の状態に基づく状態名を決定
         $conditionLabels = [
             1 => '良好',
@@ -96,6 +99,9 @@ public function index(Request $request)
         // 状態が不明の場合の処理
         $condition = $conditionLabels[$exhibition->condition] ?? '不明';
 
+        // 現在ログインしているユーザーがその商品を「いいね」しているかを確認
+        $isLiked = $exhibition->likes()->where('user_id', $user->id ?? 0)->exists();
+
         // いいね数のカウント
         $countLikes = $exhibition->likes()->count();
 
@@ -105,7 +111,7 @@ public function index(Request $request)
         // コメント数のカウント
         $countComments = $exhibition->comments()->count();
 
-        return view('item.detail', compact('exhibition', 'condition', 'countLikes','comments', 'countComments'));
+        return view('item.detail', compact('exhibition', 'condition', 'countLikes','comments', 'isLiked', 'countComments'));
     }
 
     // 商品出品画面の表示

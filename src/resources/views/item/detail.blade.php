@@ -38,30 +38,30 @@
 @section('content')
 <div class="exhibition-detail">
     <div class="left-block">
-        <img src="{{ asset($exhibition->image)}}" alt="商品画像" class="exhibition-image">
+        @if (filter_var($exhibition->image, FILTER_VALIDATE_URL))
+            <img src="{{ $exhibition->image }}"  alt="{{ $exhibition->name }}" class="exhibition-image"/>
+        @elseif($exhibition->image)
+            <img src="{{ asset('storage/' . $exhibition->image) }}" alt="{{ $exhibition->name }}" class="exhibition-image"/>
+        @endif
     </div>
     <div class="right-block">
         <div class="exhibition">
             <h1 class="exhibition-title">{{ $exhibition->name }}</h1>
             <p class="exhibition-brand_name">{{ $exhibition->brand_name }}</p>
-            <p class="exhibition-price">\{{ number_format($exhibition->price) }}(税込)</p>
-            <div class="likes-comment__mark">
-                <form action="/item/likes/{{ $exhibition->id }}" class="likes-form" method="post">
+            <div class="exhibition-price">
+                <p class="exhibition-price__int">\{{ number_format($exhibition->price) }}<span class="exhibition-price__tax">（税込）</span></p>
+            </div>
+            <div class="likes-comments__mark">
+                <div class="likes__mark">
+                    <form action="/item/likes/{{ $exhibition->id }}" class="likes-form" method="post">
                     @csrf
-                    <div class="likes__mark">
-                        <button class="likes__mark--button">
-                            <i class="fa-regular fa-star">
-                                @if ($exhibition->likes()->where('user_id', auth()->id())->exists())
-                                    いいね済み
-                                @else
-                                    いいね
-                                @endif
-                            </i>
+                        <button class="likes__mark--button {{ $isLiked ? 'liked' : '' }}">
+                            <i class="{{ $isLiked ? 'fa-solid' : 'fa-regular' }} fa-star"></i>
                         </button>
                         <p class="likes__count">{{ $countLikes }}</p>
-                    </div>
-                </form>
-                <div class="comment__mark">
+                    </form>
+                </div>
+                <div class="comments__mark">
                     <i class="fa-regular fa-comment"></i>
                     <p class="comments__count">{{ $countComments }}</p>
                 </div>
@@ -73,7 +73,7 @@
 
         <div class="exhibition-description">
             <h2 class="exhibition-description__title">商品説明</h2>
-            <p class="exhibition-description__message">{{ $exhibition->description }}</p>
+            <p class="exhibition-description__content">{{ $exhibition->description }}</p>
         </div>
 
         <div class="exhibition-information">
@@ -81,7 +81,9 @@
             <div class="exhibition-information__category--block">
                 <h3 class="exhibition-information__category--title">カテゴリー</h3>
                 @foreach($exhibition->categories as $category)
-                    <div>{{ $category->content }}</div>
+                    <div class="exhibition-information__category--content">
+                        <p>{{ $category->content }}</p>
+                    </div>
                 @endforeach
             </div>
             <div class="exhibition-information__condition--block">
@@ -93,7 +95,7 @@
         <div class="exhibition-comment">
             <form action="/item/comments/{{ $exhibition->id }}" class="comment-form" method="post">
             @csrf
-                <h2 class="exhibition-comment">コメント（{{ $countComments }}）</h2>
+                <h2 class="exhibition-comment__title">コメント（{{ $countComments }}）</h2>
                 @foreach($comments as $comment)
                     <div class="exhibition-comment__user">
                         <img src="{{ asset('storage/' . $comment->user->image) }}" alt="{{ $comment->user->name }}" class="comment-user__img">
