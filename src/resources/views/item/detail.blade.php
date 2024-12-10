@@ -98,7 +98,7 @@
                 <h2 class="exhibition-comment__title">コメント（{{ $countComments }}）</h2>
                 @foreach($comments as $comment)
                     <div class="exhibition-comment__user">
-                        <img src="{{ asset('storage/' . $comment->user->image) }}" alt="{{ $comment->user->name }}" class="comment-user__img">
+                        <img src="{{ asset('storage/' . $comment->user->image) }}" alt="" class="comment-user__img">
                         <p class="comment-user__name">{{ $comment->user->name }}</p>
                     </div>
                     <div class="exhibition-comment__content--display">

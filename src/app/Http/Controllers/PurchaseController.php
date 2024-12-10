@@ -27,7 +27,8 @@ class PurchaseController extends Controller
     // 住所変更画面の表示
     public function showAddress($item_id)
     {
-        return view('purchase.address', compact('item_id'));
+        $user = auth()->user();
+        return view('purchase.address', compact('item_id', 'user'));
     }
 
     // 配送先住所の変更

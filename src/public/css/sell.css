@@ -173,5 +173,67 @@
     text-align: left;
 }
 
+@media (min-width: 768px) and (max-width: 850px) {
+    .sell-content-box {
+        width: 60%;
+        /* タブレットでは少し広くします */
+    }
+
+    .sell-content-box__title h1 {
+        font-size: 32px;
+    }
+
+    .image__title,
+    .detail__title,
+    .information__title {
+        font-size: 26px;
+    }
+
+    .category-label {
+        font-size: 16px;
+    }
+
+    .information__name--content,
+    .information__price--content,
+    .information__description--content {
+        font-size: 16px;
+    }
+
+    .register-sell {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 1540px) and (min-width: 1400px) {
+    .sell-content-box {
+        width: 35%;
+                /* 少し広げて、より余裕を持たせます */
+        }
+
+    .sell-content-box__title h1 {
+        font-size: 40px;
+        }
+
+    .image__title,
+    .detail__title,
+    .information__title {
+        font-size: 28px;
+    }
+
+    .category-label {
+        font-size: 18px;
+    }
+
+    .information__name--content,
+    .information__price--content,
+    .information__description--content {
+        font-size: 18px;
+    }
+
+    .register-sell {
+        font-size: 28px;
+    }
+}
+
 
 

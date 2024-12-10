@@ -6,7 +6,7 @@
 
 @section('page-move')
     <div class="header__search--box">
-        <form action="{{ route('item.index') }}" method="get">
+        <form action="{{ route('item.index') }}" method="get" class="search-form">
             <input type="text" name="keyword" class="header__search--input" placeholder="なにをお探しですか？" value="{{ request('keyword')}}">
             <input type="hidden" name="tab" value="{{ session('tab', 'all') }}">
         </form>
@@ -42,11 +42,15 @@
         <div class="purchase-content__left">
             <div class="purchase-content__left--information">
                 <div class="exhibition-imgbox">
-                    <img src="{{ asset($exhibition->image)}}" alt="商品画像" class="exhibition-img">
+                    @if (filter_var($exhibition->image, FILTER_VALIDATE_URL))
+                        <img src="{{ $exhibition->image }}" alt="商品画像" class="exhibition-img">
+                    @else
+                        <img src="{{ asset('storage/' . $exhibition->image) }}" alt="商品画像" class="exhibition-img">
+                    @endif
                 </div>
                 <div class="exhibition-contentbox">
                     <h2 class="exhibition-title">{{ $exhibition->name }}</h2>
-                    <span class="exhibition-price">\{{ number_format($exhibition->price) }}</span>
+                    <span class="exhibition-price">&#165;{{ number_format($exhibition->price) }}</span>
                 </div>
             </div>
             <div class="purchase-content__left--payment">
@@ -92,7 +96,7 @@
             <div class="purchase-content__right--confirm">
                 <div class="purchase-price">
                     <p class="purchase-price-title">商品代金</p>
-                    <span class="purchase-price-content">\{{ number_format($exhibition->price) }}</span>
+                    <span class="purchase-price-content">&#165;{{ number_format($exhibition->price) }}</span>
                 </div>
                 <div class="purchase-payment">
                     <p class="purchase-payment-title">支払い方法</p>
@@ -107,22 +111,30 @@
 @endsection
 
 <script>
-    // window.onloadを使ってDOMが読み込まれた後に処理を行う
-    window.onload = function() {
-        // 初期状態で支払い方法を表示
-        updateDisplay();
+window.onload = function() {
+    // 初期状態で支払い方法を表示
+    updateDisplay();
 
-        // 支払い方法の変更があった場合に表示を更新
-        const selectElement = document.getElementById("payment");
-        selectElement.addEventListener("change", updateDisplay);
-    };
+    // 支払い方法の変更があった場合に表示を更新
+    const selectElement = document.getElementById("payment");
+    selectElement.addEventListener("change", updateDisplay);
+};
 
-    function updateDisplay() {
-        // Select要素を取得
-        const selectElement = document.getElementById("payment");
-        // 選択された値を取得
-        const selectedValue = selectElement.options[selectElement.selectedIndex].text;
-        // 表示用の要素を更新
-        document.getElementById("display").textContent = `${selectedValue}`;
+function updateDisplay() {
+    // Select要素を取得
+    const selectElement = document.getElementById("payment");
+    // 選択された値を取得
+    const selectedValue = selectElement.options[selectElement.selectedIndex].text;
+
+    // 表示用の要素を取得
+    const displayElement = document.getElementById("display");
+
+    // スタイルを保持したままテキストを更新
+    if (displayElement.firstChild) {
+        displayElement.firstChild.nodeValue = selectedValue;
+    } else {
+        // 初回表示の場合、テキストノードを作成
+        displayElement.appendChild(document.createTextNode(selectedValue));
     }
+}
 </script>
