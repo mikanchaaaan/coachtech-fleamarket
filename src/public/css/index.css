@@ -46,7 +46,9 @@
 }
 
 .sold {
+    display: inline-block;
     margin-left: 20px;
+    margin-top: 25px;
     color: #ff0000;
     font-weight: 700;
 }

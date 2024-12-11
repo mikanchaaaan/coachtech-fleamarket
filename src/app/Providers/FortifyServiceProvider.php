@@ -22,6 +22,7 @@ use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\RegisterResponse;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -30,13 +31,11 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // ユーザ登録後はプロフィール編集画面に遷移するように設定
-        $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
-            public function toResponse($request)
-            {
-                return redirect('mypage/profile');
-            }
-        });
+        // ユーザ登録後にログイン画面に遷移するように設定
+        $this->app->singleton(
+            RegisteredUserController::class,
+            RegisterController::class
+        );
 
         // ログイン後は商品一覧画面に遷移するように設定
         $this->app->instance(LoginResponse::class, new class implements LoginResponse {

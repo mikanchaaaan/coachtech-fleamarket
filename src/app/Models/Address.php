@@ -13,6 +13,7 @@ class Address extends Model
         'postcode',
         'address',
         'building',
+        'user_id',
     ];
 
     public function user()

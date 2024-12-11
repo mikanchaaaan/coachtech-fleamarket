@@ -55,7 +55,7 @@
                     <p>{{$exhibition->name}}</p>
                     {{-- 購入済みの商品は"sold"と表示する --}}
                     @if ($exhibition->purchases->isNotEmpty())
-                    <p class="sold">Sold</p>
+                    <label class="sold">Sold</label>
                     @endif
                 </div>
             </div>

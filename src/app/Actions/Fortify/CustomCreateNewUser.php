@@ -17,16 +17,11 @@ class CustomCreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
-        // サービスコンテナから RegisterRequest を解決
         $request = app(RegisterRequest::class);
-
-        // 入力データをリクエストにマージ
         $request->replace($input);
 
-        // バリデーションの実行
         $validated = $request->validate($request->rules());
 
-        // ユーザー作成
         return User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
