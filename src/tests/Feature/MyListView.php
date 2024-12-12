@@ -10,28 +10,43 @@ use App\Models\Address;
 use App\Models\Exhibition;
 use App\Models\Purchase;
 use App\Models\Sale;
+use App\Models\Like;
 use Database\Seeders\ExhibitionsTableSeeder;
 
-class ExhibitionlistView extends TestCase
+class MyListView extends TestCase
 {
     use RefreshDatabase;
 
-    // 12. 商品一覧取得 - 全商品取得
-    public function testViewExhibitions()
+    // マイリスト一覧取得 - いいねした商品だけが表示される
+    public function testMyListView()
     {
         $this->seed(ExhibitionsTableSeeder::class);
 
-        $response = $this->get('/');
+        $user = User::create([
+            'name' => 'user',
+            'email' => 'user@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $exhibition = Exhibition::first();
+        Like::create([
+            'exhibition_id' => $exhibition->id,
+            'user_id' => $user->id,
+        ]);
+
+        $this->actingAs($user);
+
+        $response = $this->get('/?tab=mylist');
         $response->assertStatus(200);
 
-        $exhibitions = Exhibition::all();
-        foreach ($exhibitions as $exhibition) {
-            $response->assertSeeText($exhibition->name);
-        }
+        $response->assertSeeText($exhibition->name);
+
+        $notLikedExhibition = Exhibition::where('id', '!=', $exhibition->id)->first();
+        $response->assertDontSeeText($notLikedExhibition->name);
     }
 
-    // 13. 商品一覧取得 - 購入済みの商品はsoldと表示
-    public function testPurchaseExhibition()
+    // マイリスト一覧取得 - 購入済みの商品は「sold」と表示
+    public function testMyListPurchaseExhibition()
     {
         $this->seed(ExhibitionsTableSeeder::class);
 
@@ -48,22 +63,36 @@ class ExhibitionlistView extends TestCase
             'building' => '丸の内ビル',
         ]);
 
-        $exhibitions = Exhibition::all();
-        $purchasedExhibition = $exhibitions->first();
+        $exhibition = Exhibition::first();
+        Like::create([
+            'exhibition_id' => $exhibition->id,
+            'user_id' => $user->id,
+        ]);
         Purchase::create([
-            'exhibition_id' => $purchasedExhibition->id,
+            'exhibition_id' => $exhibition->id,
             'user_id' => $user->id,
             'address_id' => $address->id,
         ]);
 
-        $response = $this->get('/');
+        $this->actingAs($user);
+
+        $response = $this->get('/?tab=mylist');
         $response->assertStatus(200);
 
         $response->assertSeeText('Sold');
+
+        $notLikedExhibition = Exhibition::where('id', '!=', $exhibition->id)->first();
+        $notPurchasedExhibition = Exhibition::where('id', '!=', $exhibition->id)->first();
+        Like::create([
+            'exhibition_id' => $notPurchasedExhibition->id,
+            'user_id' => $user->id,
+        ]);
+
+        $response->assertDontSeeText($notPurchasedExhibition->name . ' Sold');
     }
 
-    // 14. 商品一覧取得 - 自分が出品した商品は表示しない
-    public function testViewExhibitionsWithoutMyself()
+    // マイリスト一覧取得 - 自分が出品した商品は表示されない
+    public function testMyListExhibitionWithoutMyself()
     {
         $user = User::create([
             'name' => 'user',
@@ -95,20 +124,40 @@ class ExhibitionlistView extends TestCase
             'description' => '新鮮な玉ねぎ3束のセット',
         ]);
 
-        $userSales = Sale::create([
+        Sale::create([
             'user_id' => $user->id,
             'exhibition_id' => $userExhibition->id,
         ]);
 
-        $otherUserSales = Sale::create([
+        Sale::create([
             'user_id' => $otherUser->id,
             'exhibition_id' => $otherUserExhibition->id,
         ]);
 
+        Like::create([
+            'user_id' => $user->id,
+            'exhibition_id' => $otherUserExhibition->id,
+        ]);
+
         $this->actingAs($user);
-        $response = $this->get('/');
+        $response = $this->get('/?tab=mylist');
         $response->assertStatus(200);
+
         $response->assertDontSee($userExhibition->name);
         $response->assertSee($otherUserExhibition->name);
+    }
+
+    // マイリスト一覧取得 - 未認証の場合は何も表示されない
+    public function testMyListViewWithoutAuth()
+    {
+        $this->seed(ExhibitionsTableSeeder::class);
+        $exhibitions = Exhibition::All();
+
+        $response = $this->get('/?tab=mylist');
+        $response->assertStatus(200);
+
+        foreach($exhibitions as $exhibition){
+            $response->assertDontSee($exhibition->name);
+        }
     }
 }

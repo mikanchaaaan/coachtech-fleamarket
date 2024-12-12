@@ -23,9 +23,6 @@ Route::get('/', [ItemController::class, 'index'])->name('item.index');
 // 商品詳細画面の表示
 Route::get('/item/{item_id}', [ItemController::class, 'detail']);
 
-// 商品検索機能
-Route::get('/search', [ItemController::class, 'search']);
-
 Route::middleware('auth')->group(function () {
     // プロフィール画面の表示
     Route::get('mypage', [UserController::class, 'showProfile']);

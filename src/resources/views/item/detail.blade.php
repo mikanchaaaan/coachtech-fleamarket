@@ -88,7 +88,7 @@
             </div>
             <div class="exhibition-information__condition--block">
                 <h3 class="exhibition-information__condition--title">商品の状態</h3>
-                <p class="exhibition-information__condition">{{ $condition }}</p>
+                <p class="exhibition-information__condition">{{ $condition_label }}</p>
             </div>
         </div>
 
