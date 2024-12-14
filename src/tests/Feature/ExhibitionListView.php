@@ -68,6 +68,9 @@ class ExhibitionListView extends TestCase
     // 商品一覧取得 - 自分が出品した商品は表示しない
     public function testViewExhibitionsWithoutMyself()
     {
+        $this->seed(ExhibitionsTableSeeder::class);
+        $exhibitions = Exhibition::all();
+
         $user = User::create([
             'name' => 'user',
             'email' => 'test@example.com',
@@ -80,23 +83,8 @@ class ExhibitionListView extends TestCase
             'password' => bcrypt('password123'),
         ]);
 
-        $userExhibition = Exhibition::create([
-            'condition' => 2,
-            'name' => 'HDD',
-            'image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/HDD+Hard+Disk.jpg',
-            'brand_name' => '',
-            'price' => 5000,
-            'description' => '高速で信頼性の高いハードディスク',
-        ]);
-
-        $otherUserExhibition = Exhibition::create([
-            'condition' => 3,
-            'name' => '玉ねぎ3束',
-            'image' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/iLoveIMG+d.jpg',
-            'brand_name' => '',
-            'price' => 300,
-            'description' => '新鮮な玉ねぎ3束のセット',
-        ]);
+        $userExhibition = $exhibitions->get(0);
+        $otherUserExhibition = $exhibitions->get(1);
 
         $userSales = Sale::create([
             'user_id' => $user->id,

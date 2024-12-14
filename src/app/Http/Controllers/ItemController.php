@@ -13,9 +13,12 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Http\Requests\CommentRequest;
 use App\Http\Requests\ExhibitionRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ItemController extends Controller
 {
+
     // 商品一覧画面の表示
     public function index(Request $request)
     {
