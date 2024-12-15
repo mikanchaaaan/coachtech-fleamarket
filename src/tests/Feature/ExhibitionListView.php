@@ -59,9 +59,11 @@ class ExhibitionListView extends TestCase
         $response = $this->get('/');
         $response->assertStatus(200);
 
-        $response->assertSeeText('Sold');
+        $response->assertSeeText($purchasedExhibition->name);
+        $response->assertSeeInOrder([$purchasedExhibition->name, 'Sold']);
 
         $notPurchasedExhibition = Exhibition::where('id', '!=', $purchasedExhibition->id)->first();
+        $response->assertSeeText($notPurchasedExhibition->name);
         $response->assertDontSeeText($notPurchasedExhibition->name . ' Sold');
     }
 

@@ -253,6 +253,11 @@
     margin-bottom: 30px;
 }
 
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
 @media (max-width: 850px) and (min-width: 768px) {
     .exhibition-detail {
         flex-direction: column;

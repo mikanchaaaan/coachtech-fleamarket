@@ -69,12 +69,6 @@ class UserController extends Controller
             $user->update(['image' => $path]); // 新規登録でも適切に処理される
         }
 
-        // 初回登録の場合はログアウトしてからログイン画面にリダイレクト
-        if ($isFirstTime) {
-            auth()->logout();
-            return redirect('/login');
-        }
-
         // プロフィール更新時はマイページにリダイレクト
         return redirect('/mypage');
     }

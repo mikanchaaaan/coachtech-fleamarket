@@ -8,6 +8,7 @@ use App\Models\Address;
 use App\Models\Purchase;
 use App\Http\Requests\PurchaseRequest;
 use App\Http\Requests\AddressRequest;
+use Illuminate\Support\Facades\Log;
 
 class PurchaseController extends Controller
 {
@@ -43,8 +44,7 @@ class PurchaseController extends Controller
         // Addressテーブルの更新
         $user->address->update($address);
 
-        return redirect("/purchase/{$item_id}")->with('message', '配送先を変更しました。');
-
+        return redirect("/purchase/{$item_id}");
     }
 
     // 購入した商品をPurchaseテーブルに登録
@@ -64,13 +64,21 @@ class PurchaseController extends Controller
         $purchaseData = [
             'user_id' => $user->id,
             'exhibition_id' => $exhibition->id,
-            'address_id' => $address_id,
+            'address_id' => $address->id,
         ];
+
+        // 商品が既に購入済みかを確認
+        $existingPurchase = Purchase::where('exhibition_id', $exhibition->id)->first();
+
+        if ($existingPurchase) {
+            // すでに購入された商品
+            return redirect("/item/{$item_id}")->with('error', 'この商品はすでに購入されています。');
+        }
 
         // Purchaseテーブルに追加
         Purchase::create($purchaseData);
 
         // マイページにリダイレクト
-        return redirect("/mypage")->with('message', '商品を購入しました。');
+        return redirect("/mypage");
     }
 }

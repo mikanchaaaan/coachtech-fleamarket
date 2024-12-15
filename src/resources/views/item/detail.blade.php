@@ -68,6 +68,11 @@
             </div>
             <div class="goto-purchase">
                 <a href="/purchase/{{ $exhibition->id }}" class="purchase-button">購入手続きへ</a>
+                @if(session('error'))
+                    <div class="error-message">
+                        {{ session('error') }}
+                    </div>
+                @endif
             </div>
         </div>
 

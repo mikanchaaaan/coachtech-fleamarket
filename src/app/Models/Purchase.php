@@ -16,7 +16,7 @@ class Purchase extends Model
     ];
 
     // Exhibitionモデルとの結合
-    public function exhibitions()
+    public function exhibition()
     {
         return $this->belongsTo(Exhibition::class);
     }
