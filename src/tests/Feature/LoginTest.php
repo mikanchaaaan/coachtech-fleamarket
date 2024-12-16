@@ -11,7 +11,7 @@ class LoginTest extends TestCase
 {
     use RefreshDatabase;
 
-    // 7. ログイン機能 - メールアドレス未入力
+    // ログイン機能 - メールアドレス未入力
     public function testLoginEmail()
     {
         $response = $this->get('/login');
@@ -28,7 +28,7 @@ class LoginTest extends TestCase
         $this->assertContains('メールアドレスを入力してください', $errors);
     }
 
-    // 8. ログイン機能 - パスワード未入力
+    // ログイン機能 - パスワード未入力
     public function testLoginPassword()
     {
         $response = $this->get('/login');
@@ -45,7 +45,7 @@ class LoginTest extends TestCase
         $this->assertContains('パスワードを入力してください', $errors);
     }
 
-    // 9. ログイン機能 - 入力不正
+    // ログイン機能 - 入力不正
     public function testLoginInvalid()
     {
         $response = $this->get('/login');
@@ -66,7 +66,7 @@ class LoginTest extends TestCase
         $this->assertContains('ログイン情報が登録されていません。', $errors);
     }
 
-    // 10. ログイン機能 - 正常確認
+    // ログイン機能 - 正常確認
     public function testLogin()
     {
         $response = $this->get('/login');

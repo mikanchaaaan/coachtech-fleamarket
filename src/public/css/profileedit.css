@@ -18,25 +18,34 @@
     padding-bottom: 50px;
 }
 
-.form__group-image--content {
-    position: relative;
-}
-
-.image__preview {
+.profile__image {
     width: 150px;
     height: 150px;
     border-radius: 90px;
-    position: relative;
+    object-fit: contain;
 }
 
 .image__none {
     width: 150px;
     height: 150px;
     border-radius: 90px;
-    position: relative;
     background-color: #d9d9d9;
 }
 
+.form__input-image--text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    vertical-align: center;
+}
+.image__preview img {
+    max-width: 100%;
+    /* 親要素に収まるよう調整 */
+    height: auto;
+    display: block;
+    margin-bottom: 10px;
+    /* 画像下に余白を追加 */
+}
 
 input[type="file"] {
     display: none;
@@ -49,11 +58,7 @@ input[type="file"] {
     border: 2px solid #ff5555;
     border-radius: 10px;
     padding: 10px;
-    margin: 35px 70px;
-    position: absolute;
-    top: 50px;
-    left: 50px;
-    transform: translate(-50%, -50%);
+    margin: 35px 100px;
     text-align: center;
     cursor: pointer;
     white-space: nowrap;

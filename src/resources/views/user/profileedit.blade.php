@@ -48,16 +48,16 @@
             <div class="form__group-image">
                 <div class="form__group-image--display">
                     @if($user->image)  <!-- 画像がある場合は表示 -->
-                        <img src="{{ asset('storage/' . $user->image) }}" alt="プロフィール画像" class="image__preview">
+                        <img src="{{ asset('storage/' . $user->image) }}" alt="プロフィール画像" class="profile__image">
                     @else
                         <div class="image__none"></div>
                     @endif
                 </div>
                 <div class="form__group-image--content">
                     <div class="form__input-image--text">
+                        <div class="image__preview"></div>
                         <label for="image" class="image-change">画像を選択する</label>
                         <input type="file" name="image" id="image" value="{{ old('image') }}" />
-                        <div class="image__preview"></div>
                     </div>
                     <div class="form__error">
                         @error('image')
@@ -143,16 +143,52 @@
 <script>
     document.getElementById('image').addEventListener('change', function (event) {
         const file = event.target.files[0];  // 選択されたファイル
-        const previewDiv = document.querySelector('.image__preview'); // プレビューを表示する場所
+        const profileImage = document.querySelector('.profile__image'); // プロフィール画像
+        const noImageMessage = document.querySelector('.image__none'); // 画像がない場合に表示するメッセージ
+        const previewDiv = document.querySelector('.image__preview'); // プレビュー表示場所
 
+        // プレビューをクリア
+        while (previewDiv.firstChild) {  // プレビュー内のすべての子要素を削除
+            previewDiv.removeChild(previewDiv.firstChild);
+        }
+
+        // 画像が選ばれた場合
         if (file) {
+            // プロフィール画像を非表示に
+            if (profileImage) {
+                profileImage.style.display = 'none';
+            }
+
+            // `image__none` を非表示に
+            if (noImageMessage) {
+                noImageMessage.style.display = 'none';
+            }
+
+            // プレビューに画像を表示
             const reader = new FileReader();
-            reader.onload = function(e) {
-                previewDiv.innerHTML = `<img src="${e.target.result}" alt="選択された画像" style="max-width: 100%; height: auto;">`;
+            reader.onload = function (e) {
+                // プレビュー画像を表示
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.alt = '選択された画像';
+                img.style.maxWidth = '100%';
+                img.style.height = 'auto';
+                previewDiv.appendChild(img); // プレビューに画像を追加
             };
             reader.readAsDataURL(file);
         } else {
-            previewDiv.innerHTML = '画像が選択されていません';
+            // ファイルが選ばれていない場合
+            if (noImageMessage) {
+                noImageMessage.style.display = 'block'; // `image__none` を再表示
+            }
+
+            // プロフィール画像を再表示
+            if (profileImage) {
+                profileImage.style.display = 'block';
+            }
+
+            // プレビューをクリア
+            previewDiv.innerHTML = '';
         }
     });
 </script>

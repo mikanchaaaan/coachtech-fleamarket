@@ -10,7 +10,7 @@ class RegisterUser extends TestCase
 {
     use RefreshDatabase;
 
-    // 1. 会員登録 - 名前（入力なし）
+    // 会員登録 - 名前（入力なし）
     public function testRegisterName()
     {
         $response = $this->get('/register');
@@ -29,7 +29,7 @@ class RegisterUser extends TestCase
         $this->assertContains('お名前を入力してください', $errors);
     }
 
-    // 2. 会員登録 - メールアドレス（入力なし）
+    // 会員登録 - メールアドレス（入力なし）
     public function testRegisterEmail()
     {
         $response = $this->get('/register');
@@ -48,7 +48,7 @@ class RegisterUser extends TestCase
         $this->assertContains('メールアドレスを入力してください', $errors);
     }
 
-    // 3. 会員登録 - パスワード（入力なし）
+    // 会員登録 - パスワード（入力なし）
     public function testRegisterPassword()
     {
         $response = $this->get('/register');
@@ -66,7 +66,7 @@ class RegisterUser extends TestCase
         $this->assertContains('パスワードを入力してください', $errors);
     }
 
-    // 4. 会員登録 - パスワード（文字数制限）
+    // 会員登録 - パスワード（文字数制限）
     public function testRegisterPasswordCount()
     {
         $response = $this->get('/register');
@@ -86,7 +86,7 @@ class RegisterUser extends TestCase
         $this->assertContains('パスワードは8文字以上で入力してください', $errors);
     }
 
-    // 5. 会員登録 - パスワード（不一致）
+    // 会員登録 - パスワード（不一致）
     public function testRegisterPasswordConfirm()
     {
         $response = $this->get('/register');
@@ -106,7 +106,7 @@ class RegisterUser extends TestCase
         $this->assertContains('パスワードと一致しません', $errors);
     }
 
-    // 6. 会員登録 - 正常確認
+    // 会員登録 - 正常確認
     public function testRegister()
     {
         $response = $this->get('/register');

@@ -61,9 +61,15 @@
                         @enderror
                     </div>
                 <select id="payment" class="payment-select" name="payment-method" onchange="updateDisplay()">
+                    <option value="">選択してください</option>
                     <option value="convenience_payment">コンビニ払い</option>
                     <option value="card_payment">カード支払い</option>
                 </select>
+                <div class="form__error">
+                    @error('payment-method')
+                    {{ $message }}
+                    @enderror
+                </div>
             </div>
             <div class="purchase-content__left--address">
                 <div class="address-title-box">

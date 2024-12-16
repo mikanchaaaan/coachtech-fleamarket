@@ -61,7 +61,8 @@
                 <h3 class="detail__category--title">カテゴリー</h3>
                 @foreach($categories as $category)
                 <div class="detail__category--content">
-                    <input type="checkbox" name="categories[]" value="{{ $category->id }}" id="category-{{ $category->id }}" class="category-checkbox">
+                    <input type="checkbox" name="categories[]" value="{{ $category->id }}" id="category-{{ $category->id }}" class="category-checkbox"
+                    @if(in_array($category->id, old('categories', []))) checked @endif>
                     <label for="category-{{ $category->id }}" class="category-label">{{ $category->content }}</label>
                 </div>
                 @endforeach
@@ -75,10 +76,10 @@
                 <h3 class="detail__condition--title">商品の状態</h3>
                 <select class="detail__condition--content" name="condition">
                     <option value="">選択してください</option>
-                    <option value="1">良好</option>
-                    <option value="2">目立った傷や汚れなし</option>
-                    <option value="3">やや傷や汚れあり</option>
-                    <option value="4">状態が悪い</option>
+                    <option value="1" @if(old('condition') == 1) selected @endif>良好</option>
+                    <option value="2" @if(old('condition') == 2) selected @endif>目立った傷や汚れなし</option>
+                    <option value="3" @if(old('condition') == 3) selected @endif>やや傷や汚れあり</option>
+                    <option value="4" @if(old('condition') == 4) selected @endif>状態が悪い</option>
                 </select>
                 <div class="form__error">
                     @error ('condition')
@@ -91,7 +92,7 @@
             <h2 class="information__title">商品名と説明</h2>
             <div class="information__name">
                 <h3 class="information__name--title">商品名</h3>
-                <input type="text" name="name" value="" class="information__name--content">
+                <input type="text" name="name" value="{{ old('name') }}" class="information__name--content">
                 <div class="form__error">
                     @error ('name')
                         <p>{{$message}}</p>
@@ -100,7 +101,7 @@
             </div>
             <div class="information__description">
                 <h3 class="information__description--title">商品の説明</h3>
-                <textarea name="description" id="" cols="30" rows="10" class="information__description--content"></textarea>
+                <textarea name="description" id="" cols="30" rows="10" class="information__description--content">{{ old('description') }}</textarea>
                 <div class="form__error">
                     @error ('description')
                         <p>{{$message}}</p>
@@ -109,7 +110,7 @@
             </div>
             <div class="information__price">
                 <h3 class="information__price--title">販売価格</h3>
-                <input type="text" name="price" value="" placeholder=&#165; class="information__price--content">
+                <input type="text" name="price" value="{{ old('price') }}" placeholder=&#165; class="information__price--content">
                 <div class="form__error">
                     @error ('price')
                         <p>{{$message}}</p>

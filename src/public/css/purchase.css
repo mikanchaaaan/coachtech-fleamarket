@@ -146,6 +146,12 @@
     cursor: pointer;
 }
 
+.form__error {
+    height: 20px;
+    color: #ff0000;
+    margin-left: 50px;
+}
+
 /* PC用 (1400px ～ 1540px) */
 @media (min-width: 1400px) and (max-width: 1540px) {
     .purchase-content {

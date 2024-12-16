@@ -53,3 +53,11 @@ RUN curl -sS https://getcomposer.org/installer | php \
 
 # 作業ディレクトリの設定
 WORKDIR /var/www
+
+# 画像アップロードテスト実行用の拡張機能のインストール
+RUN apt-get update && apt-get install -y \
+  libpng-dev \
+  libjpeg-dev \
+  libfreetype6-dev \
+  && docker-php-ext-configure gd --with-freetype --with-jpeg \
+  && docker-php-ext-install gd
