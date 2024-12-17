@@ -145,6 +145,7 @@
     font-weight: 700;
     text-decoration: none;
     box-sizing: border-box;
+    cursor: pointer;
 }
 
 .exhibition-description__title {

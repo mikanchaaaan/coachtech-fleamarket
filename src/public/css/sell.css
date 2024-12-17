@@ -37,6 +37,7 @@
     font-weight: 700;
     color: #ff5555;
     align-items: center;
+    cursor: pointer;
 }
 
 .image__preview img{
@@ -107,6 +108,8 @@
 .information__description--content,
 .information__price--content {
     margin-top: 0;
+    font-size: 16px;
+    font-weight: 700;
 }
 
 .detail__condition--content {
@@ -145,15 +148,13 @@
     border-radius: 4px;
 }
 
-.information__price--content {
+.information__price--content::placeholder {
     font-size: 24px;
     font-weight: 700;
     color: #000000;
-}
-
-.information__price--content::placeholder {
     opacity: 1;
 }
+
 
 .register-sell {
     width: 100%;
@@ -165,6 +166,7 @@
     font-size: 26px;
     font-weight: 700;
     margin: 50px 0;
+    cursor: pointer;
 }
 
 .form__error {
@@ -207,7 +209,6 @@
 @media (max-width: 1540px) and (min-width: 1400px) {
     .sell-content-box {
         width: 35%;
-                /* 少し広げて、より余裕を持たせます */
         }
 
     .sell-content-box__title h1 {

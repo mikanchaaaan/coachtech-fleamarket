@@ -7,6 +7,8 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Actions\Fortify\CustomCreateNewUser;
+use App\Actions\Fortify\AuthenticateUser;
+use App\Actions\Fortify\CustomVerifyEmailResponse;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -67,6 +69,13 @@ class FortifyServiceProvider extends ServiceProvider
         RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;
             return Limit::perMinute(10)->by($email . $request->ip());
+        });
+
+        // メール認証未完了時のリダイレクト
+        Fortify::verifyEmailView(function () {
+            session()->flash('message', 'メール認証を完了してください。');
+
+            return view('auth.login');
         });
     }
 }

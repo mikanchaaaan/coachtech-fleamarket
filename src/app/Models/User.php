@@ -14,10 +14,11 @@ use Laravel\Cashier\Billable;
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Like[] $likes
  */
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
     use Billable;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.

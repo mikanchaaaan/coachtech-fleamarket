@@ -28,13 +28,10 @@ class LoginRequest extends FortifyLoginRequest
     {
         return [
             'login' => ['required', function ($attribute, $value, $fail) {
-                // メールアドレスの場合、メール形式チェック
                 if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
-                    // メールアドレス形式ならそのまま通す
                     return;
                 }
 
-                // メールアドレスでない場合、名前として存在チェック
                 if (empty($value) || !User::where('name', $value)->exists()) {
                     $fail($this->messages()['login.email']);
                 }

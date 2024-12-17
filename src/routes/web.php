@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PurchaseController;
@@ -22,7 +23,7 @@ Route::get('/', [ItemController::class, 'index'])->name('item.index');
 // 商品詳細画面の表示
 Route::get('/item/{item_id}', [ItemController::class, 'detail']);
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     // プロフィール画面の表示
     Route::get('mypage', [UserController::class, 'showProfile']);
 
@@ -62,3 +63,10 @@ Route::middleware('auth')->group(function () {
     // Stripe決済失敗
     Route::get('/checkout/cancel', [PurchaseController::class, 'cancel'])->name('checkout.cancel');
 });
+
+// メール認証用のルート
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect('/'); // 認証後にリダイレクトするページ
+})->middleware(['signed'])->name('verification.verify');
