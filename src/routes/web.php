@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +53,12 @@ Route::middleware('auth')->group(function () {
     // 配送先住所の変更
     Route::post('/purchase/address/edit/{item_id}', [PurchaseController::class, 'editAddress']);
 
-    // 商品の購入
-    Route::post('/purchase/complete/{item_id}',[PurchaseController::class, 'createPurchase']);
+    // 商品の購入（Stripe決済）
+    Route::post('/checkout/{item_id}', [PurchaseController::class, 'checkout']);
+
+    // Stripe決済成功
+    Route::get('/checkout/success', [PurchaseController::class, 'success'])->name('checkout.success');
+
+    // Stripe決済失敗
+    Route::get('/checkout/cancel', [PurchaseController::class, 'cancel'])->name('checkout.cancel');
 });

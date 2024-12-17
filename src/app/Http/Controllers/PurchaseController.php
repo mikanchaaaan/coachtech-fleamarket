@@ -9,6 +9,8 @@ use App\Models\Purchase;
 use App\Http\Requests\PurchaseRequest;
 use App\Http\Requests\AddressRequest;
 use Illuminate\Support\Facades\Log;
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
 
 class PurchaseController extends Controller
 {
@@ -48,7 +50,7 @@ class PurchaseController extends Controller
     }
 
     // 購入した商品をPurchaseテーブルに登録
-    public function createPurchase(PurchaseRequest $request, $item_id)
+    public function checkout(PurchaseRequest $request, $item_id)
     {
         // ログイン中のユーザの確認
         $user = auth()->user();
@@ -75,10 +77,65 @@ class PurchaseController extends Controller
             return redirect("/item/{$item_id}")->with('error', 'この商品はすでに購入されています。');
         }
 
-        // Purchaseテーブルに追加
-        Purchase::create($purchaseData);
+        // Stripe秘密鍵を設定
+        Stripe::setApiKey(config('stripe.secret_key'));
 
-        // マイページにリダイレクト
-        return redirect("/mypage");
+        // Stripe Checkoutセッションを作成
+        $session = Session::create([
+            'payment_method_types' => ['card', 'konbini'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'jpy',
+                    'product_data' => [
+                        'name' => $exhibition->name,
+                    ],
+                    'unit_amount' => $exhibition->price * 1, // 日本円の場合、単位は1円
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => route('checkout.success', ['item_id' => $item_id]),
+            'cancel_url' => route('checkout.cancel', ['item_id' => $item_id]),
+            'locale' => 'ja',
+        ]);
+
+        // Stripe Checkoutページにリダイレクト
+        return redirect($session->url);
+    }
+
+    public function success(Request $request)
+    {
+        // ログイン中のユーザー
+        $user = auth()->user();
+
+        // 成功時に商品IDを取得（Stripeから直接受け取るか、セッションで管理）
+        $item_id = $request->query('item_id');
+
+        // Exhibitionテーブルから商品情報を取得
+        $exhibition = Exhibition::findOrFail($item_id);
+
+        // 商品が既に購入済みかを再度確認
+        $existingPurchase = Purchase::where('exhibition_id', $exhibition->id)->first();
+
+        if ($existingPurchase) {
+            return redirect("/item/{$item_id}")->with('error', 'この商品はすでに購入されています。');
+        }
+
+        // 住所情報の取得
+        $address = $user->address;
+
+        // Purchaseテーブルに登録
+        Purchase::create([
+            'user_id' => $user->id,
+            'exhibition_id' => $exhibition->id,
+            'address_id' => $address->id,
+        ]);
+
+        return redirect('/mypage');
+    }
+
+    public function cancel()
+    {
+        return redirect('/')->with('error', '購入がキャンセルされました。');
     }
 }

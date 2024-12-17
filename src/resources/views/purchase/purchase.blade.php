@@ -36,7 +36,7 @@
 @endsection
 
 @section('content')
-<form action="/purchase/complete/{{ $exhibition->id }}" class="purchase-complete" method="post">
+<form action="/checkout/{{ $exhibition->id }}" class="purchase-complete" method="post">
     @csrf
     <div class="purchase-content">
         <div class="purchase-content__left">
