@@ -42,6 +42,8 @@ class PaymentMethodTest extends DuskTestCase
                 ->type('password', 'password123')
                 ->press('ログインする')
                 ->assertAuthenticatedAs($user);
+            $user->markEmailAsVerified();
+            $this->assertTrue($user->hasVerifiedEmail());
 
             // 任意の購入ページにアクセス
             $browser->visit('/purchase/'. $exhibition->id) // URLはアプリの実装に合わせる

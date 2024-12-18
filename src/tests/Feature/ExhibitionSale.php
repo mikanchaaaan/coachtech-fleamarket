@@ -34,11 +34,14 @@ class ExhibitionSale extends TestCase
             'password' => 'password123',
         ]);
 
+        $user->markEmailAsVerified(); // メール認証を強制的に完了させる
+        $this->assertTrue($user->hasVerifiedEmail()); // メール認証が完了していることを確認
+
         $response->assertSessionHasNoErrors();
         $this->assertAuthenticatedAs($user);
 
 
-        $response = $this->get('/sell');
+        $response = $this->actingAs($user)->get('/sell');
         $response->assertStatus(200);
 
         $sellExhibitionData = [

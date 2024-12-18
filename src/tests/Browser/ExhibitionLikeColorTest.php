@@ -19,10 +19,6 @@ class ExhibitionLikeColorTest extends DuskTestCase
     // いいね機能 - 追加済みのアイコンは色が変化する
     public function testExhibitionLikeColor()
     {
-        Log::info('Current Environment: ' . env('APP_ENV'));
-        Log::info('Database Connection: ' . env('DB_CONNECTION'));
-        Log::info('Database Name: ' . env('DB_DATABASE'));
-
         $this->seed(ExhibitionsTableSeeder::class);
         $exhibition = Exhibition::first();
 
@@ -42,6 +38,8 @@ class ExhibitionLikeColorTest extends DuskTestCase
                 ->type('password', 'password123')
                 ->press('ログインする')
                 ->assertAuthenticatedAs($user);
+            $user->markEmailAsVerified();
+            $this->assertTrue($user->hasVerifiedEmail());
 
             // 商品詳細ページに移動して、テストを実行
             $browser->visit('/item/' . $exhibition->id)

@@ -30,18 +30,18 @@ class ChangeUserProfile extends TestCase
             'building' => 'building'
         ]);
 
-        $response = $this->get('/login');
-        $response->assertStatus(200);
-
         $response = $this->post('login', [
             'login' => 'test@example.com',
             'password' => 'password123',
         ]);
 
+        $user->markEmailAsVerified(); // メール認証を強制的に完了させる
+        $this->assertTrue($user->hasVerifiedEmail()); // メール認証が完了していることを確認
+
         $response->assertSessionHasNoErrors();
         $this->assertAuthenticatedAs($user);
 
-        $response = $this->get('/mypage/profile');
+        $response = $this->actingAs($user)->get('/mypage/profile');
         $response->assertStatus(200);
 
         $response->assertSee($user->image);

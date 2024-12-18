@@ -27,6 +27,9 @@ class ExhibitionLike extends TestCase
         ]);
 
         $this->actingAs($user);
+        $user->markEmailAsVerified(); // メール認証を強制的に完了させる
+        $this->assertTrue($user->hasVerifiedEmail()); // メール認証が完了していることを確認
+
         $item_id = $exhibition->id;
         $response = $this->get('/item/' . $item_id);
         $response->assertStatus(200);
@@ -54,6 +57,9 @@ class ExhibitionLike extends TestCase
         ]);
 
         $this->actingAs($user);
+        $user->markEmailAsVerified(); // メール認証を強制的に完了させる
+        $this->assertTrue($user->hasVerifiedEmail()); // メール認証が完了していることを確認
+
         $item_id = $exhibition->id;
         $response = $this->get('/item/' . $item_id);
         $response->assertStatus(200);
