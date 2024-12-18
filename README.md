@@ -9,8 +9,8 @@
 ### Laravel環境構築
 1. ```docker-compose exec php bash```
 2. ```composer install```
-3. ``` cp -p .env.example .env```
-4. envの環境変数を変更（下記参照）
+3. ```cp -p .env.example .env```
+4. envの環境変数を変更（「環境変数」参照）
 5. ```php artisan key:generate```
 6. ```php artisan migrate```
 7. ```php artisan db:seed```
@@ -40,20 +40,15 @@
 * Mailhog：```http://localhost:8025/```
 
 ## テスト
-### テスト環境構築
-1. 
-2. ``` cp -p .env.example .env```
-3. .env.exampleの環境変数を変更
-4. ```php artisan key:generate --env=testing```
-5. ```php artisan migrate --env=testing```
-
-
-6. ```php artisan migrate --env=dusk.testing```
-7. ```nohup php artisan serve --env=dusk.testing&```
-
-### テスト実行
 ※ 各テスト内容は案件シートの[テストケース一覧]シート参照。
-#### PHP Unitテスト
+### PHP Unitテスト
+#### 環境構築
+1. ```cp -p .env .env.testing```
+2. .env.exampleの環境変数を変更（「テスト用環境変数」参照）
+3. ```php artisan key:generate --env=testing```
+4. ```php artisan migrate --env=testing```
+
+#### テスト実行
 1. ```vendor/bin/phpunit tests/Feature/RegisterUser.php```
 2. ```vendor/bin/phpunit tests/Feature/LoginTest.php```
 3. ```vendor/bin/phpunit tests/Feature/LogoutTest.php```
@@ -69,12 +64,32 @@
 13. ```vendor/bin/phpunit tests/Feature/ChangeUserProfile.php```
 14. ```vendor/bin/phpunit tests/Feature/ExhibitionSale.php```
 
-#### Laravel Duskテスト
+### Laravel Duskテスト
+#### 環境構築
+1. ```cp -p .env .env.dusk.testing```
+2. .env.exampleの環境変数を変更（「テスト用環境変数」参照）
+3. ```php artisan key:generate --env=dusk.testing```
+6. ```php artisan migrate --env=dusk.testing```
+7. ```nohup php artisan serve --env=dusk.testing&```
+
+#### テスト実行
 1. ```php artisan dusk --filter ExhibitionLikeColorTest --env=dusk.testing```
 2. ```php artisan dusk --filter PaymentMethodTest --env=dusk.testing```
 
+#### トラブルシューティング
 ※　テスト実行時に「This version of ChromeDriver only supports Chrome version 114
 Current browser version is 131.0.6778.139 with binary path /usr/bin/google-chrome」というメッセージが表示された場合は、Googleブラウザのバージョン114をインストールして再実行してください。
 1. Chromeブラウザのバージョン114をダウンロード
 2. ```dpkg -i chrome_114_amd64.deb```
+
+### テスト用環境変数（.env.testing および .env.dusk.testingに追加する）
+| 変数名              | 値                                              | 備考                                                               |
+| ------------------- | ----------------------------------------------- | ------------------------------------------------------------------ |
+| DB_HOST             | mysql                                           | 接続するデータベース                                               |
+| DB_DATABASE         | laravel_test                                    | 接続するデータベース名                                             |
+| DB_USERNAME         | root                                            | データベースに接続時のユーザー名                                   |
+| DB_PASSWORD         | docker-compose.ymlの「MYSQL_ROOT_PASSWORD」参照 | データベースに接続時のパスワード                                   |
+| MAIL_FROM_ADDRESS   | 任意のメールアドレス（入力必須）                | メール認証時の送信元メールアドレス                                 |
+| STRIPE_PUBLIC_KEY   | StripeのAPIキー（Public）                       | Stripe接続用のAPIキー（Public） ※.env.dusk.testingには不要        |
+| STRIPE_SECRET_KEY   | StripeのAPIキー（Secret）                       | Stripe接続用のAPIキー（Secret） ※.env.dusk.testingには不要        |
 
