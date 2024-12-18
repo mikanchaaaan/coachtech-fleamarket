@@ -67,6 +67,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // メール認証用のルート
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
-
-    return redirect('/'); // 認証後にリダイレクトするページ
+    return redirect('/');
 })->middleware(['signed'])->name('verification.verify');

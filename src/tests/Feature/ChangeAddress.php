@@ -35,8 +35,8 @@ class ChangeAddress extends TestCase
         ]);
 
         $this->actingAs($user);
-        $user->markEmailAsVerified(); // メール認証を強制的に完了させる
-        $this->assertTrue($user->hasVerifiedEmail()); // メール認証が完了していることを確認
+        $user->markEmailAsVerified();
+        $this->assertTrue($user->hasVerifiedEmail());
 
         $item_id = $exhibition->id;
         $response = $this->get('/purchase/address/' . $item_id);
@@ -83,8 +83,8 @@ class ChangeAddress extends TestCase
         ]);
 
         $this->actingAs($user);
-        $user->markEmailAsVerified(); // メール認証を強制的に完了させる
-        $this->assertTrue($user->hasVerifiedEmail()); // メール認証が完了していることを確認
+        $user->markEmailAsVerified();
+        $this->assertTrue($user->hasVerifiedEmail());
 
         $item_id = $exhibition->id;
         $response = $this->get('/purchase/address/' . $item_id);
@@ -105,12 +105,10 @@ class ChangeAddress extends TestCase
             'payment-method' => 'convenience_payment'
         ];
 
-        // checkout メソッドのリダイレクトを検証
         $response = $this->post("/checkout/{$item_id}", $purchaseData);
         $response->assertRedirect();
         $this->assertStringContainsString('https://checkout.stripe.com/', $response->headers->get('Location'));
 
-        // success メソッドを直接呼び出して購入処理をシミュレーション
         $response = $this->get(route('checkout.success', ['item_id' => $item_id]));
 
         $this->assertDatabaseHas('purchases', [

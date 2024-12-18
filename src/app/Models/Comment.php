@@ -9,13 +9,11 @@ class Comment extends Model
 {
     use HasFactory;
 
-    // userテーブルとの結合
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // exhibitionテーブルとの結合
     public function exhibition()
     {
         return $this->belongsTo(Exhibition::class);

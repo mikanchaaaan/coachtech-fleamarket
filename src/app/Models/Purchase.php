@@ -15,13 +15,11 @@ class Purchase extends Model
         'address_id',
     ];
 
-    // Exhibitionモデルとの結合
     public function exhibition()
     {
         return $this->belongsTo(Exhibition::class);
     }
 
-    // Userモデルとの結合
     public function users()
     {
         return $this->belongsTo(User::class);

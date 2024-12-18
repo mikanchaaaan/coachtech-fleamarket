@@ -23,12 +23,10 @@ class LoginController extends Controller
         if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user);
 
-            // 住所が未登録の場合は/mypage/profileにリダイレクト
             if (is_null($user->address)) {
                 return redirect('/mypage/profile');
             }
 
-            // 住所が登録されている場合はトップページにリダイレクト
             return redirect('/');
         }
 

@@ -118,28 +118,21 @@
 
 <script>
 window.onload = function() {
-    // 初期状態で支払い方法を表示
     updateDisplay();
 
-    // 支払い方法の変更があった場合に表示を更新
     const selectElement = document.getElementById("payment");
     selectElement.addEventListener("change", updateDisplay);
 };
 
 function updateDisplay() {
-    // Select要素を取得
     const selectElement = document.getElementById("payment");
-    // 選択された値を取得
     const selectedValue = selectElement.options[selectElement.selectedIndex].text;
 
-    // 表示用の要素を取得
     const displayElement = document.getElementById("display");
 
-    // スタイルを保持したままテキストを更新
     if (displayElement.firstChild) {
         displayElement.firstChild.nodeValue = selectedValue;
     } else {
-        // 初回表示の場合、テキストノードを作成
         displayElement.appendChild(document.createTextNode(selectedValue));
     }
 }

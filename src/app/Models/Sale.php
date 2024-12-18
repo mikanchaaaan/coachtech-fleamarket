@@ -14,7 +14,6 @@ class Sale extends Model
         'exhibition_id',
     ];
 
-    // Exhibitionモデルとの結合
     public function exhibitions()
     {
         return $this->belongsTo(Exhibition::class);

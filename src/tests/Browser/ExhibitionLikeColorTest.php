@@ -22,7 +22,6 @@ class ExhibitionLikeColorTest extends DuskTestCase
         $this->seed(ExhibitionsTableSeeder::class);
         $exhibition = Exhibition::first();
 
-        // テスト用ユーザーを作成
         $user = User::create([
             'name' => 'Test User',
             'email' => 'testuser@example.com',
@@ -41,7 +40,6 @@ class ExhibitionLikeColorTest extends DuskTestCase
             $user->markEmailAsVerified();
             $this->assertTrue($user->hasVerifiedEmail());
 
-            // 商品詳細ページに移動して、テストを実行
             $browser->visit('/item/' . $exhibition->id)
             ->assertPresent('.likes__mark--button')
             ->screenshot('change_likes__mark-before')

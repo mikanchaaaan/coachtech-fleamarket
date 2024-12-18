@@ -104,7 +104,7 @@ class ItemController extends Controller
     public function createSell(ExhibitionRequest $request)
     {
         $user = auth()->user();
-        $exhibitionData = $request->only(['name','image','price','condition','description']);
+        $exhibitionData = $request->only(['name','image','brand_name','price','condition','description']);
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('exhibition_images', 'public');

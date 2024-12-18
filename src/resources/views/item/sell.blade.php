@@ -93,6 +93,8 @@
             <div class="information__name">
                 <h3 class="information__name--title">商品名</h3>
                 <input type="text" name="name" value="{{ old('name') }}" class="information__name--content">
+                <h3 class="information__name--title">ブランド名</h3>
+                <input type="text" name="brand_name" value="{{ old('brand_name') }}" class="information__name--content">
                 <div class="form__error">
                     @error ('name')
                         <p>{{$message}}</p>
@@ -134,14 +136,14 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 previewDiv.innerHTML = `<img src="${e.target.result}" alt="選択された画像">`;
-                previewDiv.style.display = 'block'; // プレビューを表示
-                button.style.display = 'none'; // ボタンを非表示
+                previewDiv.style.display = 'block';
+                button.style.display = 'none';
             };
             reader.readAsDataURL(file);
         } else {
-            previewDiv.innerHTML = ''; // プレビューをクリア
-            previewDiv.style.display = 'none'; // プレビューを隠す
-            button.style.display = 'block'; // ボタンを再表示
+            previewDiv.innerHTML = '';
+            previewDiv.style.display = 'none';
+            button.style.display = 'block';
         }
     });
 </script>

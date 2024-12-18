@@ -108,6 +108,7 @@ class PurchaseController extends Controller
         return redirect('/mypage');
     }
 
+    // Stripe決済をキャンセルしたとき
     public function cancel()
     {
         return redirect('/');

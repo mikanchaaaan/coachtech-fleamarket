@@ -77,7 +77,6 @@ class LoginTest extends TestCase
             'password' => bcrypt('password123'),
         ]);
 
-        // メール認証を強制的に完了させる
         $user->markEmailAsVerified();
 
         $response = $this->post('login', [

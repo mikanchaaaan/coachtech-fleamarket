@@ -44,8 +44,8 @@ class ExhibitionPurchase extends TestCase
         ]);
 
         $this->actingAs($user);
-        $user->markEmailAsVerified(); // メール認証を強制的に完了させる
-        $this->assertTrue($user->hasVerifiedEmail()); // メール認証が完了していることを確認
+        $user->markEmailAsVerified();
+        $this->assertTrue($user->hasVerifiedEmail());
 
         $item_id = $exhibition->id;
         $response = $this->get('/item/' . $item_id);
@@ -55,9 +55,8 @@ class ExhibitionPurchase extends TestCase
             'exhibition_id' => $exhibition->id,
         ]);
 
-        // テスト用のPaymentIntent作成
         $paymentIntent = PaymentIntent::create([
-            'amount' => 1000, // 金額（例: 1000円）
+            'amount' => 1000,
             'currency' => 'jpy',
             'payment_method_types' => ['card'],
         ]);
@@ -67,16 +66,14 @@ class ExhibitionPurchase extends TestCase
             'exhibition_id' => $exhibition->id,
             'address_id' => $address->id,
             'payment-method' => 'convenience_payment',
-            'payment_method_id' => 'pm_card_visa', // Stripeが提供するテスト用のカードID
-            'payment_intent_id' => $paymentIntent->id, // 作成したPaymentIntentのID
+            'payment_method_id' => 'pm_card_visa',
+            'payment_intent_id' => $paymentIntent->id,
         ];
 
-        // checkout メソッドのリダイレクトを検証
         $response = $this->post("/checkout/{$item_id}", $purchaseData);
         $response->assertRedirect();
         $this->assertStringContainsString('https://checkout.stripe.com/', $response->headers->get('Location'));
 
-        // success メソッドを直接呼び出して購入処理をシミュレーション
         $response = $this->get(route('checkout.success', ['item_id' => $item_id]));
 
         $this->assertDatabaseHas('purchases', [
@@ -108,8 +105,8 @@ class ExhibitionPurchase extends TestCase
         ]);
 
         $this->actingAs($user);
-        $user->markEmailAsVerified(); // メール認証を強制的に完了させる
-        $this->assertTrue($user->hasVerifiedEmail()); // メール認証が完了していることを確認
+        $user->markEmailAsVerified();
+        $this->assertTrue($user->hasVerifiedEmail());
 
         $item_id = $exhibition->id;
         $response = $this->get('/item/' . $item_id);
@@ -126,12 +123,10 @@ class ExhibitionPurchase extends TestCase
             'payment-method' => 'convenience_payment'
         ];
 
-        // checkout メソッドのリダイレクトを検証
         $response = $this->post("/checkout/{$item_id}", $purchaseData);
         $response->assertRedirect();
         $this->assertStringContainsString('https://checkout.stripe.com/', $response->headers->get('Location'));
 
-        // success メソッドを直接呼び出して購入処理をシミュレーション
         $response = $this->get(route('checkout.success', ['item_id' => $item_id]));
 
         $response = $this->get('/');
@@ -166,8 +161,8 @@ class ExhibitionPurchase extends TestCase
         ]);
 
         $this->actingAs($user);
-        $user->markEmailAsVerified(); // メール認証を強制的に完了させる
-        $this->assertTrue($user->hasVerifiedEmail()); // メール認証が完了していることを確認
+        $user->markEmailAsVerified();
+        $this->assertTrue($user->hasVerifiedEmail());
 
         $item_id = $exhibition->id;
         $response = $this->get('/item/' . $item_id);
@@ -184,12 +179,10 @@ class ExhibitionPurchase extends TestCase
             'payment-method' => 'convenience_payment'
         ];
 
-        // checkout メソッドのリダイレクトを検証
         $response = $this->post("/checkout/{$item_id}", $purchaseData);
         $response->assertRedirect();
         $this->assertStringContainsString('https://checkout.stripe.com/', $response->headers->get('Location'));
 
-        // success メソッドを直接呼び出して購入処理をシミュレーション
         $response = $this->get(route('checkout.success', ['item_id' => $item_id]));
 
         $this->assertDatabaseHas('purchases', [

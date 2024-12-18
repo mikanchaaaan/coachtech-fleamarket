@@ -142,52 +142,43 @@
 @section('js')
 <script>
     document.getElementById('image').addEventListener('change', function (event) {
-        const file = event.target.files[0];  // 選択されたファイル
-        const profileImage = document.querySelector('.profile__image'); // プロフィール画像
-        const noImageMessage = document.querySelector('.image__none'); // 画像がない場合に表示するメッセージ
-        const previewDiv = document.querySelector('.image__preview'); // プレビュー表示場所
+        const file = event.target.files[0];
+        const profileImage = document.querySelector('.profile__image');
+        const noImageMessage = document.querySelector('.image__none');
+        const previewDiv = document.querySelector('.image__preview');
 
-        // プレビューをクリア
-        while (previewDiv.firstChild) {  // プレビュー内のすべての子要素を削除
+        while (previewDiv.firstChild) {
             previewDiv.removeChild(previewDiv.firstChild);
         }
 
-        // 画像が選ばれた場合
         if (file) {
-            // プロフィール画像を非表示に
             if (profileImage) {
                 profileImage.style.display = 'none';
             }
 
-            // `image__none` を非表示に
             if (noImageMessage) {
                 noImageMessage.style.display = 'none';
             }
 
-            // プレビューに画像を表示
             const reader = new FileReader();
             reader.onload = function (e) {
-                // プレビュー画像を表示
                 const img = document.createElement('img');
                 img.src = e.target.result;
                 img.alt = '選択された画像';
                 img.style.maxWidth = '100%';
                 img.style.height = 'auto';
-                previewDiv.appendChild(img); // プレビューに画像を追加
+                previewDiv.appendChild(img);
             };
             reader.readAsDataURL(file);
         } else {
-            // ファイルが選ばれていない場合
             if (noImageMessage) {
-                noImageMessage.style.display = 'block'; // `image__none` を再表示
+                noImageMessage.style.display = 'block';
             }
 
-            // プロフィール画像を再表示
             if (profileImage) {
                 profileImage.style.display = 'block';
             }
 
-            // プレビューをクリア
             previewDiv.innerHTML = '';
         }
     });
