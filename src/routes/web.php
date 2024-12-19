@@ -23,12 +23,17 @@ Route::get('/', [ItemController::class, 'index'])->name('item.index');
 // 商品詳細画面の表示
 Route::get('/item/{item_id}', [ItemController::class, 'detail']);
 
+Route::middleware(['auth'])->group(function () {
+    // プロフィール編集画面の表示
+    Route::get('/mypage/profile', [UserController::class, 'showEditProfile']);
+
+    // プロフィール編集画面の更新
+    Route::post('/mypage/profile/edit', [UserController::class, 'editProfile']);
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     // プロフィール画面の表示
     Route::get('mypage', [UserController::class, 'showProfile']);
-
-    // プロフィール編集画面の表示
-    Route::get('/mypage/profile', [UserController::class, 'showEditProfile']);
 
     // 商品出品画面の表示
     Route::get('/sell',[ItemController::class, 'showSell']);
@@ -41,9 +46,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // コメント機能の実装
     Route::post('item/comments/{item_id}', [ItemController::class, 'comment']);
-
-    // プロフィール編集画面の更新
-    Route::post('/mypage/profile/edit', [UserController::class, 'editProfile']);
 
     // 商品購入画面の表示
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'showPurchase']);

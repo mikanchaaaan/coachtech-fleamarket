@@ -119,7 +119,7 @@ class RegisterUser extends TestCase
             'password_confirmation' => 'password123',
         ]);
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect('/mypage/profile');
         $response->assertSessionHasNoErrors();
     }
 }

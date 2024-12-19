@@ -23,13 +23,8 @@ class LoginController extends Controller
         if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user);
 
-            if (is_null($user->address)) {
-                return redirect('/mypage/profile');
-            }
-
             return redirect('/');
         }
-
         return back()->withErrors([
             'login' => 'ログイン情報が登録されていません。',
         ]);
