@@ -1,4 +1,4 @@
-FROM php:7.4.9-fpm
+FROM php:8.1-fpm
 
 # php.iniのコピー
 COPY php.ini /usr/local/etc/php/
@@ -36,11 +36,10 @@ RUN apt update \
 # zip拡張をインストール
 RUN docker-php-ext-install zip
 
-# 最新のChromeDriverをインストール
-RUN LATEST_CHROMEDRIVER=$(curl -sSL https://chromedriver.storage.googleapis.com/LATEST_RELEASE) && \
-  wget https://chromedriver.storage.googleapis.com/$LATEST_CHROMEDRIVER/chromedriver_linux64.zip && \
-  unzip chromedriver_linux64.zip -d /usr/local/bin/ && \
-  chmod +x /usr/local/bin/chromedriver
+# Chromeをインストール
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+  echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list && \
+  apt-get update && apt-get install -y google-chrome-stable
 
 RUN apt update \
   && apt install -y default-mysql-client zlib1g-dev libzip-dev unzip \

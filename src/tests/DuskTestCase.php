@@ -40,11 +40,17 @@ abstract class DuskTestCase extends BaseTestCase
             $this->shouldStartMaximized() ? '--start-maximized' : '--window-size=1920,1080',
         ])->unless($this->hasHeadlessDisabled(), function ($items) {
             return $items->merge([
+                '--window-size=1920,1080',
                 '--disable-gpu',
                 '--headless',
+                '--ignore-certificate-errors',
                 '--no-sandbox',
+                '--disable-dev-shm-usage',
             ]);
         })->all());
+
+        $driverPath = 'DUSK_DRIVER_PATH=vendor/laravel/dusk/bin/chromedriver-linux64/chromedriver';
+        putenv("DUSK_DRIVER_PATH=$driverPath");
 
         return RemoteWebDriver::create(
             $_ENV['DUSK_DRIVER_URL'] ?? 'http://localhost:9515',

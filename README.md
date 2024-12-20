@@ -14,7 +14,7 @@
 5. ```php artisan key:generate```
 6. ```php artisan migrate```
 7. ```php artisan db:seed```
-8. ```php artisan link:storage```
+8. ```php artisan storage:link```
 
 ### 環境変数（.env）
 | 変数名              | 値                                         | 備考                                    |
@@ -23,7 +23,7 @@
 | DB_DATABASE         | docker-compose.ymlの「MYSQL_DATABASE」参照 | 接続するデータベース名                  |
 | DB_USERNAME         | docker-compose.ymlの「MYSQL_USER」参照     | データベースに接続時のユーザー名        |
 | DB_PASSWORD         | docker-compose.ymlの「MYSQL_PASSWORD」参照 | データベースに接続時のパスワード        |
-| MAIL_FROM_ADDRESS   | 任意のメールアドレス（入力必須）           | メール認証時の送信元メールアドレス      |
+| MAIL_FROM_ADDRESS   | ```no-reply@example.com```           | メール認証時の送信元メールアドレス      |
 | STRIPE_PUBLIC_KEY   | StripeのAPIキー（Public）                  | Stripe接続用のAPIキー（Public）         |
 | STRIPE_SECRET_KEY   | StripeのAPIキー（Secret）                  | Stripe接続用のAPIキー（Secret）         |
 
@@ -80,9 +80,7 @@
 3. .env.dusk.exampleの環境変数を変更（[テスト用環境変数](#テスト用環境変数envtesting-および-envdusktesting)参照）
 4. ```php artisan key:generate --env=dusk.testing```
 5. ```php artisan migrate --env=dusk.testing```
-6. Chromeブラウザのバージョン114をダウンロード
-7. ```dpkg -i <ダウンロードしたChromeブラウザのパス>```
-8. ```nohup php artisan serve --env=dusk.testing&```
+6. ```php artisan serve --env=dusk.testing&```
 
 #### テスト実行
 ※ 各テスト内容は案件シートの[テストケース一覧]シート参照。
@@ -91,6 +89,9 @@
 
 #### トラブルシューティング
 テスト実行時にエラーが出力された場合は、手動確認を実施するか、対応するChromeブラウザのバージョンをインストールして実行してください。
+
+1. Chromeブラウザのバージョン114をダウンロード([URL])
+2. ```dpkg -i <ダウンロードしたChromeブラウザのパス>```
 
 ### テスト用環境変数（.env.testing および .env.dusk.testing）
 | 変数名              | 値                                              | 備考                                                                |
@@ -102,7 +103,7 @@
 | DB_DATABASE         | laravel_test                                    | 接続するデータベース名                                              |
 | DB_USERNAME         | root                                            | データベースに接続時のユーザー名                                    |
 | DB_PASSWORD         | docker-compose.ymlの「MYSQL_ROOT_PASSWORD」参照 | データベースに接続時のパスワード                                    |
-| MAIL_FROM_ADDRESS   | 任意のメールアドレス（入力必須）                | メール認証時の送信元メールアドレス                                  |
+| MAIL_FROM_ADDRESS   | ```no-reply@example.com```                           | メール認証時の送信元メールアドレス                                  |
 | STRIPE_PUBLIC_KEY   | StripeのAPIキー（Public）                       | Stripe接続用のAPIキー（Public） ※.env.dusk.testingには不要         |
 | STRIPE_SECRET_KEY   | StripeのAPIキー（Secret）                       | Stripe接続用のAPIキー（Secret） ※.env.dusk.testingには不要         |
 
