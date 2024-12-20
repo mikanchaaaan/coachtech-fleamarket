@@ -28,8 +28,8 @@
 | STRIPE_SECRET_KEY   | StripeのAPIキー（Secret）                  | Stripe接続用のAPIキー（Secret）         |
 
 ### 使用技術
-* PHP 7.4.9
-* Laravel Framework 8.83.29
+* PHP 8.1.31
+* Laravel Framework 9.52.18
 * nginx 1.21.1
 * MySQL 10.3.39-MariaDB
 * Stripe 9.9.0
@@ -42,19 +42,20 @@
 * Mailhog：```http://localhost:8025/```
 
 ## テスト
-### PHP Unitテスト
-#### 環境構築
+#### テスト用DB構築
 1. ```docker-compose exec mysql bash```
-2. ```mysql -u root -p```
+2. ```mysql -u root -p```（rootのパスワードを入力する）
 3. ```CREATE DATABASE laravel_test;```
 4. ```SHOW DATABASES;```
-5. ```laravel_test```のデータベースが作成されていることを確認し、```exit```で抜ける。
+5. ```laravel_test```のデータベースが作成されていることを確認し、```exit```を2回実行してMySQLから抜ける。
 
-6. ```docker-compose exec php bash```
-7. ```cp -p .env .env.testing```
-8. .env.exampleの環境変数を変更（[テスト用環境変数](#テスト用環境変数envtesting-および-envdusktesting)参照）
-9. ```php artisan key:generate --env=testing```
-10. ```php artisan migrate --env=testing```
+### PHP Unitテスト
+#### 環境構築
+1. ```docker-compose exec php bash```
+2. ```cp -p .env .env.testing```
+3. .env.exampleの環境変数を変更（[テスト用環境変数](#テスト用環境変数envtesting-および-envdusktesting)参照）
+4. ```php artisan key:generate --env=testing```
+5. ```php artisan migrate --env=testing```
 
 #### テスト実行
 ※ 各テスト内容は案件シートの[テストケース一覧]シート参照。
@@ -79,8 +80,15 @@
 2. ```cp -p .env .env.dusk.testing```
 3. .env.dusk.exampleの環境変数を変更（[テスト用環境変数](#テスト用環境変数envtesting-および-envdusktesting)参照）
 4. ```php artisan key:generate --env=dusk.testing```
-5. ```php artisan migrate --env=dusk.testing```
+5. ```php artisan migrate --env=dusk.testing```（PHP Unitテスト実施後は「Nothing to Migrate」と表示される）
+5. ```php artisan dusk:install```
+6. ```chmod 755 vendor/laravel/dusk/bin/chromedriver-linux64/chromedriver```
+7. vendor/laravel/dusk/src/Chrome/ChromeProcess.phpの43行目を修正する
+　　<br>（修正前）'linux' => 'chromedriver-linux,
+　　<br>（修正後）'linux' => 'chromedriver-linux***64***,
+
 6. ```php artisan serve --env=dusk.testing&```
+7. ```vendor/laravel/dusk/bin/chromedriver-linux64/chromedriver --port=9515&```
 
 #### テスト実行
 ※ 各テスト内容は案件シートの[テストケース一覧]シート参照。
@@ -88,10 +96,7 @@
 2. ```php artisan dusk --filter PaymentMethodTest --env=dusk.testing```
 
 #### トラブルシューティング
-テスト実行時にエラーが出力された場合は、手動確認を実施するか、対応するChromeブラウザのバージョンをインストールして実行してください。
-
-1. Chromeブラウザのバージョン114をダウンロード([URL])
-2. ```dpkg -i <ダウンロードしたChromeブラウザのパス>```
+テスト実行時にエラーが出力された場合は、手動確認を実施してください。
 
 ### テスト用環境変数（.env.testing および .env.dusk.testing）
 | 変数名              | 値                                              | 備考                                                                |
