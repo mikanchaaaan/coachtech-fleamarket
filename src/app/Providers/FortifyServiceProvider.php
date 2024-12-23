@@ -35,12 +35,10 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
             public function toResponse($request)
             {
-                // 登録後、プロフィール編集ページ（/mypage/profile）にリダイレクト
                 return redirect('mypage/profile');
             }
         });
 
-        // ログイン後は商品一覧画面に遷移するように設定
         $this->app->instance(LoginResponse::class, new class implements LoginResponse {
             public function toResponse($request)
             {
@@ -64,7 +62,6 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.login');
         });
 
-        // Fortifyのデフォルトのルートをカスタムコントローラに置き換え
         Route::middleware(['web'])->post('/login', [\App\Http\Controllers\LoginController::class, 'store'])->name('login');
 
         RateLimiter::for('login', function (Request $request) {
@@ -72,7 +69,6 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(10)->by($email . $request->ip());
         });
 
-        // メール認証未完了時のリダイレクト
         Fortify::verifyEmailView(function () {
             session()->flash('message', 'メール認証を完了してください。');
 

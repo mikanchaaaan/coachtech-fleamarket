@@ -40,11 +40,10 @@
 }
 .image__preview img {
     max-width: 100%;
-    /* 親要素に収まるよう調整 */
     height: auto;
     display: block;
     margin-bottom: 10px;
-    /* 画像下に余白を追加 */
+    object-fit: cover;
 }
 
 input[type="file"] {

@@ -66,7 +66,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/checkout/cancel', [PurchaseController::class, 'cancel'])->name('checkout.cancel');
 });
 
-// メール認証用のルート
+// メール認証後のリダイレクト先指定
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
     return redirect('/');
