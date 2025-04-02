@@ -19,8 +19,10 @@ class UserController extends Controller
 
         if ($tab == 'buy') {
             $exhibitions = auth()->user()->purchaseItems;
-        } else {
+        } elseif ($tab == 'sell') {
             $exhibitions = auth()->user()->sellItems;
+        } else {
+            $exhibitions = auth()->user()->transactionItems;
         }
 
         return view('user.profile', compact('user','exhibitions','tab'));

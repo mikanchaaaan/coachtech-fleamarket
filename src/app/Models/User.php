@@ -80,4 +80,21 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Exhibition::class, 'likes', 'user_id', 'exhibition_id');
     }
+
+    // 追加要件用に追記
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'seller_id');
+    }
+
+    public function averageRating()
+    {
+        return $this->reviews()->avg('rating'); // 平均評価を算出
+    }
+
+    public function transactionItems()
+    {
+        return $this->belongsToMany(Exhibition::class, 'transactions', 'receiver_id', 'exhibition_id')
+            ->orWhere('transactions.seller_id', $this->id);
+    }
 }

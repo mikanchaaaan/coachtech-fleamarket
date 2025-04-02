@@ -5,6 +5,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +65,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Stripe決済失敗
     Route::get('/checkout/cancel', [PurchaseController::class, 'cancel'])->name('checkout.cancel');
+
+    // 取引チャット画面の表示
+    Route::get('/message/{item_id}', [MessageController::class, 'showMessage']);
 });
 
 // メール認証後のリダイレクト先指定

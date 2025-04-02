@@ -49,12 +49,13 @@
 <div class="profile__tab">
     <a href="/mypage?tab=sell" class="purchase-exhibition {{ $tab == 'sell' ? 'active' : '' }}">出品した商品</a>
     <a href="/mypage?tab=buy" class="sell-exhibition {{ $tab == 'buy' ? 'active' : '' }}">購入した商品</a>
+    <a href="/mypage?tab=transaction" class="transaction-exhibition {{ $tab == 'transaction' ? 'active' : '' }}">取引中の商品</a>
 </div>
 
 <div class="profile__content">
     @foreach($exhibitions as $exhibition)
     <div class="profile-exhibition">
-        <a href="/item/{{$exhibition->id}}" class="exhibition-link">
+        <a href="{{ $tab == 'transaction' ? '/message/' . $exhibition->id : '/item/' . $exhibition->id }}" class="exhibition-link">
         @if (filter_var($exhibition->image, FILTER_VALIDATE_URL))
             <img src="{{ $exhibition->image }}"  alt="{{ $exhibition->name }}" class="profile__exhibition-img"/>
         @elseif($exhibition->image)

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Exhibition;
 use App\Models\Address;
 use App\Models\Purchase;
+use App\Models\Transaction;
+use App\Models\Sale;
 use App\Http\Requests\PurchaseRequest;
 use App\Http\Requests\AddressRequest;
 use Stripe\Stripe;
@@ -44,7 +46,7 @@ class PurchaseController extends Controller
         return redirect("/purchase/{$item_id}");
     }
 
-    // 購入した商品をPurchaseテーブルに登録
+    // 決済
     public function checkout(PurchaseRequest $request, $item_id)
     {
         $user = auth()->user();
@@ -102,6 +104,16 @@ class PurchaseController extends Controller
             'user_id' => $user->id,
             'exhibition_id' => $exhibition->id,
             'address_id' => $address->id,
+        ]);
+
+        // 追加要件のため追記（Transactionテーブルに購入商品に関するやり取りを追加）
+        $seller = Sale::where('exhibition_id', $exhibition->id)->first();
+
+        Transaction::create([
+            'seller_id' => $seller->user_id,
+            'receiver_id' => $user->id,
+            'exhibition_id' => $exhibition->id,
+            'is_active' => true,
         ]);
 
         return redirect('/mypage');
