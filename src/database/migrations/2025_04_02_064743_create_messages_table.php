@@ -15,11 +15,12 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('seller_id')->constrained('users'); // 出品者
+            $table->foreignId('sender_id')->constrained('users'); // 出品者
             $table->foreignId('receiver_id')->constrained('users'); // 購入者
             $table->foreignId('exhibition_id')->constrained('exhibitions'); // 商品ID
-            $table->text('message'); // メッセージ内容
+            $table->text('content'); // メッセージ内容
             $table->boolean('is_read')->default(false); // 既読/未読フラグ
+            $table->string('image')->nullable(); // メッセージ内の画像
             $table->timestamps();
         });
     }

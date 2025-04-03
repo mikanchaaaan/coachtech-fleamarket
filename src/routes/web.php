@@ -66,8 +66,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Stripe決済失敗
     Route::get('/checkout/cancel', [PurchaseController::class, 'cancel'])->name('checkout.cancel');
 
+    // 要件追加で追記
     // 取引チャット画面の表示
     Route::get('/message/{item_id}', [MessageController::class, 'showMessage']);
+
+    // メッセージ送信
+    Route::post('/message/send', [MessageController::class, 'sendMessage']);
 });
 
 // メール認証後のリダイレクト先指定

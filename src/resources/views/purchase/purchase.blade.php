@@ -35,6 +35,10 @@
     </div>
 @endsection
 
+@section('js')
+<script src="{{ asset('js/purchase.js') }}"></script>
+@endsection
+
 @section('content')
 <form action="/checkout/{{ $exhibition->id }}" class="purchase-complete" method="post">
     @csrf
@@ -115,25 +119,3 @@
     </div>
 </form>
 @endsection
-
-<script>
-window.onload = function() {
-    updateDisplay();
-
-    const selectElement = document.getElementById("payment");
-    selectElement.addEventListener("change", updateDisplay);
-};
-
-function updateDisplay() {
-    const selectElement = document.getElementById("payment");
-    const selectedValue = selectElement.options[selectElement.selectedIndex].text;
-
-    const displayElement = document.getElementById("display");
-
-    if (displayElement.firstChild) {
-        displayElement.firstChild.nodeValue = selectedValue;
-    } else {
-        displayElement.appendChild(document.createTextNode(selectedValue));
-    }
-}
-</script>

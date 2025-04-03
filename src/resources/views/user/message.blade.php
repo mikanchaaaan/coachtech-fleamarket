@@ -35,6 +35,14 @@
     </div>
 @endsection
 
+@section('js')
+    <script>
+    // Laravelの認証情報をJavaScriptに渡す
+    const authUserId = @json(auth()->id());  // 現在のユーザーIDをJavaScriptに渡す
+    </script>
+    <script src="{{ asset('js/message.js') }}"></script>
+@endsection
+
 @section('content')
     <div class="container">
         <aside class="sidebar">
@@ -45,45 +53,86 @@
         </aside>
         <div class="chat-area">
             <div class="chat-header">
-                @if(auth()->user()->image)
-                    <img src="{{ asset('storage/' . auth()->user()->image) }}" alt="プロフィール画像" class="profile-img">
+                @if($chat_partner->image)
+                    <img src="{{ asset('storage/' . $chat_partner->image) }}" alt="プロフィール画像" class="profile-img">
                 @else
                     <div class="image__none"></div>
                 @endif
-                <h2>{{ $user->name }}さんとの取引画面</h2>
+                <h2>{{ $chat_partner->name }}さんとの取引画面</h2>
             </div>
             <div class="product-info">
-                <div class="image-box">商品画像</div>
+                <div class="image-box">
+                    @if (filter_var($exhibition->image, FILTER_VALIDATE_URL))
+                        <img src="{{ asset($exhibition->image) }}"  alt="商品画像" class="img-content"/>
+                    @elseif($exhibition->image)
+                        <img src="{{ asset('storage/' . $exhibition->image) }}" alt="{{ $exhibition->name }}" class="img-content"/>
+                    @endif</div>
                 <div class="details">
-                    <h3>商品名</h3>
-                    <p>商品価格</p>
+                    <h3>{{ $exhibition->name }}</h3>
+                    <p class="exhibition-price__int">&#165;{{ number_format($exhibition->price) }}<span class="exhibition-price__tax">（税込）</span></p>
                 </div>
             </div>
-            <div class="messages">
-                <div class="received">
-                    <div class="message">
-                        <div class="receiver-icon"></div>
-                        <div class="receiver-name">ユーザー名</div>
-                    </div>
-                </div>
-                <div class="message-content">相手から送られたメッセージ</div>
-                <div class="sent">
-                    <div class="message">
-                        <div class="sender-name">ユーザー名</div>
-                        <div class="sender-icon"></div>
-                    </div>
-                    <div class="message-content">自分が送ったメッセージ</div>
-                    <div class="options">
-                        <button>編集</button>
-                        <button>削除</button>
-                    </div>
-                </div>
+            <div class="messages" data-receiver="{{ $chat_partner->id }}" data-item-id="{{ $exhibition->id }}">
+                @foreach($messages as $message)
+                    @if($message->sender_id === $chat_partner->id)
+                        <div class="received">
+                            <div class="message">
+                                <div class="receiver-icon">
+                                    @if($chat_partner->image)
+                                        <img src="{{ asset('storage/' . $chat_partner->image) }}" alt="プロフィール画像" class="icon-img">
+                                    @else
+                                        <div class="profile-image__none"></div>
+                                    @endif
+                                </div>
+                                <div class="receiver-name">{{ $chat_partner->name }}</div>
+                            </div>
+                        </div>
+                        <div class="message-content">{{ $message->content }}</div>
+                        @if ($message->image)
+                            <div class="message-image">
+                                <img src="{{ Storage::url($message->image) }}" alt="送信画像" class="message-img">
+                            </div>
+                        @endif
+                    @else
+                        <div class="sent">
+                            <div class="message">
+                                <div class="sender-name">{{ $user->name }}</div>
+                                <div class="sender-icon">
+                                    @if(auth()->user()->image)
+                                        <img src="{{ asset('storage/' . auth()->user()->image) }}" alt="プロフィール画像" class="icon-img">
+                                    @else
+                                        <div class="profile-image__none"></div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="message-content">{{ $message->content }}</div>
+                            @if ($message->image)
+                                <div class="message-image">
+                                    <img src="{{ Storage::url($message->image) }}" alt="送信画像" class="message-img">
+                                </div>
+                            @endif
+                            <div class="options">
+                                <button>編集</button>
+                                <button>削除</button>
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
             </div>
+
             <footer class="chat-input">
-                <input type="text" placeholder="取引メッセージを記入してください">
-                <button class="add-img">画像を追加</button>
-                <button class="send">
-                    <img src="{{ asset('img/send.jpg') }}" alt="ロゴ">
+                <input type="text" name="content" placeholder="取引メッセージを記入してください">
+
+                <label class="add-img" for="image" style="cursor: pointer; display: inline-block; margin-right: 10px;">画像を追加</label>
+                <input type="file" name="image" id="image" style="display: none;" />
+
+                <!-- 画像プレビューを表示するエリア -->
+                <div id="image-preview-container"></div>
+
+                <button type="submit" class="send">
+                    <img src="{{ asset('img/send.jpg') }}" alt="送信">
                 </button>
             </footer>
+        </div>
+    </div>
 @endsection

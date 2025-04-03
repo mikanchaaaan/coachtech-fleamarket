@@ -9,11 +9,11 @@ class Message extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['seller_id', 'receiver_id', 'exhibition_id', 'message', 'is_read'];
+    protected $fillable = ['sender_id', 'receiver_id', 'exhibition_id', 'content', 'is_read', 'image'];
 
-    public function seller()
+    public function sender()
     {
-        return $this->belongsTo(User::class, 'seller_id');
+        return $this->belongsTo(User::class, 'sender_id');
     }
 
     public function receiver()
