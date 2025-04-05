@@ -39,6 +39,11 @@ class Exhibition extends Model
         return $this->hasMany(Transaction::class, 'exhibition_id');
     }
 
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'exhibition_id');
+    }
+
     protected $fillable = [
         'name',
         'image',

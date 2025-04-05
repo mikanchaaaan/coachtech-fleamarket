@@ -51,10 +51,32 @@ class MessageController extends Controller
         return view('user.message', compact('ongoingExhibitions', 'exhibition', 'user', 'transaction', 'chat_partner', 'messages'));
     }
 
+    // 未読メッセージを既読に変更
+    public function markAsRead($id){
+        // メッセージIDでメッセージを取得
+        $message = Message::findOrFail($id);
+        Log::info('Message:', [
+            'id' => $message->id,
+            'sender_id' => $message->sender_id,
+            'receiver_id' => $message->receiver_id,
+            'content' => $message->content,
+            'is_read' => $message->is_read,
+        ]);
+
+        if ($message) {
+            // 送信者が自分以外で、未読メッセージの場合のみ更新
+            if ($message->sender_id != auth()->user()->id && $message->is_read == 0) {
+                $message->update(['is_read' => 1]);
+                return response()->json(['success' => true]);
+            }
+        }
+        // 成功のレスポンスを返す
+        return response()->json(['success' => true]);
+    }
+
     // メッセージ送信
     public function sendMessage(MessageRequest $request)
     {
-        Log::info($request);
         $imagePath = null;
 
         // 画像がアップロードされている場合は保存

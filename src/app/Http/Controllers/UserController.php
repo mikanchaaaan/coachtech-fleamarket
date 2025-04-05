@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Address;
 use App\Models\User;
+use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\AddressRequest;
 use App\Http\Requests\ProfileRequest;
@@ -22,10 +23,44 @@ class UserController extends Controller
         } elseif ($tab == 'sell') {
             $exhibitions = auth()->user()->sellItems;
         } else {
-            $exhibitions = auth()->user()->transactionItems;
+            // transactionItems はリレーションインスタンスなので、そのまま呼び出す
+            $exhibitions = auth()->user()->transactionItems()
+                ->orderByDesc(function ($query) {
+                    $query->select('created_at')
+                        ->from('messages')
+                        ->whereColumn('messages.exhibition_id', 'exhibitions.id')
+                        ->latest()
+                        ->limit(1);
+                })
+                ->get();  // 最新のメッセージ順に並べる
         }
 
         return view('user.profile', compact('user','exhibitions','tab'));
+    }
+
+    public function getUnreadMessageCount()
+    {
+        $user = auth()->user();
+
+        // 全体の未読メッセージ数を取得
+        $totalUnreadCount = Message::where('receiver_id', $user->id)
+            ->where('sender_id', '!=', $user->id)
+            ->where('is_read', 0)
+            ->count();
+
+        // 各商品の未読メッセージ数を取得
+        $exhibitions = auth()->user()->transactionItems->loadCount([
+            'messages as unread_messages_count' => function ($query) use ($user) {
+                $query->where('receiver_id', $user->id)
+                    ->where('sender_id', '!=', $user->id)
+                    ->where('is_read', 0);
+            }
+        ]);
+
+        return response()->json([
+            'totalUnreadCount' => $totalUnreadCount,
+            'exhibitions' => $exhibitions,
+        ]);
     }
 
     // プロフィール編集画面の表示

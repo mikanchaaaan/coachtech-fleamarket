@@ -1,10 +1,44 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("JavaScript is loaded");
 
-    const imageInput = document.getElementById('image');
-    console.log(imageInput);
+    // ページアクセス時に未読メッセージを既読に変更
+    const messageIds = document.querySelectorAll('.msg'); // メッセージの要素を取得
+
+    messageIds.forEach(messageElement => {
+        const id = messageElement.dataset.messageId; // メッセージIDを取得
+        const isRead = messageElement.dataset.isRead;  // 未読/既読の判定
+        const senderId = messageElement.dataset.senderId;  // 送信者のIDを取得
+        const currentUserId = document.querySelector('meta[name="current-user-id"]').content;  // 現在のユーザーID
+
+        console.log(id);
+        console.log(isRead);
+        console.log(senderId);
+        console.log(currentUserId);
+
+        // 自分以外から送られてきた未読メッセージの場合のみ既読にする
+        if (isRead == 0 && senderId !== currentUserId) {  // 自分以外からの未読メッセージの場合
+            fetch(`/message/${id}/mark-as-read`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content // CSRFトークン
+                },
+                body: JSON.stringify({ id })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // 既読にしたら、data-is-read属性を1に更新
+                    messageElement.dataset.isRead = 1;  // data-is-readを1に変更
+                    messageElement.classList.add('read'); // 既読状態をCSSクラスで管理する場合
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        });
 
     // メッセージ送信時の画像プレビュー
+    const imageInput = document.getElementById('image');
+    console.log(imageInput);
     if (imageInput) {
         imageInput.addEventListener('change', function (event) {
             console.log("Image input changed");

@@ -66,9 +66,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Stripe決済失敗
     Route::get('/checkout/cancel', [PurchaseController::class, 'cancel'])->name('checkout.cancel');
 
-    // 要件追加で追記
+    // 要件追加で追記_202504
     // 取引チャット画面の表示
     Route::get('/message/{item_id}', [MessageController::class, 'showMessage']);
+
+    // 未読メッセージを既読に変更
+    Route::post('/message/{id}/mark-as-read', [MessageController::class, 'markAsRead']);
+
+    // 未読メッセージのカウント
+    Route::get('/api/unread-message-count', [UserController::class, 'getUnreadMessageCount']);
 
     // メッセージ送信
     Route::post('/message/send', [MessageController::class, 'sendMessage']);

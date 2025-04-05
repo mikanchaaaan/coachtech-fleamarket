@@ -62,15 +62,50 @@
     padding-left: 40px;
 }
 
+.transaction-exhibition {
+    padding-left: 40px;
+}
+
+.unread-count-total {
+    width: 30px;
+    height: 30px;
+    background-color: #ff0000;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 30px;
+}
+
 .profile__content {
     display: flex;
 }
 
+.profile-exhibition {
+    position: relative;
+}
+
 .profile__exhibition-img {
+    display: block;
     width: 290px;
     height: 290px;
     border-radius: 4px;
     margin: 0 40px;
+}
+
+.unread-count {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 5px;
+    left: 45px;
+    background-color: #ff0000;
+    color: #ffffff;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 700;
 }
 
 .profile__exhibition-name {

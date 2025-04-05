@@ -78,35 +78,18 @@
             </div>
             <div class="messages" data-receiver="{{ $chat_partner->id }}" data-item-id="{{ $exhibition->id }}">
                 @foreach($messages as $message)
-                    @if($message->sender_id === $chat_partner->id)
-                        <div class="received">
-                            <div class="message">
-                                <div class="receiver-icon">
-                                    @if($chat_partner->image)
-                                        <img src="{{ asset('storage/' . $chat_partner->image) }}" alt="プロフィール画像" class="icon-img">
-                                    @else
-                                        <div class="profile-image__none"></div>
-                                    @endif
-                                </div>
-                                <div class="receiver-name">{{ $chat_partner->name }}</div>
-                            </div>
-                        </div>
-                        <div class="message-content">{{ $message->content }}</div>
-                        @if ($message->image)
-                            <div class="message-image">
-                                <img src="{{ Storage::url($message->image) }}" alt="送信画像" class="message-img">
-                            </div>
-                        @endif
-                    @else
-                        <div class="sent">
-                            <div class="message">
-                                <div class="sender-name">{{ $user->name }}</div>
-                                <div class="sender-icon">
-                                    @if(auth()->user()->image)
-                                        <img src="{{ asset('storage/' . auth()->user()->image) }}" alt="プロフィール画像" class="icon-img">
-                                    @else
-                                        <div class="profile-image__none"></div>
-                                    @endif
+                    <div class="msg" data-message-id="{{ $message->id }}" data-sender-id="{{ $message->sender_id }}" data-is-read="{{ $message->is_read }}">
+                        @if($message->sender_id === $chat_partner->id)
+                            <div class="received">
+                                <div class="message">
+                                    <div class="receiver-icon">
+                                        @if($chat_partner->image)
+                                            <img src="{{ asset('storage/' . $chat_partner->image) }}" alt="プロフィール画像" class="icon-img">
+                                        @else
+                                            <div class="profile-image__none"></div>
+                                        @endif
+                                    </div>
+                                    <div class="receiver-name">{{ $chat_partner->name }}</div>
                                 </div>
                             </div>
                             <div class="message-content">{{ $message->content }}</div>
@@ -115,12 +98,31 @@
                                     <img src="{{ Storage::url($message->image) }}" alt="送信画像" class="message-img">
                                 </div>
                             @endif
-                            <div class="options">
-                                <button class="edit-btn" data-message-id="{{ $message->id }}">編集</button>
-                                <button class="delete-btn" data-message-id="{{ $message->id }}">削除</button>
+                        @else
+                            <div class="sent">
+                                <div class="message">
+                                    <div class="sender-name">{{ $user->name }}</div>
+                                    <div class="sender-icon">
+                                        @if(auth()->user()->image)
+                                            <img src="{{ asset('storage/' . auth()->user()->image) }}" alt="プロフィール画像" class="icon-img">
+                                        @else
+                                            <div class="profile-image__none"></div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="message-content">{{ $message->content }}</div>
+                                @if ($message->image)
+                                    <div class="message-image">
+                                        <img src="{{ Storage::url($message->image) }}" alt="送信画像" class="message-img">
+                                    </div>
+                                @endif
+                                <div class="options">
+                                    <button class="edit-btn" data-message-id="{{ $message->id }}">編集</button>
+                                    <button class="delete-btn" data-message-id="{{ $message->id }}">削除</button>
+                                </div>
                             </div>
-                        </div>
-                    @endif
+                        @endif
+                    </div>
                 @endforeach
             </div>
 

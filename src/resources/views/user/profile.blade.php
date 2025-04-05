@@ -49,12 +49,15 @@
 <div class="profile__tab">
     <a href="/mypage?tab=sell" class="purchase-exhibition {{ $tab == 'sell' ? 'active' : '' }}">出品した商品</a>
     <a href="/mypage?tab=buy" class="sell-exhibition {{ $tab == 'buy' ? 'active' : '' }}">購入した商品</a>
-    <a href="/mypage?tab=transaction" class="transaction-exhibition {{ $tab == 'transaction' ? 'active' : '' }}">取引中の商品</a>
+    <a href="/mypage?tab=transaction" class="transaction-exhibition {{ $tab == 'transaction' ? 'active' : '' }}">
+        取引中の商品
+        <span class="unread-count-total">0</span>
+    </a>
 </div>
 
 <div class="profile__content">
     @foreach($exhibitions as $exhibition)
-    <div class="profile-exhibition">
+    <div class="profile-exhibition" data-exhibition-id="{{ $exhibition->id }}">
         <a href="{{ $tab == 'transaction' ? '/message/' . $exhibition->id : '/item/' . $exhibition->id }}" class="exhibition-link">
         @if (filter_var($exhibition->image, FILTER_VALIDATE_URL))
             <img src="{{ $exhibition->image }}"  alt="{{ $exhibition->name }}" class="profile__exhibition-img"/>
@@ -62,8 +65,19 @@
             <img src="{{ asset('storage/' . $exhibition->image) }}" alt="{{ $exhibition->name }}" class="profile__exhibition-img"/>
         @endif
         </a>
-    <p class="profile__exhibition-name">{{$exhibition->name}}</p>
+        <p class="profile__exhibition-name">{{$exhibition->name}}</p>
+
+        <!-- ここでtransactionタブの場合のみ未読メッセージ数を表示 -->
+        @if($tab == 'transaction')
+            <div class="unread-count">
+                {{ $exhibition->unread_messages_count > 0 ? $exhibition->unread_messages_count : '' }}
+            </div>
+        @endif
     </div>
     @endforeach
 </div>
+@endsection
+
+@section('js')
+    <script src="{{ asset('js/profile.js') }}"></script>
 @endsection
