@@ -72,6 +72,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // メッセージ送信
     Route::post('/message/send', [MessageController::class, 'sendMessage']);
+
+    // メッセージ編集
+    Route::post('/message/{id}/edit', [MessageController::class, 'updateMessage']);
+
+    // メッセージ削除
+    Route::post('/message/{id}/delete', [MessageController::class, 'destroyMessage']);
 });
 
 // メール認証後のリダイレクト先指定

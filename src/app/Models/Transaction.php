@@ -23,6 +23,6 @@ class Transaction extends Model
 
     public function exhibition()
     {
-        return $this->belongsTo(Exhibition::class);
+        return $this->belongsTo(Exhibition::class, 'exhibition_id');
     }
 }

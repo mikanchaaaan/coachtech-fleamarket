@@ -47,9 +47,13 @@
     <div class="container">
         <aside class="sidebar">
             <h2>その他の取引</h2>
-            <button class="item">商品名</button>
-            <button class="item">商品名</button>
-            <button class="item">商品名</button>
+            @foreach ($ongoingExhibitions as $transaction)
+                <div class="chatItem-choice">
+                    <a href="{{ url('/message/' . $transaction->exhibition_id) }}">
+                        {{ $transaction->exhibition->name }}
+                    </a>
+                </div>
+            @endforeach
         </aside>
         <div class="chat-area">
             <div class="chat-header">
@@ -112,16 +116,18 @@
                                 </div>
                             @endif
                             <div class="options">
-                                <button>編集</button>
-                                <button>削除</button>
+                                <button class="edit-btn" data-message-id="{{ $message->id }}">編集</button>
+                                <button class="delete-btn" data-message-id="{{ $message->id }}">削除</button>
                             </div>
                         </div>
                     @endif
                 @endforeach
             </div>
 
-            <footer class="chat-input">
-                <input type="text" name="content" placeholder="取引メッセージを記入してください">
+            <footer class="chat">
+                <div class="form__error"></div>
+                <div class="chat-input">
+                <input type="text" name="content" placeholder="取引メッセージを記入してください" value="{{ old('content') }}">
 
                 <label class="add-img" for="image" style="cursor: pointer; display: inline-block; margin-right: 10px;">画像を追加</label>
                 <input type="file" name="image" id="image" style="display: none;" />
@@ -132,6 +138,7 @@
                 <button type="submit" class="send">
                     <img src="{{ asset('img/send.jpg') }}" alt="送信">
                 </button>
+                </div>
             </footer>
         </div>
     </div>

@@ -34,6 +34,11 @@ class Exhibition extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'exhibition_id');
+    }
+
     protected $fillable = [
         'name',
         'image',

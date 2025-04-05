@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("JavaScript is loaded"); // このログが表示されるか確認
+    console.log("JavaScript is loaded");
 
-    // 画像プレビュー表示の処理を追加
     const imageInput = document.getElementById('image');
-    console.log(imageInput); // これが null ならエラー
+    console.log(imageInput);
 
+    // メッセージ送信時の画像プレビュー
     if (imageInput) {
-        imageInput.addEventListener('change', function(event) {
+        imageInput.addEventListener('change', function (event) {
             console.log("Image input changed");
 
             const file = event.target.files[0];
@@ -14,13 +14,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     console.log("FileReader loaded", e.target.result);
-
-                    // プレビュー画像をクリアしてから新しい画像を追加
                     previewContainer.innerHTML = '';
-
-                    // 画像を「画像を追加」の右側に表示
                     const imgElement = document.createElement('img');
                     imgElement.src = e.target.result;
                     imgElement.alt = "選択された画像";
@@ -28,8 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     imgElement.style.maxHeight = "100px";
                     imgElement.style.border = "1px solid #ccc";
                     imgElement.style.borderRadius = "5px";
-                    imgElement.style.marginLeft = "10px"; // 「画像を追加」との間隔を確保
-
+                    imgElement.style.marginLeft = "10px";
                     previewContainer.appendChild(imgElement);
                 };
                 reader.readAsDataURL(file);
@@ -42,8 +37,25 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Element #image not found");
     }
 
+    // メッセージ入力内容をlocalStorageに保存
+    const messageInput = document.querySelector(".chat-input input");
+
+    // 入力内容の保存
+    if (messageInput) {
+        messageInput.addEventListener("input", function () {
+            const content = messageInput.value;
+            localStorage.setItem("messageContent", content);
+        });
+
+        // ページ読み込み時に保存されているメッセージを表示
+        const savedMessage = localStorage.getItem("messageContent");
+        if (savedMessage) {
+            messageInput.value = savedMessage;
+        }
+    }
+
     // 送信ボタンの処理
-    document.querySelector(".send").addEventListener("click", function() {
+    document.querySelector(".send").addEventListener("click", function () {
         console.log("送信ボタンがクリックされました！");
 
         let messageContent = document.querySelector(".chat-input input").value;
@@ -51,21 +63,13 @@ document.addEventListener("DOMContentLoaded", function () {
         let itemId = document.querySelector(".messages").dataset.itemId;
         let imageFile = document.getElementById("image").files[0];
 
-        console.log("選択された画像:", imageFile);
-
-        if (messageContent.trim() === "" && !imageFile) {
-            console.log("メッセージも画像も空です");
-            return;
-        }
-
         let formData = new FormData();
-        formData.append("message", messageContent);
+        formData.append("content", messageContent);
         formData.append("receiver_id", receiverId);
         formData.append("item_id", itemId);
         if (imageFile) {
             formData.append("image", imageFile);
         }
-
 
         fetch("/message/send", {
             method: "POST",
@@ -74,38 +78,48 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             body: formData
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log("サーバーのレスポンス:", data);
-            if (data.success) {
-                console.log("メッセージが送信されました！");
+        .then(async response => {
+            const data = await response.json();
 
-                // 送信したメッセージを即時表示する
-                addMessageToChat(data.message);
+                if (response.ok && data.success) {
+                    // 成功時の処理
+                    document.querySelector(".chat-input input").value = "";
+                    document.getElementById("image").value = "";
+                    document.getElementById("image-preview-container").innerHTML = "";
+                    addMessageToChat(data.message);
 
-                // 入力欄をクリア
-                document.querySelector(".chat-input input").value = "";
-                document.getElementById("image").value = ""; // ファイル選択をリセット
-                document.getElementById("image-preview-container").innerHTML = "";
-            } else {
-                console.log("メッセージ送信に失敗しました");
-            }
-        })
-        .catch(error => console.error("エラー:", error));
-    });
+                    // エラー表示エリアもリセットしておく
+                    document.querySelector(".form__error").innerHTML = "";
 
-    // 送信したメッセージを追加する関数
-    function addMessageToChat(message) {
-        console.log("追加するメッセージ:", message);
+                    // 送信後にローカルストレージをクリア
+                    localStorage.removeItem("messageContent");
 
-        let chatBox = document.querySelector(".messages");
+                } else if (response.status === 422) {
+                    // バリデーションエラー処理
+                    const errorBox = document.querySelector(".form__error");
+                    errorBox.innerHTML = "";
 
-        let messageHtml = '';
+                    // Laravelからのerrorsオブジェクトをループで表示
+                    Object.values(data.errors).forEach(messages => {
+                        messages.forEach(msg => {
+                            const p = document.createElement("p");
+                            p.textContent = msg;
+                            errorBox.appendChild(p);
+                        });
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("通信エラー:", error);
+            });
 
-        // 相手からのメッセージか、自分からのメッセージかで表示を分ける
-        if (message.sender_id === authUserId) {
-            // 自分が送信したメッセージ
-            messageHtml = `
+        // メッセージ追加処理
+        function addMessageToChat(message) {
+            let chatBox = document.querySelector(".messages");
+            let messageHtml = '';
+
+            if (message.sender_id === authUserId) {
+                messageHtml = `
                 <div class="sent">
                     <div class="message">
                         <div class="sender-name">${message.sender_name}</div>
@@ -114,18 +128,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         </div>
                     </div>
                     <div class="message-content">${message.message}</div>
-                    <div class="message-image">
-                        ${message.image ? `<img src="${message.image}" alt="送信画像" class="message-img">` : ''}
-                    </div>
+                    ${message.image ? `<div class="message-image"><img src="${message.image}" alt="送信画像" class="message-img"></div>` : ''}
                     <div class="options">
-                        <button>編集</button>
-                        <button>削除</button>
+                        <button class="edit-btn" data-message-id="${message.id}">編集</button>
+                        <button class="delete-btn" data-message-id="${message.id}">削除</button>
                     </div>
                 </div>
             `;
-        } else {
-            // 相手からのメッセージ
-            messageHtml = `
+            } else {
+                messageHtml = `
                 <div class="received">
                     <div class="message">
                         <div class="receiver-icon">
@@ -135,13 +146,97 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                 </div>
                 <div class="message-content">${message.message}</div>
-                <div class="message-image">
-                    ${message.image ? `<img src="${message.image}" alt="送信画像" class="message-img">` : ''}
-                </div>
+                ${message.image ? `<div class="message-image"><img src="${message.image}" alt="送信画像" class="message-img"></div>` : ''}
             `;
+            }
+
+            chatBox.insertAdjacentHTML("beforeend", messageHtml);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // 追加後にイベントを再設定
+            attachEditDeleteListeners();
         }
 
-        chatBox.insertAdjacentHTML("beforeend", messageHtml);
-        chatBox.scrollTop = chatBox.scrollHeight; // スクロールを最新メッセージに移動
-    }
+        // 編集と削除ボタンのイベントリスナーを設定する関数
+        function attachEditDeleteListeners() {
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    let messageDiv = this.closest('.sent').querySelector('.message-content');
+                    let messageId = this.getAttribute('data-message-id');
+                    let originalContent = messageDiv.innerText;
+
+                    let input = document.createElement('textarea');
+                    input.value = originalContent;
+                    input.classList.add('edit-input');
+                    messageDiv.innerHTML = '';
+                    messageDiv.appendChild(input);
+                    input.focus();
+
+                    input.addEventListener('blur', function () {
+                        let newContent = input.value.trim();
+                        if (newContent === originalContent) {
+                            messageDiv.innerHTML = originalContent;
+                            return;
+                        }
+
+                        fetch(`/message/${messageId}/edit`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            },
+                            body: JSON.stringify({ content: newContent })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    messageDiv.innerHTML = newContent;
+                                } else {
+                                    messageDiv.innerHTML = originalContent;
+                                    alert("編集に失敗しました");
+                                }
+                            })
+                            .catch(() => {
+                                messageDiv.innerHTML = originalContent;
+                                alert("エラーが発生しました");
+                            });
+                    });
+
+                    input.addEventListener('keydown', function (event) {
+                        if (event.key === 'Enter' && !event.shiftKey) {
+                            event.preventDefault();
+                            input.blur();
+                        }
+                    });
+                });
+            });
+
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    let messageId = this.getAttribute('data-message-id');
+
+                    if (confirm('本当に削除しますか？')) {
+                        fetch(`/message/${messageId}/delete`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            }
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    this.closest('.sent').remove();
+                                } else {
+                                    alert("削除に失敗しました");
+                                }
+                            });
+                    }
+                });
+            });
+        }
+
+        // 初期状態で編集と削除ボタンにリスナーを適用
+        attachEditDeleteListeners();
+    })
 });
