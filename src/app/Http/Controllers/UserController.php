@@ -18,6 +18,10 @@ class UserController extends Controller
         $user = auth()->user();
         $tab = $request->query('tab', 'sell');
 
+        // reviewテーブルで評価を計算（reviewee_idが現在のユーザーのものを対象に）
+        $averageRating = $user->reviewsAsReviewee()->avg('rating'); // reviewsAsReviewee はリレーションの名前
+        $averageRating = round($averageRating);
+
         if ($tab == 'buy') {
             $exhibitions = auth()->user()->purchaseItems;
         } elseif ($tab == 'sell') {
@@ -35,7 +39,7 @@ class UserController extends Controller
                 ->get();  // 最新のメッセージ順に並べる
         }
 
-        return view('user.profile', compact('user','exhibitions','tab'));
+        return view('user.profile', compact('user','exhibitions','tab', 'averageRating'));
     }
 
     public function getUnreadMessageCount()

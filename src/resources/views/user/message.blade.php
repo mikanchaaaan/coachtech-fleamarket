@@ -5,37 +5,6 @@
 <link rel="stylesheet" href="{{ asset('css/review.css') }}">
 @endsection
 
-@section('page-move')
-    <div class="header__search--box">
-        <form action="{{ route('item.index') }}" method="get">
-            <input type="text" name="keyword" class="header__search--input" placeholder="なにをお探しですか？" value="{{ request('keyword')}}">
-            <input type="hidden" name="tab" value="{{ session('tab', 'all') }}">
-        </form>
-    </div>
-    <div class="header__button">
-        @auth
-            <!-- ログインしている場合 -->
-            <div class="header__button--logout">
-                <form action="/logout" class="logout-form" method="post">
-                    @csrf
-                    <button class="logout-button">ログアウト</button>
-                </form>
-            </div>
-        @else
-            <!-- ログインしていない場合 -->
-            <div class="header__button--login">
-                <a href="/login" class="login-button">ログイン</a>
-            </div>
-        @endauth
-        <div class="header__button--mypage">
-            <a href="/mypage" class="goto-mypage">マイページ</a>
-        </div>
-        <div class="header__button--sell">
-            <a href="/sell" class="goto-sell">出品</a>
-        </div>
-    </div>
-@endsection
-
 @section('js')
     <script>
     // Laravelの認証情報をJavaScriptに渡す
@@ -63,6 +32,7 @@
             data-is-complete="{{ $transaction->is_active === 0 ? 'true' : 'false' }}"
             data-is-reviewed="{{ $reviewStatus ? 'true' : 'false' }}">
         </div>
+
         <div class="chat-area">
             <div class="chat-header">
                 @if($chat_partner->image)
@@ -71,11 +41,13 @@
                     <div class="image__none"></div>
                 @endif
                 <h2>{{ $chat_partner->name }}さんとの取引画面</h2>
-                @if (Auth::id() == $transaction->receiver_id)
-                        <button type="button" class="btn btn-primary" id="openModalButton">
-                        取引を完了する
+                <div class="button-container">
+                    @if (Auth::id() == $transaction->receiver_id)
+                        <button type="button" class="complete-button" id="openModalButton">
+                            取引を完了する
                         </button>
-                @endif
+                    @endif
+                </div>
             </div>
             <div class="product-info">
                 <div class="image-box">
@@ -176,7 +148,7 @@
                             <span class="star" data-value="4">&#9733;</span>
                             <span class="star" data-value="5">&#9733;</span>
                         </div>
-                        <input type="hidden" id="rating" name="rating" value="" required />
+                        <input type="hidden" id="rating" name="rating" value="0" required />
                     </div>
                     <div class="send-box">
                         <button type="submit" class="submit-btn btn-primary">送信する</button>

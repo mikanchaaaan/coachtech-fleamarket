@@ -1,5 +1,5 @@
 .profile__top {
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     margin: 30px 70px;
@@ -16,6 +16,31 @@
     height: 150px;
     border-radius: 50%;
     background-color: #d9d9d9;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    /* 横並びを縦並びに変更 */
+}
+
+/* 評価部分のスタイル */
+.profile-rating {
+    display: flex;
+    gap: 5px;
+    margin-left: 40px;
+    /* 星同士の間隔 */
+}
+
+.star {
+    font-size: 40px;
+    color: #d3d3d3;
+    /* 空の星の色 */
+}
+
+.star.filled {
+    color: #ffcc00;
+    /* 塗りつぶし済みの星の色 */
 }
 
 .profile-name {
@@ -201,5 +226,14 @@
         font-size: 18px;
         margin: 5px 15px;
         text-align: center;
+    }
+
+    .profile-rating {
+        margin-left: 0;
+    }
+
+    .unread-count {
+        top: 15px;
+        left: 25px;
     }
 }

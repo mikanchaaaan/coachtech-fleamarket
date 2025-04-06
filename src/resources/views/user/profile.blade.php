@@ -42,7 +42,21 @@
     @else
         <div class="image__none"></div>
     @endif
-    <h2 class="profile-name">{{ $user->name }}</h2>
+    <div class="profile-info">
+        <h2 class="profile-name">{{ $user->name }}</h2>
+
+        <!-- 平均評価表示 -->
+        <div class="profile-rating">
+            @for ($i = 1; $i <= 5; $i++)
+                @if ($i <= $averageRating)
+                    <span class="star filled">&#9733;</span> <!-- 塗りつぶし済みの星 -->
+                @else
+                    <span class="star">&#9733;</span> <!-- 空の星 -->
+                @endif
+            @endfor
+        </div>
+    </div>
+
     <a href="/mypage/profile" class="goto-profileedit">プロフィールを編集</a>
 </div>
 

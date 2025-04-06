@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Models\Message;
 use App\Models\Review;
 use App\Http\Requests\MessageRequest;
+use App\Mail\TransactionCompletedMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 
 class MessageController extends Controller
@@ -175,6 +177,10 @@ class MessageController extends Controller
         // 取引のis_activeを更新 (取引完了後、アクティブでない状態に変更)
         $transaction->is_active = 0; // 取引を非アクティブ化
         $transaction->save();
+
+        // 出品者にメールを送信
+        $seller = $transaction->seller;
+        Mail::to($seller->email)->send(new TransactionCompletedMail($exhibition));
 
         // 保存後、リダイレクト（商品一覧ページに戻す）
         return redirect('/');

@@ -51,4 +51,13 @@ document.addEventListener('DOMContentLoaded', function () {
             ratingInput.value = value;
         });
     });
+
+    // 評価を1つも選択していない場合、評価を0に設定する
+    const form = document.getElementById('ratingForm'); // フォームのID（適宜変更してください）
+
+    form.addEventListener('submit', function () {
+        if (!ratingInput.value) {
+            ratingInput.value = 0; // 星が選ばれていない場合、評価0を設定
+        }
+    });
 });
