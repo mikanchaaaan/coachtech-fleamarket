@@ -25,4 +25,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(Exhibition::class, 'exhibition_id');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

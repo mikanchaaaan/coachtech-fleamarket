@@ -1,0 +1,78 @@
+#ratingModal {
+    display: none;
+    /* 初期状態では非表示 */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 400px;
+    transform: translate(-50%, -50%);
+    background: white;
+    z-index: 1050;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    background-color: #fdfce6;
+}
+
+.modal-header {
+    border-bottom: 1px solid #000000;
+}
+
+.modal-title {
+    font-size: 40px;
+    font-weight: 400;
+    color: #000000;
+    margin: 20px;
+}
+
+.rating-box {
+    border-bottom: 1px solid #000000;
+}
+
+.form-label {
+    display: block;
+    font-size: 20px;
+    color: #868686;
+    margin: 20px;
+}
+
+.rating-container {
+    display: flex;
+    justify-content: center;
+}
+
+.star {
+    font-size: 100px;
+    cursor: pointer;
+    color: #ddd;
+    /* 初期状態で灰色 */
+    transition: color 0.3s;
+}
+
+.star:hover {
+    color: #fff048;
+    /* ホバー時の色 */
+}
+
+.star.selected {
+    color: #fff048;
+    /* 選択された星の色 */
+}
+
+.send-box {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px;
+}
+
+.submit-btn {
+    width: 130px;
+    height: 50px;
+    background-color: #ff8282;
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 400;
+    cursor: pointer;
+}

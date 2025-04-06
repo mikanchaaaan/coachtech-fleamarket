@@ -9,11 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const senderId = messageElement.dataset.senderId;  // 送信者のIDを取得
         const currentUserId = document.querySelector('meta[name="current-user-id"]').content;  // 現在のユーザーID
 
-        console.log(id);
-        console.log(isRead);
-        console.log(senderId);
-        console.log(currentUserId);
-
         // 自分以外から送られてきた未読メッセージの場合のみ既読にする
         if (isRead == 0 && senderId !== currentUserId) {  // 自分以外からの未読メッセージの場合
             fetch(`/message/${id}/mark-as-read`, {

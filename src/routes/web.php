@@ -84,6 +84,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // メッセージ削除
     Route::post('/message/{id}/delete', [MessageController::class, 'destroyMessage']);
+
+    // 取引相手の評価
+    Route::post('/transaction/rate/{exhibition_id}' , [MessageController::class, 'transactionReview']);
 });
 
 // メール認証後のリダイレクト先指定

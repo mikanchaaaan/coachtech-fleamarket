@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sender_id')->constrained('users'); // 出品者
-            $table->foreignId('receiver_id')->constrained('users'); // 購入者
-            $table->foreignId('exhibition_id')->constrained('exhibitions'); // 商品ID
+            $table->foreignId('sender_id')->constrained('users')->cascadeOnDelete(); // 出品者
+            $table->foreignId('receiver_id')->constrained('users')->cascadeOnDelete(); // 購入者
+            $table->foreignId('exhibition_id')->constrained('exhibitions')->cascadeOnDelete(); // 商品ID
             $table->text('content'); // メッセージ内容
             $table->boolean('is_read')->default(false); // 既読/未読フラグ
             $table->string('image')->nullable(); // メッセージ内の画像

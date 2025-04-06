@@ -7,6 +7,7 @@ use App\Models\Exhibition;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Message;
+use App\Models\Review;
 use App\Http\Requests\MessageRequest;
 use Illuminate\Support\Facades\Log;
 
@@ -25,6 +26,9 @@ class MessageController extends Controller
 
         // transactions テーブルから exhibition_id に紐づく取引を取得
         $transaction = Transaction::where('exhibition_id', $item_id)->firstOrFail();
+
+        // レビューのステータスを取得
+        $reviewStatus = $transaction ? $transaction->reviews()->where('reviewer_id', auth()->id())->exists() : false;
 
         // 自分が出品者なら receiver_id、購入者なら seller_id を渡す
         $chat_partner_id = ($user->id === $transaction->seller_id)
@@ -48,7 +52,7 @@ class MessageController extends Controller
             ->orderBy('created_at')
             ->get();
 
-        return view('user.message', compact('ongoingExhibitions', 'exhibition', 'user', 'transaction', 'chat_partner', 'messages'));
+        return view('user.message', compact('ongoingExhibitions', 'exhibition', 'user', 'transaction', 'reviewStatus', 'chat_partner', 'messages'));
     }
 
     // 未読メッセージを既読に変更
@@ -137,5 +141,42 @@ class MessageController extends Controller
 
         $message->delete();
         return response()->json(['success' => true]);
+    }
+
+    // 取引評価の登録
+    public function transactionReview(Request $request, $exhibition_id)
+    {
+        // exhibition_idで取引対象となる商品情報を取得
+        $exhibition = Exhibition::findOrFail($exhibition_id);
+
+        // 取引情報を取得 (出品者または購入者かを判定)
+        $transaction = $exhibition->transactions()->where('exhibition_id', $exhibition_id)->first();
+
+        // 評価者と非評価者のIDを判別
+        if ($transaction->receiver_id == auth()->id()) {
+            // 購入者が評価を行う
+            $reviewer_id = auth()->id();  // 評価者（購入者）
+            $reviewee_id = $transaction->seller_id;    // 非評価者（出品者）
+        } else {
+            // 出品者が評価を行う
+            $reviewer_id = auth()->id();    // 評価者（出品者）
+            $reviewee_id = $transaction->receiver_id;  // 非評価者（購入者）
+        }
+
+        // 評価の保存
+        $review = new Review();
+        $review->exhibition_id = $exhibition->id;
+        $review->reviewer_id = $reviewer_id;  // 評価者
+        $review->reviewee_id = $reviewee_id;  // 非評価者
+        $review->transaction_id = $transaction->id;
+        $review->rating = $request->input('rating');  // 星の評価
+        $review->save();
+
+        // 取引のis_activeを更新 (取引完了後、アクティブでない状態に変更)
+        $transaction->is_active = 0; // 取引を非アクティブ化
+        $transaction->save();
+
+        // 保存後、リダイレクト（商品一覧ページに戻す）
+        return redirect('/');
     }
 }

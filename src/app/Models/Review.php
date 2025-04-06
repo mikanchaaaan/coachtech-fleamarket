@@ -9,20 +9,25 @@ class Review extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['seller_id', 'receiver_id', 'exhibition_id', 'rating'];
+    protected $fillable = ['seller_id', 'receiver_id', 'exhibition_id', 'transaction_id', 'rating'];
 
-    public function seller()
-    {
-        return $this->belongsTo(User::class, 'seller_id');
-    }
-
-    public function receiver()
+    public function reviewer()
     {
         return $this->belongsTo(User::class, 'reviewer_id');
+    }
+
+    public function reviewee()
+    {
+        return $this->belongsTo(User::class, 'reviewee_id');
     }
 
     public function exhibition()
     {
         return $this->belongsTo(Exhibition::class);
+    }
+
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class);
     }
 }

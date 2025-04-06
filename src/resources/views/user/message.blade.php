@@ -2,6 +2,7 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/message.css') }}">
+<link rel="stylesheet" href="{{ asset('css/review.css') }}">
 @endsection
 
 @section('page-move')
@@ -41,20 +42,27 @@
     const authUserId = @json(auth()->id());  // 現在のユーザーIDをJavaScriptに渡す
     </script>
     <script src="{{ asset('js/message.js') }}"></script>
+    <script src="{{ asset('js/review.js') }}"></script>
 @endsection
 
 @section('content')
     <div class="container">
         <aside class="sidebar">
             <h2>その他の取引</h2>
-            @foreach ($ongoingExhibitions as $transaction)
+            @foreach ($ongoingExhibitions as $ongoing)
                 <div class="chatItem-choice">
-                    <a href="{{ url('/message/' . $transaction->exhibition_id) }}">
-                        {{ $transaction->exhibition->name }}
+                    <a href="{{ url('/message/' . $ongoing->exhibition_id) }}">
+                        {{ $ongoing->exhibition->name }}
                     </a>
                 </div>
             @endforeach
         </aside>
+
+        <div id="transactionData"
+            data-is-seller="{{ Auth::id() === $transaction->seller_id ? 'true' : 'false' }}"
+            data-is-complete="{{ $transaction->is_active === 0 ? 'true' : 'false' }}"
+            data-is-reviewed="{{ $reviewStatus ? 'true' : 'false' }}">
+        </div>
         <div class="chat-area">
             <div class="chat-header">
                 @if($chat_partner->image)
@@ -63,6 +71,11 @@
                     <div class="image__none"></div>
                 @endif
                 <h2>{{ $chat_partner->name }}さんとの取引画面</h2>
+                @if (Auth::id() == $transaction->receiver_id)
+                        <button type="button" class="btn btn-primary" id="openModalButton">
+                        取引を完了する
+                        </button>
+                @endif
             </div>
             <div class="product-info">
                 <div class="image-box">
@@ -142,6 +155,34 @@
                 </button>
                 </div>
             </footer>
+        </div>
+    </div>
+
+    <!-- モーダル -->
+    <div id="ratingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title">取引が完了しました。</p>
+            </div>
+            <div class="modal-body">
+                <form action="/transaction/rate/{{ $exhibition->id }}" method="POST" id="ratingForm">
+                    @csrf
+                    <div class="rating-box">
+                        <label for="rating" class="form-label">今回の取引相手はどうでしたか？</label>
+                        <div class="rating-container">
+                            <span class="star" data-value="1">&#9733;</span>
+                            <span class="star" data-value="2">&#9733;</span>
+                            <span class="star" data-value="3">&#9733;</span>
+                            <span class="star" data-value="4">&#9733;</span>
+                            <span class="star" data-value="5">&#9733;</span>
+                        </div>
+                        <input type="hidden" id="rating" name="rating" value="" required />
+                    </div>
+                    <div class="send-box">
+                        <button type="submit" class="submit-btn btn-primary">送信する</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 @endsection

@@ -30,5 +30,4 @@
         @yield('content')
         @yield('js')
     </main>
-</body>
 </html>
