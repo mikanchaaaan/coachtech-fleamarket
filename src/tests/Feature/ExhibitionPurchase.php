@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Address;
 use App\Models\Exhibition;
 use App\Models\Purchase;
+use App\Models\Sale;
 use Database\Seeders\ExhibitionsTableSeeder;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
@@ -41,6 +42,11 @@ class ExhibitionPurchase extends TestCase
             'postcode' => '123-4567',
             'address' => '123 Main Street',
             'building' => 'building'
+        ]);
+
+        Sale::create([
+            'exhibition_id' => $exhibition->id,
+            'user_id' => $user->id,
         ]);
 
         $this->actingAs($user);
@@ -194,8 +200,8 @@ class ExhibitionPurchase extends TestCase
         $response->assertStatus(200);
 
         $purchasedExhibition = Purchase::where('user_id', $purchaseData['user_id'])
-        ->where('exhibition_id', $purchaseData['exhibition_id'])
-        ->first();
+            ->where('exhibition_id', $purchaseData['exhibition_id'])
+            ->first();
         $response->assertSeeText($purchasedExhibition->exhibition->name);
 
         $notPurchasedExhibition = Exhibition::whereDoesntHave('purchases')->first();

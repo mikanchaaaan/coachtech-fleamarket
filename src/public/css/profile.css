@@ -170,7 +170,7 @@
     }
 }
 
-@media (min-width: 768px) and (max-width: 850px) {
+@media (min-width: 768px) and (max-width: 1310px) {
     .profile__top {
         flex-direction: column;
         margin: 20px 30px;

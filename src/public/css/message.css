@@ -197,7 +197,7 @@
     padding: 10px;
     border-radius: 5px;
     width: 460px;
-    height: 60px;
+    height: auto;
     font-size: 20px;
     font-weight: 700;
 }
@@ -272,7 +272,6 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-left: 10px;
-    /* 「画像を追加」との間隔 */
 }
 
 .send {
@@ -291,7 +290,6 @@
 @media screen and (min-width: 1400px) and (max-width: 1540px) {
     .sidebar {
         width: 22%;
-        /* 少し広めにして余裕を持たせる */
     }
 
     .chatItem-choice {
@@ -304,7 +302,7 @@
 }
 
 
-@media screen and (min-width: 768px) and (max-width: 850px) {
+@media screen and (max-width: 1310px) {
     .sidebar {
         flex: 0 0 20%;
         padding: 10px;

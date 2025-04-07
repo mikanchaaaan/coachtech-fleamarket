@@ -44,6 +44,11 @@ class Exhibition extends Model
         return $this->hasMany(Message::class, 'exhibition_id');
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'exhibition_id');
+    }
+
     protected $fillable = [
         'name',
         'image',

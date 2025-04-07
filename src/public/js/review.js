@@ -1,29 +1,22 @@
+// モーダル管理用
 document.addEventListener('DOMContentLoaded', function () {
-    // モーダルを開くボタン
     const openModalButton = document.getElementById('openModalButton');
-    // モーダル本体
     const modal = document.getElementById('ratingModal');
-
-    // PHPからJavaScriptにデータを渡す
-    // HTML要素のdata属性から値を取得
     const transactionData = document.getElementById('transactionData');
     const isSeller = transactionData.dataset.isSeller === 'true';
     const isTransactionComplete = transactionData.dataset.isComplete === 'true';
     const isReviewed = transactionData.dataset.isReviewed === 'true';
 
-    // 出品者が評価していない場合、モーダルを自動表示
     if (isSeller && isTransactionComplete && !isReviewed) {
-        modal.style.display = 'block';  // モーダルを表示
+        modal.style.display = 'block';
     }
 
-    // 購入者はボタンがクリックされたらモーダルを表示
     if (openModalButton) {
         openModalButton.addEventListener('click', function () {
-            modal.style.display = 'block';  // モーダルを表示
+            modal.style.display = 'block';
         });
     }
 
-    // モーダル外がクリックされたらモーダルを非表示
     window.addEventListener('click', function(event) {
         if (event.target === modal) {
             modal.style.display = 'none';
@@ -37,8 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
     stars.forEach(star => {
         star.addEventListener('click', function () {
             const value = this.getAttribute('data-value');
-
-            // 星を選択する
             stars.forEach(star => {
                 if (star.getAttribute('data-value') <= value) {
                     star.classList.add('selected');
@@ -46,18 +37,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     star.classList.remove('selected');
                 }
             });
-
-            // 隠し入力フィールドに選択された評価をセット
             ratingInput.value = value;
         });
     });
 
-    // 評価を1つも選択していない場合、評価を0に設定する
-    const form = document.getElementById('ratingForm'); // フォームのID（適宜変更してください）
-
+    const form = document.getElementById('ratingForm');
     form.addEventListener('submit', function () {
         if (!ratingInput.value) {
-            ratingInput.value = 0; // 星が選ばれていない場合、評価0を設定
+            ratingInput.value = 0;
         }
     });
 });

@@ -5,15 +5,6 @@
 <link rel="stylesheet" href="{{ asset('css/review.css') }}">
 @endsection
 
-@section('js')
-    <script>
-    // Laravelの認証情報をJavaScriptに渡す
-    const authUserId = @json(auth()->id());  // 現在のユーザーIDをJavaScriptに渡す
-    </script>
-    <script src="{{ asset('js/message.js') }}"></script>
-    <script src="{{ asset('js/review.js') }}"></script>
-@endsection
-
 @section('content')
     <div class="container">
         <aside class="sidebar">
@@ -114,17 +105,13 @@
             <footer class="chat">
                 <div class="form__error"></div>
                 <div class="chat-input">
-                <input type="text" name="content" placeholder="取引メッセージを記入してください" value="{{ old('content') }}">
-
-                <label class="add-img" for="image" style="cursor: pointer; display: inline-block; margin-right: 10px;">画像を追加</label>
-                <input type="file" name="image" id="image" style="display: none;" />
-
-                <!-- 画像プレビューを表示するエリア -->
-                <div id="image-preview-container"></div>
-
-                <button type="submit" class="send">
-                    <img src="{{ asset('img/send.jpg') }}" alt="送信">
-                </button>
+                    <input type="text" name="content" placeholder="取引メッセージを記入してください" value="{{ old('content') }}">
+                    <label class="add-img" for="image" style="cursor: pointer; display: inline-block; margin-right: 10px;">画像を追加</label>
+                    <input type="file" name="image" id="image" style="display: none;" />
+                    <div id="image-preview-container"></div>
+                    <button type="submit" class="send">
+                        <img src="{{ asset('img/send.jpg') }}" alt="送信">
+                    </button>
                 </div>
             </footer>
         </div>
@@ -157,4 +144,13 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('js')
+    <script>
+    // Laravelの認証情報をJavaScriptに渡す
+    const authUserId = @json(auth()->id());  // 現在のユーザーIDをJavaScriptに渡す
+    </script>
+    <script src="{{ asset('js/message.js') }}"></script>
+    <script src="{{ asset('js/review.js') }}"></script>
 @endsection

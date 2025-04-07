@@ -1,30 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
-
-    // ページアクセス時に未読メッセージを既読に変更
-    const messageIds = document.querySelectorAll('.msg'); // メッセージの要素を取得
+     // ページアクセス時に未読メッセージを既読に変更
+    const messageIds = document.querySelectorAll('.msg');
 
     messageIds.forEach(messageElement => {
-        const id = messageElement.dataset.messageId; // メッセージIDを取得
-        const isRead = messageElement.dataset.isRead;  // 未読/既読の判定
-        const senderId = messageElement.dataset.senderId;  // 送信者のIDを取得
-        const currentUserId = document.querySelector('meta[name="current-user-id"]').content;  // 現在のユーザーID
+        const id = messageElement.dataset.messageId;
+        const isRead = messageElement.dataset.isRead;
+        const senderId = messageElement.dataset.senderId;
+        const currentUserId = document.querySelector('meta[name="current-user-id"]').content;
 
-        // 自分以外から送られてきた未読メッセージの場合のみ既読にする
-        if (isRead == 0 && senderId !== currentUserId) {  // 自分以外からの未読メッセージの場合
+        if (isRead == 0 && senderId !== currentUserId) {
             fetch(`/message/${id}/mark-as-read`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content // CSRFトークン
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                 },
                 body: JSON.stringify({ id })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // 既読にしたら、data-is-read属性を1に更新
-                    messageElement.dataset.isRead = 1;  // data-is-readを1に変更
-                    messageElement.classList.add('read'); // 既読状態をCSSクラスで管理する場合
+                    messageElement.dataset.isRead = 1;
+                    messageElement.classList.add('read');
                 }
             })
             .catch(error => console.error('Error:', error));
@@ -69,14 +66,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // メッセージ入力内容をlocalStorageに保存
     const messageInput = document.querySelector(".chat-input input");
 
-    // 入力内容の保存
     if (messageInput) {
         messageInput.addEventListener("input", function () {
             const content = messageInput.value;
             localStorage.setItem("messageContent", content);
         });
 
-        // ページ読み込み時に保存されているメッセージを表示
         const savedMessage = localStorage.getItem("messageContent");
         if (savedMessage) {
             messageInput.value = savedMessage;
@@ -85,17 +80,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 送信ボタンの処理
     document.querySelector(".send").addEventListener("click", function () {
-        console.log("送信ボタンがクリックされました！");
-
         let messageContent = document.querySelector(".chat-input input").value;
         let receiverId = document.querySelector(".messages").dataset.receiver;
         let itemId = document.querySelector(".messages").dataset.itemId;
         let imageFile = document.getElementById("image").files[0];
-
         let formData = new FormData();
+
         formData.append("content", messageContent);
         formData.append("receiver_id", receiverId);
         formData.append("item_id", itemId);
+
         if (imageFile) {
             formData.append("image", imageFile);
         }
@@ -111,24 +105,15 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await response.json();
 
                 if (response.ok && data.success) {
-                    // 成功時の処理
                     document.querySelector(".chat-input input").value = "";
                     document.getElementById("image").value = "";
                     document.getElementById("image-preview-container").innerHTML = "";
                     addMessageToChat(data.message);
-
-                    // エラー表示エリアもリセットしておく
                     document.querySelector(".form__error").innerHTML = "";
-
-                    // 送信後にローカルストレージをクリア
                     localStorage.removeItem("messageContent");
-
                 } else if (response.status === 422) {
-                    // バリデーションエラー処理
                     const errorBox = document.querySelector(".form__error");
                     errorBox.innerHTML = "";
-
-                    // Laravelからのerrorsオブジェクトをループで表示
                     Object.values(data.errors).forEach(messages => {
                         messages.forEach(msg => {
                             const p = document.createElement("p");
@@ -181,8 +166,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             chatBox.insertAdjacentHTML("beforeend", messageHtml);
             chatBox.scrollTop = chatBox.scrollHeight;
-
-            // 追加後にイベントを再設定
             attachEditDeleteListeners();
         }
 
@@ -193,7 +176,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     let messageDiv = this.closest('.sent').querySelector('.message-content');
                     let messageId = this.getAttribute('data-message-id');
                     let originalContent = messageDiv.innerText;
-
                     let input = document.createElement('textarea');
                     input.value = originalContent;
                     input.classList.add('edit-input');
@@ -264,8 +246,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             });
         }
-
-        // 初期状態で編集と削除ボタンにリスナーを適用
         attachEditDeleteListeners();
     })
 });

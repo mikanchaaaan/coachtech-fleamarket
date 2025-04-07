@@ -18,8 +18,7 @@ class UserController extends Controller
         $user = auth()->user();
         $tab = $request->query('tab', 'sell');
 
-        // reviewテーブルで評価を計算（reviewee_idが現在のユーザーのものを対象に）
-        $averageRating = $user->reviewsAsReviewee()->avg('rating'); // reviewsAsReviewee はリレーションの名前
+        $averageRating = $user->reviewsAsReviewee()->avg('rating');
         $averageRating = round($averageRating);
 
         if ($tab == 'buy') {
@@ -27,7 +26,6 @@ class UserController extends Controller
         } elseif ($tab == 'sell') {
             $exhibitions = auth()->user()->sellItems;
         } else {
-            // transactionItems はリレーションインスタンスなので、そのまま呼び出す
             $exhibitions = auth()->user()->transactionItems()
                 ->orderByDesc(function ($query) {
                     $query->select('created_at')
@@ -36,23 +34,22 @@ class UserController extends Controller
                         ->latest()
                         ->limit(1);
                 })
-                ->get();  // 最新のメッセージ順に並べる
+                ->get();
         }
 
         return view('user.profile', compact('user','exhibitions','tab', 'averageRating'));
     }
 
+    // 未読メッセージの確認
     public function getUnreadMessageCount()
     {
         $user = auth()->user();
 
-        // 全体の未読メッセージ数を取得
         $totalUnreadCount = Message::where('receiver_id', $user->id)
             ->where('sender_id', '!=', $user->id)
             ->where('is_read', 0)
             ->count();
 
-        // 各商品の未読メッセージ数を取得
         $exhibitions = auth()->user()->transactionItems->loadCount([
             'messages as unread_messages_count' => function ($query) use ($user) {
                 $query->where('receiver_id', $user->id)

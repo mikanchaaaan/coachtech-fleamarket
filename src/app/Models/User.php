@@ -82,7 +82,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Exhibition::class, 'likes', 'user_id', 'exhibition_id');
     }
 
-    // 追加要件用に追記
     public function reviews()
     {
         return $this->hasMany(Review::class, 'seller_id');

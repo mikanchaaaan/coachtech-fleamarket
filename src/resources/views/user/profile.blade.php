@@ -36,60 +36,55 @@
 @endsection
 
 @section('content')
-<div class="profile__top">
-    @if(auth()->user()->image)
-        <img src="{{ asset('storage/' . auth()->user()->image) }}" alt="プロフィール画像" class="profile-img">
-    @else
-        <div class="image__none"></div>
-    @endif
-    <div class="profile-info">
-        <h2 class="profile-name">{{ $user->name }}</h2>
-
-        <!-- 平均評価表示 -->
-        <div class="profile-rating">
-            @for ($i = 1; $i <= 5; $i++)
-                @if ($i <= $averageRating)
-                    <span class="star filled">&#9733;</span> <!-- 塗りつぶし済みの星 -->
-                @else
-                    <span class="star">&#9733;</span> <!-- 空の星 -->
-                @endif
-            @endfor
-        </div>
-    </div>
-
-    <a href="/mypage/profile" class="goto-profileedit">プロフィールを編集</a>
-</div>
-
-<div class="profile__tab">
-    <a href="/mypage?tab=sell" class="purchase-exhibition {{ $tab == 'sell' ? 'active' : '' }}">出品した商品</a>
-    <a href="/mypage?tab=buy" class="sell-exhibition {{ $tab == 'buy' ? 'active' : '' }}">購入した商品</a>
-    <a href="/mypage?tab=transaction" class="transaction-exhibition {{ $tab == 'transaction' ? 'active' : '' }}">
-        取引中の商品
-        <span class="unread-count-total">0</span>
-    </a>
-</div>
-
-<div class="profile__content">
-    @foreach($exhibitions as $exhibition)
-    <div class="profile-exhibition" data-exhibition-id="{{ $exhibition->id }}">
-        <a href="{{ $tab == 'transaction' ? '/message/' . $exhibition->id : '/item/' . $exhibition->id }}" class="exhibition-link">
-        @if (filter_var($exhibition->image, FILTER_VALIDATE_URL))
-            <img src="{{ $exhibition->image }}"  alt="{{ $exhibition->name }}" class="profile__exhibition-img"/>
-        @elseif($exhibition->image)
-            <img src="{{ asset('storage/' . $exhibition->image) }}" alt="{{ $exhibition->name }}" class="profile__exhibition-img"/>
+    <div class="profile__top">
+        @if(auth()->user()->image)
+            <img src="{{ asset('storage/' . auth()->user()->image) }}" alt="プロフィール画像" class="profile-img">
+        @else
+            <div class="image__none"></div>
         @endif
-        </a>
-        <p class="profile__exhibition-name">{{$exhibition->name}}</p>
-
-        <!-- ここでtransactionタブの場合のみ未読メッセージ数を表示 -->
-        @if($tab == 'transaction')
-            <div class="unread-count">
-                {{ $exhibition->unread_messages_count > 0 ? $exhibition->unread_messages_count : '' }}
+        <div class="profile-info">
+            <h2 class="profile-name">{{ $user->name }}</h2>
+            <div class="profile-rating">
+                @for ($i = 1; $i <= 5; $i++)
+                    @if ($i <= $averageRating)
+                        <span class="star filled">&#9733;</span>
+                    @else
+                        <span class="star">&#9733;</span>
+                    @endif
+                @endfor
             </div>
-        @endif
+        </div>
+        <a href="/mypage/profile" class="goto-profileedit">プロフィールを編集</a>
     </div>
-    @endforeach
-</div>
+
+    <div class="profile__tab">
+        <a href="/mypage?tab=sell" class="purchase-exhibition {{ $tab == 'sell' ? 'active' : '' }}">出品した商品</a>
+        <a href="/mypage?tab=buy" class="sell-exhibition {{ $tab == 'buy' ? 'active' : '' }}">購入した商品</a>
+        <a href="/mypage?tab=transaction" class="transaction-exhibition {{ $tab == 'transaction' ? 'active' : '' }}">
+            取引中の商品
+            <span class="unread-count-total">0</span>
+        </a>
+    </div>
+
+    <div class="profile__content">
+        @foreach($exhibitions as $exhibition)
+            <div class="profile-exhibition" data-exhibition-id="{{ $exhibition->id }}">
+                <a href="{{ $tab == 'transaction' ? '/message/' . $exhibition->id : '/item/' . $exhibition->id }}" class="exhibition-link">
+                    @if (filter_var($exhibition->image, FILTER_VALIDATE_URL))
+                        <img src="{{ $exhibition->image }}"  alt="{{ $exhibition->name }}" class="profile__exhibition-img"/>
+                    @elseif($exhibition->image)
+                        <img src="{{ asset('storage/' . $exhibition->image) }}" alt="{{ $exhibition->name }}" class="profile__exhibition-img"/>
+                    @endif
+                </a>
+                <p class="profile__exhibition-name">{{$exhibition->name}}</p>
+                @if($tab == 'transaction')
+                    <div class="unread-count">
+                        {{ $exhibition->unread_messages_count > 0 ? $exhibition->unread_messages_count : '' }}
+                    </div>
+                @endif
+            </div>
+        @endforeach
+    </div>
 @endsection
 
 @section('js')

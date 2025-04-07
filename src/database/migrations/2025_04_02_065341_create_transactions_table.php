@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('seller_id')->constrained('users')->cascadeOnDelete(); // 出品者
-            $table->foreignId('receiver_id')->constrained('users')->cascadeOnDelete(); // 購入者
-            $table->foreignId('exhibition_id')->constrained('exhibitions')->cascadeOnDelete(); // 商品ID
-            $table->boolean('is_active')->default(true); // 取引中フラグ
+            $table->foreignId('seller_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('receiver_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('exhibition_id')->constrained('exhibitions')->cascadeOnDelete();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

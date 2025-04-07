@@ -17,6 +17,9 @@
 8. ```php artisan storage:link```
 
 ### 環境変数（.env）
+Stripe接続用のAPIキーについては、事前に以下URLから作成してください<br>
+https://dashboard.stripe.com/register
+
 | 変数名              | 値                                         | 備考                                    |
 | ------------------- | ------------------------------------------ | --------------------------------------- |
 | DB_HOST             | mysql                                      | 接続するデータベース                    |
@@ -40,6 +43,22 @@
 * 開発環境：```http://localhost/```
 * phpMyAdmin：```http://localhost:8080/```
 * Mailhog：```http://localhost:8025/```
+
+### テスト用ユーザ
+メール認証済みの状態で作成しています。<br>
+追加機能の取引チャット機能をテストする場合は、商品購入を先に実施してください。
+* test1(CO01~CO05を出品したユーザ)
+    * ユーザー名：test1
+    * メールアドレス：test1@example.com
+    * パスワード：coachtech1106
+* test2(CO06~CO10を出品したユーザ)
+    * ユーザー名：test2
+    * メールアドレス：test2@example.com
+    * パスワード：coachtech1106
+* test3(何も紐づけていないユーザ)
+    * ユーザー名：test3
+    * メールアドレス：test3@example.com
+    * パスワード：coachtech1106
 
 ## テスト
 #### テスト用DB構築
@@ -96,7 +115,11 @@
 2. ```php artisan dusk --filter PaymentMethodTest --env=dusk.testing```
 
 #### トラブルシューティング
-テスト実行時にエラーが出力された場合は、手動確認を実施してください。
+テスト実行時にエラーが出力された場合は、手動確認を実施してください。<br>
+Chromeブラウザのバージョンに関するエラーが出力された場合は、リポジトリをアップデートすることで実行できるようになる場合があります。<br>
+    ```apt-get clean```<br>
+    ```apt-get update```<br>
+    ```apt-get upgrade google-chrome-stable```<br>
 
 ### テスト用環境変数（.env.testing および .env.dusk.testing）
 | 変数名              | 値                                              | 備考                                                                |
@@ -112,3 +135,5 @@
 | STRIPE_PUBLIC_KEY   | StripeのAPIキー（Public）                       | Stripe接続用のAPIキー（Public） ※.env.dusk.testingには不要         |
 | STRIPE_SECRET_KEY   | StripeのAPIキー（Secret）                       | Stripe接続用のAPIキー（Secret） ※.env.dusk.testingには不要         |
 
+## 更新履歴
+* 2025.4.8 商品購入後の取引チャット機能を追加

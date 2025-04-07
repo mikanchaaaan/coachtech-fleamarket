@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('reviewer_id')->constrained('users')->cascadeOnDelete(); // 評価者
-            $table->foreignId('reviewee_id')->constrained('users')->cascadeOnDelete(); // 被評価者
-            $table->foreignId('exhibition_id')->constrained('exhibitions')->cascadeOnDelete(); // 取引対象の商品
-            $table->foreignId('transaction_id')->constrained('transactions')->cascadeOnDelete(); // 外部キー制約
-            $table->tinyInteger('rating');
+            $table->foreignId('reviewer_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('reviewee_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('exhibition_id')->constrained('exhibitions')->cascadeOnDelete();
+            $table->foreignId('transaction_id')->constrained('transactions')->cascadeOnDelete();
+            $table->integer('rating');
             $table->timestamps();
         });
     }

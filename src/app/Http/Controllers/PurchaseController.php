@@ -106,7 +106,6 @@ class PurchaseController extends Controller
             'address_id' => $address->id,
         ]);
 
-        // 追加要件のため追記（Transactionテーブルに購入商品に関するやり取りを追加）
         $seller = Sale::where('exhibition_id', $exhibition->id)->first();
 
         Transaction::create([
