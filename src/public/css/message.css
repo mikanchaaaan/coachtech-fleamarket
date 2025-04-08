@@ -9,6 +9,10 @@
     padding: 20px;
 }
 
+.sidebar a {
+    text-decoration: none;
+}
+
 .sidebar h2 {
     font-size: 30px;
     margin-bottom: 10px;
@@ -24,9 +28,6 @@
     text-align: center;
     margin: 30px auto;
     cursor: pointer;
-}
-
-.chatItem-choice a {
     font-size: 24px;
     color: #000000;
     text-decoration: none;
@@ -120,6 +121,7 @@
     font-size: 20px;
     font-weight: 700;
     border: none;
+    cursor: pointer;
 }
 
 .details {
@@ -200,6 +202,12 @@
     height: auto;
     font-size: 20px;
     font-weight: 700;
+}
+
+.edit-input {
+    width: 420px;
+    font-size: 20px;
+    height: auto;
 }
 
 .message-image {
@@ -316,10 +324,9 @@
         width: 90%;
         height: 36px;
         margin: 20px auto;
-    }
-
-    .chatItem-choice a {
         font-size: 14px;
+        text-align: center;
+        line-height: 2.5;
     }
 
     .chat-area {

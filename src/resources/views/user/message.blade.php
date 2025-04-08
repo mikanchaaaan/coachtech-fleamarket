@@ -10,11 +10,11 @@
         <aside class="sidebar">
             <h2>その他の取引</h2>
             @foreach ($ongoingExhibitions as $ongoing)
-                <div class="chatItem-choice">
-                    <a href="{{ url('/message/' . $ongoing->exhibition_id) }}">
+                <a href="{{ url('/message/' . $ongoing->exhibition_id) }}">
+                    <div class="chatItem-choice">
                         {{ $ongoing->exhibition->name }}
-                    </a>
-                </div>
+                    </div>
+                </a>
             @endforeach
         </aside>
 

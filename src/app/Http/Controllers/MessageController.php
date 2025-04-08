@@ -131,7 +131,9 @@ class MessageController extends Controller
         $exhibition = Exhibition::findOrFail($exhibition_id);
         $transaction = $exhibition->transactions()->where('exhibition_id', $exhibition_id)->first();
 
-        if ($transaction->receiver_id == auth()->id()) {
+        $isBuyerReviewing = $transaction->receiver_id == auth()->id();
+
+        if ($isBuyerReviewing) {
             $reviewer_id = auth()->id();
             $reviewee_id = $transaction->seller_id;
         } else {
@@ -150,8 +152,10 @@ class MessageController extends Controller
         $transaction->is_active = 0;
         $transaction->save();
 
-        $seller = $transaction->seller;
-        Mail::to($seller->email)->send(new TransactionCompletedMail($exhibition));
+        if ($isBuyerReviewing) {
+            $seller = $transaction->seller;
+            Mail::to($seller->email)->send(new TransactionCompletedMail($exhibition));
+        }
 
         return redirect('/');
     }

@@ -31,7 +31,7 @@ class UserController extends Controller
                     $query->select('created_at')
                         ->from('messages')
                         ->whereColumn('messages.exhibition_id', 'exhibitions.id')
-                        ->latest()
+                        ->oldest()
                         ->limit(1);
                 })
                 ->get();
