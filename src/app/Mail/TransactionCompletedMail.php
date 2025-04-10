@@ -35,7 +35,7 @@ class TransactionCompletedMail extends Mailable
     public function build()
     {
         // 最初の取引を取得
-        $transaction = $this->exhibition->transactions()->first();
+        $transaction = $this->exhibition->transaction()->first();
 
         // receiver_id から User を取得
         $receiver = $transaction ? User::find($transaction->receiver_id) : null;

@@ -19,8 +19,14 @@ class MessageController extends Controller
         $exhibition = Exhibition::findOrFail($item_id);
         $user = auth()->user();
 
-        $ongoingExhibitions = Transaction::where('seller_id', $user->id)
-            ->orWhere('receiver_id', $user->id)
+        $ongoingExhibitions = Transaction::where(function ($query) use ($user) {
+            $query->where('seller_id', $user->id)  // 自分が出品者
+                ->where('is_active', 1);         // 出品者の取引は進行中（is_active = 1）
+        })
+            ->orWhere(function ($query) use ($user) {
+                $query->where('receiver_id', $user->id) // 自分が購入者
+                    ->where('is_active', 1);          // 購入者の取引も進行中（is_active = 1）
+            })
             ->with('exhibition')
             ->get();
 
@@ -129,7 +135,7 @@ class MessageController extends Controller
     public function transactionReview(Request $request, $exhibition_id)
     {
         $exhibition = Exhibition::findOrFail($exhibition_id);
-        $transaction = $exhibition->transactions()->where('exhibition_id', $exhibition_id)->first();
+        $transaction = $exhibition->transaction()->where('exhibition_id', $exhibition_id)->first();
 
         $isBuyerReviewing = $transaction->receiver_id == auth()->id();
 

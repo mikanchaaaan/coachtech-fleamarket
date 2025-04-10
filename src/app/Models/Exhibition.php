@@ -34,9 +34,9 @@ class Exhibition extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function transactions()
+    public function transaction()
     {
-        return $this->hasMany(Transaction::class, 'exhibition_id');
+        return $this->hasOne(Transaction::class, 'exhibition_id');
     }
 
     public function messages()
